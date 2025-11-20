@@ -1,4 +1,4 @@
-// location_section.dart
+// location_section.dart (updated)
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/date_field.dart';
@@ -57,7 +57,6 @@ class LocationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenSize = MediaQuery.of(context).size;
-    // final isSmallScreen = screenSize.width < 375;
     final isMediumScreen = screenSize.width < 600;
 
     return Container(

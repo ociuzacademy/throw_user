@@ -8,7 +8,7 @@ class PaymentPage extends StatefulWidget {
   final Bid bid;
   const PaymentPage({super.key, required this.bid});
 
-  static route({required Bid bid}) =>
+  static MaterialPageRoute route({required Bid bid}) =>
       MaterialPageRoute(builder: (context) => PaymentPage(bid: bid));
 
   @override

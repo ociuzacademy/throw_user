@@ -9,7 +9,7 @@ import 'package:throw_user/modules/auction_module/widgets/time_unit.dart';
 class AuctionPage extends StatefulWidget {
   const AuctionPage({super.key});
 
-  static route() =>
+  static MaterialPageRoute route() =>
       MaterialPageRoute(builder: (context) => const AuctionPage());
 
   @override
@@ -99,7 +99,7 @@ class _AuctionPageState extends State<AuctionPage> {
                 builder: (context, isTimerActive, _) {
                   return ValueListenableBuilder<int>(
                     valueListenable: _remainingSeconds,
-                    builder: (context, remainingSeconds, __) {
+                    builder: (context, remainingSeconds, _) {
                       final minutes = (remainingSeconds ~/ 60)
                           .toString()
                           .padLeft(2, '0');
@@ -236,7 +236,7 @@ class _AuctionPageState extends State<AuctionPage> {
                 builder: (context, isTimerActive, child) {
                   return ValueListenableBuilder<List<Bid>>(
                     valueListenable: _bids,
-                    builder: (context, bids, __) {
+                    builder: (context, bids, _) {
                       return Column(
                         children: bids
                             .map(

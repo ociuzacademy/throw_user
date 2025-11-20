@@ -1,7 +1,8 @@
-import 'dart:io';
-
+// profile_setup_page.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:throw_user/core/widgets/text_field/unified_text_field.dart';
+import 'package:throw_user/modules/profile_setup_module/providers/profile_setup_provider.dart';
 import 'package:throw_user/modules/profile_setup_module/utils/profile_setup_helper.dart';
 import 'package:throw_user/modules/profile_setup_module/widgets/continue_button.dart';
 import 'package:throw_user/modules/profile_setup_module/widgets/profile_image_section.dart';
@@ -17,32 +18,7 @@ class ProfileSetupPage extends StatefulWidget {
 }
 
 class _ProfileSetupPageState extends State<ProfileSetupPage> {
-  late final ProfileSetupHelper _profileSetupHelper;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _fullNameController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  final ValueNotifier<File?> _profileImage = ValueNotifier<File?>(null);
-  final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> _isPasswordVisible = ValueNotifier<bool>(false);
-
-  @override
-  void initState() {
-    super.initState();
-    _profileSetupHelper = ProfileSetupHelper(
-      context: context,
-      formKey: _formKey,
-      fullNameController: _fullNameController,
-      phoneNumberController: _phoneNumberController,
-      emailController: _emailController,
-      passwordController: _passwordController,
-      profileImage: _profileImage,
-      isLoading: _isLoading,
-      isPasswordVisible: _isPasswordVisible,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,172 +43,215 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
       screenSize.height,
     );
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: AppBar(
-        backgroundColor: cardColor,
-        elevation: 2,
-        shadowColor: Colors.black.withValues(alpha: 0.1),
-        centerTitle: true,
-        title: Text(
-          'Profile Setup',
-          style: TextStyle(
-            fontSize: _getTitleFontSize(screenSize.width),
-            fontWeight: FontWeight.bold,
-            color: textPrimaryColor,
+    return ChangeNotifierProvider(
+      create: (context) => ProfileSetupProvider(),
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: AppBar(
+          backgroundColor: cardColor,
+          elevation: 2,
+          shadowColor: Colors.black.withValues(alpha: 0.1),
+          centerTitle: true,
+          title: Text(
+            'Profile Setup',
+            style: TextStyle(
+              fontSize: _getTitleFontSize(screenSize.width),
+              fontWeight: FontWeight.bold,
+              color: textPrimaryColor,
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalPadding,
-            ),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight:
-                    screenSize.height -
-                    (kToolbarHeight + verticalPadding * 2 + 100),
-              ),
-              child: Column(
-                children: [
-                  // Profile Photo Section
-                  ValueListenableBuilder(
-                    valueListenable: _profileImage,
-                    builder: (context, profileImage, child) {
-                      return ProfileImageSection(
-                        isDark: isDark,
-                        screenWidth: screenSize.width,
-                        profileImagePath: profileImage?.path,
-                        onUploadPressed: _profileSetupHelper.pickImage,
-                      );
-                    },
+        body: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: Consumer<ProfileSetupProvider>(
+              builder: (context, provider, child) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: horizontalPadding,
+                    vertical: verticalPadding,
                   ),
-
-                  SizedBox(height: isLargeScreen ? 32 : 24),
-
-                  // Form Section
-                  Container(
+                  child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxWidth: isLargeScreen ? 500 : double.infinity,
+                      minHeight:
+                          screenSize.height -
+                          (kToolbarHeight + verticalPadding * 2 + 100),
                     ),
                     child: Column(
                       children: [
-                        // Full Name Field
-                        UnifiedTextField(
-                          controller: _fullNameController,
-                          hintText: 'Full Name',
-                          screenWidth: screenSize.width,
+                        // Profile Photo Section
+                        ProfileImageSection(
                           isDark: isDark,
-                          style: TextFieldStyle.profile,
-                          keyboardType: TextInputType.name,
-                          validator: ProfileSetupHelper.validateFullName,
-                        ),
-                        SizedBox(
-                          height: ProfileSetupHelper.getFieldSpacing(
-                            screenSize.width,
-                          ),
+                          screenWidth: screenSize.width,
+                          profileImagePath: provider.profileImage?.path,
+                          onUploadPressed: provider.pickImage,
                         ),
 
-                        // Phone Number Field
-                        UnifiedTextField(
-                          controller: _phoneNumberController,
-                          hintText: 'Phone Number',
-                          screenWidth: screenSize.width,
-                          isDark: isDark,
-                          style: TextFieldStyle.profile,
-                          keyboardType: TextInputType.phone,
-                          validator: ProfileSetupHelper.validatePhoneNumber,
-                        ),
-                        SizedBox(
-                          height: ProfileSetupHelper.getFieldSpacing(
-                            screenSize.width,
-                          ),
-                        ),
+                        SizedBox(height: isLargeScreen ? 32 : 24),
 
-                        // Email Address Field
-                        UnifiedTextField(
-                          controller: _emailController,
-                          hintText: 'Email Address',
-                          screenWidth: screenSize.width,
-                          isDark: isDark,
-                          style: TextFieldStyle.profile,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: ProfileSetupHelper.validateEmail,
-                        ),
-                        SizedBox(
-                          height: ProfileSetupHelper.getFieldSpacing(
-                            screenSize.width,
+                        // Form Section
+                        Container(
+                          constraints: BoxConstraints(
+                            maxWidth: isLargeScreen ? 500 : double.infinity,
                           ),
-                        ),
-
-                        // Password Field
-                        ValueListenableBuilder<bool>(
-                          valueListenable: _isPasswordVisible,
-                          builder: (context, isVisible, child) {
-                            return UnifiedTextField(
-                              controller: _passwordController,
-                              hintText: 'Password',
-                              screenWidth: screenSize.width,
-                              isDark: isDark,
-                              style: TextFieldStyle.profile,
-                              obscureText: !isVisible,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  isVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: isDark
-                                      ? const Color(0xFFa0b3c4)
-                                      : const Color(0xFF4c779a),
-                                ),
-                                onPressed: () =>
-                                    _isPasswordVisible.value = !isVisible,
+                          child: Column(
+                            children: [
+                              // Full Name Field
+                              UnifiedTextField(
+                                controller: provider.fullNameController,
+                                hintText: 'Full Name',
+                                screenWidth: screenSize.width,
+                                isDark: isDark,
+                                style: TextFieldStyle.profile,
+                                keyboardType: TextInputType.name,
+                                validator:
+                                    ProfileSetupProvider.validateFullName,
                               ),
-                              validator: ProfileSetupHelper.validatePassword,
-                            );
-                          },
+                              SizedBox(
+                                height: ProfileSetupHelper.getFieldSpacing(
+                                  screenSize.width,
+                                ),
+                              ),
+
+                              // Phone Number Field
+                              UnifiedTextField(
+                                controller: provider.phoneNumberController,
+                                hintText: 'Phone Number',
+                                screenWidth: screenSize.width,
+                                isDark: isDark,
+                                style: TextFieldStyle.profile,
+                                keyboardType: TextInputType.phone,
+                                validator:
+                                    ProfileSetupProvider.validatePhoneNumber,
+                              ),
+                              SizedBox(
+                                height: ProfileSetupHelper.getFieldSpacing(
+                                  screenSize.width,
+                                ),
+                              ),
+
+                              // Email Address Field
+                              UnifiedTextField(
+                                controller: provider.emailController,
+                                hintText: 'Email Address',
+                                screenWidth: screenSize.width,
+                                isDark: isDark,
+                                style: TextFieldStyle.profile,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: ProfileSetupProvider.validateEmail,
+                              ),
+                              SizedBox(
+                                height: ProfileSetupHelper.getFieldSpacing(
+                                  screenSize.width,
+                                ),
+                              ),
+
+                              // Password Field
+                              UnifiedTextField(
+                                controller: provider.passwordController,
+                                hintText: 'Password',
+                                screenWidth: screenSize.width,
+                                isDark: isDark,
+                                style: TextFieldStyle.profile,
+                                obscureText: !provider.isPasswordVisible,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    provider.isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: isDark
+                                        ? const Color(0xFFa0b3c4)
+                                        : const Color(0xFF4c779a),
+                                  ),
+                                  onPressed: provider.togglePasswordVisibility,
+                                ),
+                                validator:
+                                    ProfileSetupProvider.validatePassword,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),
-      ),
-      // Footer Button
-      bottomNavigationBar: ValueListenableBuilder<bool>(
-        valueListenable: _isLoading,
-        builder: (context, isLoading, child) {
-          return Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: 16,
-            ),
-            decoration: BoxDecoration(
-              color: cardColor,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
-            child: ContinueButton(
-              screenWidth: screenSize.width,
-              isLoading: isLoading,
-              onPressed: _profileSetupHelper.submitForm,
-            ),
-          );
-        },
+        // Footer Button
+        bottomNavigationBar: Consumer<ProfileSetupProvider>(
+          builder: (context, provider, child) {
+            return Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: 16,
+              ),
+              decoration: BoxDecoration(
+                color: cardColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, -2),
+                  ),
+                ],
+              ),
+              child: ContinueButton(
+                screenWidth: screenSize.width,
+                isLoading: provider.isLoading,
+                onPressed: () => _submitForm(context, provider),
+              ),
+            );
+          },
+        ),
       ),
     );
+  }
+
+  Future<void> _submitForm(
+    BuildContext context,
+    ProfileSetupProvider provider,
+  ) async {
+    if (_formKey.currentState!.validate()) {
+      if (provider.profileImage != null) {
+        provider.isLoading = true;
+
+        // Simulate API call
+        await Future.delayed(const Duration(seconds: 2));
+
+        if (context.mounted) {
+          provider.isLoading = false;
+
+          final String fullName = provider.fullNameController.text.trim();
+          final String phoneNumber = provider.phoneNumberController.text.trim();
+          final String email = provider.emailController.text.trim();
+          final String password = provider.passwordController.text.trim();
+
+          debugPrint('Full name: $fullName');
+          debugPrint('Phone number: $phoneNumber');
+          debugPrint('Email: $email');
+          debugPrint('Password: $password');
+
+          // Use your existing snackbar and navigation logic
+          // CustomSnackbar.showSuccess(
+          //   context: context,
+          //   message: 'Profile set up successfully!',
+          // );
+          // Navigator.pushAndRemoveUntil(context, LoginPage.route(), (_) => false);
+        }
+      } else {
+        // CustomSnackbar.showError(
+        //   context: context,
+        //   message: 'Please upload the profile image.',
+        // );
+      }
+    } else {
+      // CustomSnackbar.showError(
+      //   context: context,
+      //   message: 'Please fill all the required form fields',
+      // );
+    }
   }
 
   double _getTitleFontSize(double screenWidth) {
@@ -240,17 +259,5 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     if (screenWidth < 600) return 20;
     if (screenWidth < 900) return 22;
     return 24;
-  }
-
-  @override
-  void dispose() {
-    _fullNameController.dispose();
-    _phoneNumberController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _profileImage.dispose();
-    _isLoading.dispose();
-    _isPasswordVisible.dispose();
-    super.dispose();
   }
 }

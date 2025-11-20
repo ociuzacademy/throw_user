@@ -22,7 +22,7 @@ class PaymentResultPage extends StatefulWidget {
   @override
   State<PaymentResultPage> createState() => _PaymentResultPageState();
 
-  static route({required bool isSuccess, Bid? bid, String? transactionId}) =>
+  static MaterialPageRoute route({required bool isSuccess, Bid? bid, String? transactionId}) =>
       MaterialPageRoute(
         builder: (context) => PaymentResultPage(
           isSuccess: isSuccess,

@@ -9,7 +9,7 @@ import 'package:throw_user/modules/delivery_details_module/widgets/progress_time
 class DeliveryDetailsPage extends StatefulWidget {
   const DeliveryDetailsPage({super.key});
 
-  static route() => MaterialPageRoute(builder: (_) => DeliveryDetailsPage());
+  static MaterialPageRoute route() => MaterialPageRoute(builder: (_) => DeliveryDetailsPage());
 
   @override
   State<DeliveryDetailsPage> createState() => _DeliveryDetailsPageState();

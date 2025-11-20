@@ -4,7 +4,7 @@ import 'package:throw_user/modules/home_module/view/home_page.dart';
 class AuctionExpiredPage extends StatelessWidget {
   const AuctionExpiredPage({super.key});
 
-  static route() =>
+  static MaterialPageRoute route() =>
       MaterialPageRoute(builder: (context) => const AuctionExpiredPage());
 
   @override

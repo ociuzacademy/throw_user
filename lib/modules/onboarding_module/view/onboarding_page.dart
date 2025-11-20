@@ -8,7 +8,7 @@ class OnboardingPage extends StatefulWidget {
   @override
   State<OnboardingPage> createState() => _OnboardingPageState();
 
-  static route() => MaterialPageRoute(builder: (_) => OnboardingPage());
+  static MaterialPageRoute route() => MaterialPageRoute(builder: (_) => OnboardingPage());
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
