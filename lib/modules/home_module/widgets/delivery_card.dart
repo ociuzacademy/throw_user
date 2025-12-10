@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_details_module/view/delivery_details_page.dart';
 
 class DeliveryCard extends StatelessWidget {
@@ -21,14 +22,10 @@ class DeliveryCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Color definitions
-    final cardColor = isDark ? const Color(0xFF182430) : Colors.white;
-    final textPrimaryColor = isDark ? Colors.white : const Color(0xFF111518);
-    final textSecondaryColor = isDark
-        ? const Color(0xFF9badbd)
-        : const Color(0xFF617789);
-    final dividerColor = isDark
-        ? const Color(0xFF374151)
-        : const Color(0xFFe5e7eb);
+    final cardColor = isDark ? AppColors.cardDark : AppColors.cardLight;
+    final textPrimaryColor = AppColors.getTextPrimaryColor(isDark);
+    final textSecondaryColor = AppColors.getTextSecondaryColor(isDark);
+    final dividerColor = AppColors.getBorderColor(isDark);
 
     // Responsive dimensions
     final padding = isVerySmallScreen ? 16.0 : 20.0;
@@ -67,8 +64,8 @@ class DeliveryCard extends StatelessWidget {
                       fontSize: statusFontSize,
                       fontWeight: FontWeight.w600,
                       color: status == 'In Progress'
-                          ? const Color(0xFF2694ed)
-                          : const Color(0xFF10b981),
+                          ? AppColors.primary
+                          : AppColors.success,
                     ),
                   ),
                   SizedBox(height: 8),

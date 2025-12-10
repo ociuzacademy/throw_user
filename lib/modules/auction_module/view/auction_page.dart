@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/models/bid.dart';
 import 'package:throw_user/modules/auction_module/helper/fake_data.dart';
 import 'package:throw_user/modules/auction_module/utils/auction_helper.dart';
@@ -67,9 +68,9 @@ class _AuctionPageState extends State<AuctionPage> {
     final cardPadding = isSmallScreen ? 16.0 : 24.0;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF101a22) : Colors.white,
+      backgroundColor: AppColors.getBackgroundColor(isDark),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2694ed),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         titleTextStyle: TextStyle(
           fontWeight: FontWeight.bold,
@@ -136,7 +137,7 @@ class _AuctionPageState extends State<AuctionPage> {
                                           ? colorScheme.onSurface.withValues(
                                               alpha: 0.6,
                                             )
-                                          : const Color(0xFF6b7280))
+                                          : AppColors.grayLight)
                                     : Colors.red,
                                 fontWeight: isTimerActive
                                     ? null

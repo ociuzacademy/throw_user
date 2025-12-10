@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class WalletHeader extends StatelessWidget {
   const WalletHeader({
@@ -22,7 +23,7 @@ class WalletHeader extends StatelessWidget {
         bottom: isSmallScreen ? 16 : 24,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFF2694ed),
+        color: AppColors.primary,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),

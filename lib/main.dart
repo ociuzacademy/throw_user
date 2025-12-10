@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/splash_screen_module/view/splash_screen.dart';
 
 void main() {
@@ -15,9 +16,9 @@ class MyApp extends StatelessWidget {
       title: 'Throw',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color(0xFF2694ED),
+        primaryColor: AppColors.primary,
         cardColor: Colors.white,
-        scaffoldBackgroundColor: Color(0xFFF6F7F8),
+        scaffoldBackgroundColor: AppColors.backgroundLight,
         textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
           titleLarge: GoogleFonts.plusJakartaSans(
             fontWeight: FontWeight.bold,
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
           bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[600]),
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFFF6F7F8).withValues(alpha: 0.8),
+          backgroundColor: AppColors.backgroundLight.withValues(alpha: 0.8),
           elevation: 0,
           titleTextStyle: GoogleFonts.plusJakartaSans(
             fontSize: 18,
@@ -38,9 +39,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       darkTheme: ThemeData(
-        primaryColor: Color(0xFF2694ED),
-        cardColor: Colors.black,
-        scaffoldBackgroundColor: Color(0xFF101A22),
+        primaryColor: AppColors.primary,
+        cardColor: AppColors.cardDark,
+        scaffoldBackgroundColor: AppColors.backgroundDark,
         textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
           titleLarge: GoogleFonts.plusJakartaSans(
             fontWeight: FontWeight.bold,
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[400]),
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFF101A22).withValues(alpha: 0.8),
+          backgroundColor: AppColors.backgroundDark.withValues(alpha: 0.8),
           elevation: 0,
           titleTextStyle: GoogleFonts.plusJakartaSans(
             fontSize: 18,

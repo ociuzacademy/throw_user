@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class ProfileSetupHeader extends StatelessWidget {
   final bool isDark;
@@ -19,7 +20,7 @@ class ProfileSetupHeader extends StatelessWidget {
     final fontSize = _getFontSize(screenWidth);
 
     return Container(
-      color: isDark ? const Color(0xFF101a22) : const Color(0xFFf6f7f8),
+      color: AppColors.getBackgroundColor(isDark),
       child: Padding(
         padding: EdgeInsets.all(padding),
         child: Row(
@@ -29,7 +30,7 @@ class ProfileSetupHeader extends StatelessWidget {
               onPressed: onBackPressed,
               icon: Icon(
                 Icons.arrow_back,
-                color: isDark ? Colors.white : const Color(0xFF0d151b),
+                color: isDark ? Colors.white : AppColors.textPrimaryLight,
                 size: iconSize,
               ),
               padding: EdgeInsets.all(padding * 0.5),
@@ -43,7 +44,7 @@ class ProfileSetupHeader extends StatelessWidget {
                 style: TextStyle(
                   fontSize: fontSize,
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : const Color(0xFF0d151b),
+                  color: isDark ? Colors.white : AppColors.textPrimaryLight,
                 ),
               ),
             ),

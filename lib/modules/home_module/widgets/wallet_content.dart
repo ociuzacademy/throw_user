@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/home_module/widgets/transaction_item.dart';
 
 class WalletContent extends StatelessWidget {
@@ -27,7 +28,7 @@ class WalletContent extends StatelessWidget {
             style: TextStyle(
               fontSize: isSmallScreen ? 18 : 22,
               fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : const Color(0xFF101a22),
+              color: isDark ? Colors.white : AppColors.textPrimaryLight,
             ),
           ),
 

@@ -1,5 +1,6 @@
 // urgency_dropdown.dart
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class UrgencyDropdown extends StatelessWidget {
   final String? selectedUrgency;
@@ -22,16 +23,20 @@ class UrgencyDropdown extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         hintText: 'Urgency',
         hintStyle: TextStyle(
-          color: isDark ? const Color(0xFF9ca3af) : const Color(0xFF6b7280),
+          color: isDark
+              ? AppColors.textSecondaryDark
+              : AppColors.textSecondaryLight,
         ),
       ),
-      dropdownColor: isDark ? const Color(0xFF1f2937) : Colors.white,
+      dropdownColor: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
       style: TextStyle(
-        color: isDark ? const Color(0xFFf9fafb) : const Color(0xFF111827),
+        color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
       ),
       icon: Icon(
         Icons.arrow_drop_down,
-        color: isDark ? const Color(0xFF9ca3af) : const Color(0xFF6b7280),
+        color: isDark
+            ? AppColors.textSecondaryDark
+            : AppColors.textSecondaryLight,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

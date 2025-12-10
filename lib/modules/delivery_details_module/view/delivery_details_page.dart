@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_details_module/enums/delivery_status.dart';
 import 'package:throw_user/modules/delivery_details_module/utils/delivery_details_helper.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/location_section.dart';
@@ -9,7 +10,8 @@ import 'package:throw_user/modules/delivery_details_module/widgets/progress_time
 class DeliveryDetailsPage extends StatefulWidget {
   const DeliveryDetailsPage({super.key});
 
-  static MaterialPageRoute route() => MaterialPageRoute(builder: (_) => DeliveryDetailsPage());
+  static MaterialPageRoute route() =>
+      MaterialPageRoute(builder: (_) => DeliveryDetailsPage());
 
   @override
   State<DeliveryDetailsPage> createState() => _DeliveryDetailsPageState();
@@ -57,15 +59,15 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
     final spacing = isSmallScreen ? 16.0 : 24.0;
 
     // Color definitions based on HTML
-    final primaryColor = const Color(0xFF2694ed);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101a22);
-    final cardLight = Colors.white;
-    final cardDark = const Color(0xFF182430);
-    final textPrimaryLight = const Color(0xFF111518);
-    final textPrimaryDark = const Color(0xFFf6f7f8);
-    final textSecondaryLight = const Color(0xFF617789);
-    final textSecondaryDark = const Color(0xFF9badbd);
+    final primaryColor = AppColors.primary;
+    final backgroundLight = AppColors.backgroundLight;
+    final backgroundDark = AppColors.backgroundDark;
+    final cardLight = AppColors.cardLight;
+    final cardDark = AppColors.cardDark;
+    final textPrimaryLight = AppColors.textPrimaryLight;
+    final textPrimaryDark = AppColors.textPrimaryDark;
+    final textSecondaryLight = AppColors.textSecondaryLight;
+    final textSecondaryDark = AppColors.textSecondaryDark;
 
     final backgroundColor = isDark ? backgroundDark : backgroundLight;
     final cardColor = isDark ? cardDark : cardLight;
@@ -216,9 +218,7 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                       margin: EdgeInsets.symmetric(
                         vertical: isSmallScreen ? 16.0 : 20.0,
                       ),
-                      color: isDark
-                          ? const Color(0xFF374151)
-                          : const Color(0xFFe5e7eb),
+                      color: AppColors.getBorderColor(isDark),
                     ),
 
                     // Drop-off Section

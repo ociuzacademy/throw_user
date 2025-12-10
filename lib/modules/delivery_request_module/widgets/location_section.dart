@@ -1,5 +1,6 @@
 // location_section.dart (updated)
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/date_field.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/preferred_date_field.dart';
@@ -61,7 +62,7 @@ class LocationSection extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1f2937) : Colors.white,
+        color: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -79,9 +80,7 @@ class LocationSection extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: isDark
-                      ? const Color(0xFF374151)
-                      : const Color(0xFFe5e7eb),
+                  color: isDark ? AppColors.borderDark : AppColors.borderLight,
                 ),
               ),
             ),
@@ -93,8 +92,8 @@ class LocationSection extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: isDark
-                        ? const Color(0xFFf9fafb)
-                        : const Color(0xFF111827),
+                        ? AppColors.textPrimaryDark
+                        : AppColors.textPrimaryLight,
                   ),
                 ),
               ],
@@ -110,12 +109,12 @@ class LocationSection extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: isDark
-                        ? const Color(0xFF1f2937)
-                        : const Color(0xFFf6f7f8),
+                        ? AppColors.inactiveBackgroundDark
+                        : AppColors.getBackgroundColor(false),
                     border: Border.all(
                       color: isDark
-                          ? const Color(0xFF374151)
-                          : const Color(0xFFe5e7eb),
+                          ? AppColors.borderDark
+                          : AppColors.borderLight,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -128,14 +127,14 @@ class LocationSection extends StatelessWidget {
                       hintText: addressHint,
                       hintStyle: TextStyle(
                         color: isDark
-                            ? const Color(0xFF9ca3af)
-                            : const Color(0xFF6b7280),
+                            ? AppColors.textSecondaryDark
+                            : AppColors.textSecondaryLight,
                       ),
                     ),
                     style: TextStyle(
                       color: isDark
-                          ? const Color(0xFFf9fafb)
-                          : const Color(0xFF111827),
+                          ? AppColors.textPrimaryDark
+                          : AppColors.textPrimaryLight,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -158,12 +157,12 @@ class LocationSection extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: isDark
-                        ? const Color(0xFF1f2937)
-                        : const Color(0xFFf6f7f8),
+                        ? AppColors.inactiveBackgroundDark
+                        : AppColors.getBackgroundColor(false),
                     border: Border.all(
                       color: isDark
-                          ? const Color(0xFF374151)
-                          : const Color(0xFFe5e7eb),
+                          ? AppColors.borderDark
+                          : AppColors.borderLight,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -176,14 +175,14 @@ class LocationSection extends StatelessWidget {
                       hintText: remarksHint,
                       hintStyle: TextStyle(
                         color: isDark
-                            ? const Color(0xFF9ca3af)
-                            : const Color(0xFF6b7280),
+                            ? AppColors.textSecondaryDark
+                            : AppColors.textSecondaryLight,
                       ),
                     ),
                     style: TextStyle(
                       color: isDark
-                          ? const Color(0xFFf9fafb)
-                          : const Color(0xFF111827),
+                          ? AppColors.textPrimaryDark
+                          : AppColors.textPrimaryLight,
                     ),
                   ),
                 ),
@@ -251,8 +250,8 @@ class LocationSection extends StatelessWidget {
                       )
                     : Container(
                         color: isDark
-                            ? const Color(0xFF374151)
-                            : const Color(0xFFe5e7eb),
+                            ? AppColors.borderDark
+                            : AppColors.borderLight,
                         child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -261,16 +260,16 @@ class LocationSection extends StatelessWidget {
                                 Icons.add_location_alt,
                                 size: 48,
                                 color: isDark
-                                    ? const Color(0xFF9ca3af)
-                                    : const Color(0xFF6b7280),
+                                    ? AppColors.textSecondaryDark
+                                    : AppColors.textSecondaryLight,
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Tap to select location',
                                 style: TextStyle(
                                   color: isDark
-                                      ? const Color(0xFF9ca3af)
-                                      : const Color(0xFF6b7280),
+                                      ? AppColors.textSecondaryDark
+                                      : AppColors.textSecondaryLight,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),

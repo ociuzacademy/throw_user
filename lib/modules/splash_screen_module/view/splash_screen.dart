@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'dart:async';
 
 import 'package:throw_user/modules/onboarding_module/view/onboarding_page.dart';
@@ -76,9 +77,9 @@ class _SplashScreenState extends State<SplashScreen>
     final spacing = SplashScreenHelper.getSpacing(screenSize.width);
 
     // Color definitions
-    final primaryColor = const Color(0xFF2694ed);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101a22);
+    final primaryColor = AppColors.primary;
+    final backgroundLight = AppColors.backgroundLight;
+    final backgroundDark = AppColors.backgroundDark;
 
     return Scaffold(
       backgroundColor: isDark ? backgroundDark : backgroundLight,
@@ -120,7 +121,7 @@ class _SplashScreenState extends State<SplashScreen>
                     style: TextStyle(
                       fontSize: appNameFontSize,
                       fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black,
+                      color: AppColors.getTextPrimaryColor(isDark),
                     ),
                   ),
                   SizedBox(height: spacing * 0.5),
@@ -129,7 +130,7 @@ class _SplashScreenState extends State<SplashScreen>
                     'Your package, delivered with care.',
                     style: TextStyle(
                       fontSize: taglineFontSize,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      color: AppColors.getTextSecondaryColor(isDark),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -183,7 +184,7 @@ class _StarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFF2694ed)
+      ..color = AppColors.primary
       ..style = PaintingStyle.fill;
 
     // Scale the path to fit the provided size

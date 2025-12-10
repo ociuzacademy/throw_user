@@ -1,5 +1,6 @@
 // phone_field.dart
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class PhoneField extends StatelessWidget {
   final TextEditingController phoneController;
@@ -13,9 +14,9 @@ class PhoneField extends StatelessWidget {
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1f2937) : const Color(0xFFf6f7f8),
+        color: AppColors.getPhoneFieldBackground(isDark),
         border: Border.all(
-          color: isDark ? const Color(0xFF374151) : const Color(0xFFe5e7eb),
+          color: AppColors.getBorderColor(isDark),
         ),
         borderRadius: BorderRadius.circular(8),
       ),
@@ -30,16 +31,16 @@ class PhoneField extends StatelessWidget {
           ),
           hintText: "Recipient's phone number",
           hintStyle: TextStyle(
-            color: isDark ? const Color(0xFF9ca3af) : const Color(0xFF6b7280),
+            color: AppColors.getGrayColor(isDark),
           ),
           prefixIcon: Icon(
             Icons.phone,
-            color: isDark ? const Color(0xFF9ca3af) : const Color(0xFF6b7280),
+            color: AppColors.getGrayColor(isDark),
             size: 20,
           ),
         ),
         style: TextStyle(
-          color: isDark ? const Color(0xFFf9fafb) : const Color(0xFF111827),
+          color: AppColors.getTextPrimaryColor(isDark),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {

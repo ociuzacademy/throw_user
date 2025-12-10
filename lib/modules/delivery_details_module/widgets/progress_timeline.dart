@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_details_module/enums/delivery_status.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/progress_step.dart';
 
@@ -44,7 +45,7 @@ class ProgressTimeline extends StatelessWidget {
           child: CustomPaint(
             size: const Size(2, double.infinity),
             painter: _DashedLinePainter(
-              color: isDark ? const Color(0xFF374151) : const Color(0xFFe5e7eb),
+              color: AppColors.getBorderColor(isDark),
             ),
           ),
         ),

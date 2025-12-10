@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/widgets/text_field/unified_text_field.dart';
 import 'package:throw_user/modules/login_module/utils/login_helper.dart';
 import 'package:throw_user/modules/login_module/widgets/custom_button.dart';
@@ -41,15 +42,15 @@ class _LoginPageState extends State<LoginPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Color definitions based on HTML
-    final primaryColor = const Color(0xFF2694ed);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101a22);
-    final cardLight = Colors.white;
-    final cardDark = const Color(0xFF182430);
-    final textPrimaryLight = const Color(0xFF111518);
-    final textPrimaryDark = const Color(0xFFf6f7f8);
-    final textSecondaryLight = const Color(0xFF617789);
-    final textSecondaryDark = const Color(0xFF9badbd);
+    final primaryColor = AppColors.primary;
+    final backgroundLight = AppColors.backgroundLight;
+    final backgroundDark = AppColors.backgroundDark;
+    final cardLight = AppColors.cardLight;
+    final cardDark = AppColors.cardDark;
+    final textPrimaryLight = AppColors.textPrimaryLight;
+    final textPrimaryDark = AppColors.textPrimaryDark;
+    final textSecondaryLight = AppColors.textSecondaryLight;
+    final textSecondaryDark = AppColors.textSecondaryDark;
 
     final backgroundColor = isDark ? backgroundDark : backgroundLight;
     final textPrimaryColor = isDark ? textPrimaryDark : textPrimaryLight;

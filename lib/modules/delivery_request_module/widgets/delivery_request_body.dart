@@ -1,6 +1,7 @@
 // delivery_request_page.dart (updated)
 
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_request_module/providers/delivery_request_provider.dart';
 import 'package:throw_user/modules/delivery_request_module/services/delivery_request_service.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/location_section.dart';
@@ -88,12 +89,10 @@ class DeliveryRequestBody extends StatelessWidget {
                 Container(
                   height: 56,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1f2937) : Colors.white,
-                    border: Border.all(
-                      color: isDark
-                          ? const Color(0xFF374151)
-                          : const Color(0xFFe5e7eb),
-                    ),
+                    color: isDark
+                        ? AppColors.getInactiveBackgroundColor(isDark)
+                        : AppColors.cardLight,
+                    border: Border.all(color: AppColors.getBorderColor(isDark)),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: PackageTypeSelectionWidget(
@@ -133,11 +132,11 @@ class DeliveryRequestBody extends StatelessWidget {
               width: double.infinity,
               height: 56,
               decoration: BoxDecoration(
-                color: const Color(0xFF2694ed),
+                color: AppColors.primary,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF2694ed).withValues(alpha: 0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),

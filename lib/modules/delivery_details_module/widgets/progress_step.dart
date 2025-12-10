@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/modules/delivery_details_module/utils/progress_step_helper.dart';
 import 'package:throw_user/modules/feedback_module/view/feedback_page.dart';
@@ -63,15 +64,16 @@ class ProgressStep extends StatelessWidget {
 
     // Determine icon circle color
     final iconCircleColor = isCompleted
-        ? const Color(0xFF10b981) // Green for completed
+        ? AppColors
+              .success // Green for completed
         : isActive
         ? primaryColor!
-        : (isDark ? const Color(0xFF374151) : const Color(0xFFe5e7eb));
+        : AppColors.getBorderColor(isDark);
 
     // Determine icon color
     final iconColor = isCompleted || isActive
         ? Colors.white
-        : (isDark ? const Color(0xFF6b7280) : const Color(0xFF9ca3af));
+        : AppColors.getGrayColor(isDark);
 
     // Determine title color
     final titleColor = isActive || isCompleted
@@ -80,9 +82,11 @@ class ProgressStep extends StatelessWidget {
 
     // Determine subtitle color
     final subtitleColor = isCompleted
-        ? const Color(0xFF10b981) // Green for completed
+        ? AppColors
+              .success // Green for completed
         : isActive
-        ? const Color(0xFF10b981) // Green for active
+        ? AppColors
+              .success // Green for active
         : textSecondaryColor;
 
     return Row(
@@ -135,8 +139,8 @@ class ProgressStep extends StatelessWidget {
                     padding: EdgeInsets.all(isVerySmallScreen ? 12 : 12),
                     decoration: BoxDecoration(
                       color: isDark
-                          ? const Color(0xFF1f2937)
-                          : const Color(0xFFf3f4f6),
+                          ? AppColors.inactiveBackgroundDark
+                          : AppColors.backgroundLight,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(

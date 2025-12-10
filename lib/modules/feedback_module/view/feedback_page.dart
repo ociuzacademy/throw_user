@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:throw_user/modules/feedback_module/utils/feedback_helper.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -39,21 +40,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
     final mediaQuery = MediaQuery.of(context);
     final isSmallScreen = mediaQuery.size.width < 600;
 
-    // Color definitions based on HTML
-    final primaryColor = const Color(0xFF13a4ec);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101c22);
-    final foregroundLight = const Color(0xFF0d171b);
-    final foregroundDark = const Color(0xFFf6f7f8);
-    final subtleLight = const Color(0xFFe7eff3);
-    final subtleDark = const Color(0xFF1a2c35);
-    final mutedLight = const Color(0xFF4c809a);
-    final mutedDark = const Color(0xFF9cb3c1);
-
-    final backgroundColor = isDark ? backgroundDark : backgroundLight;
-    final foregroundColor = isDark ? foregroundDark : foregroundLight;
-    final subtleColor = isDark ? subtleDark : subtleLight;
-    final mutedColor = isDark ? mutedDark : mutedLight;
+    final backgroundColor = AppColors.getBackgroundColor(isDark);
+    final foregroundColor = AppColors.getTextPrimaryColor(isDark);
+    final subtleColor = isDark ? AppColors.borderDark : AppColors.borderLight;
+    final mutedColor = isDark
+        ? AppColors.textSecondaryDark
+        : AppColors.textSecondaryLight;
 
     // Responsive dimensions
     final horizontalPadding = isSmallScreen ? 16.0 : 24.0;
@@ -168,7 +160,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                     Icons.star,
                                     size: 40,
                                     color: index < rating
-                                        ? primaryColor
+                                        ? AppColors.primary
                                         : mutedColor,
                                   ),
                                 ),
@@ -256,7 +248,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           ? _feedbackHelper.submitFeedback
                           : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
+                        backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                         minimumSize: const Size(double.infinity, 56),
                         shape: RoundedRectangleBorder(
@@ -264,7 +256,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         ),
                         elevation: isEnabled ? 4 : 0,
                         shadowColor: isEnabled
-                            ? primaryColor.withValues(alpha: 0.3)
+                            ? AppColors.primary.withValues(alpha: 0.3)
                             : Colors.transparent,
                       ),
                       child: const Text(

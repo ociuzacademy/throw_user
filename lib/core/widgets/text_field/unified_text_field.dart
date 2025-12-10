@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_request_module/typedefs/validate_text_input.dart';
 
 enum TextFieldStyle {
@@ -98,16 +99,16 @@ class UnifiedTextField extends StatelessWidget {
 
     switch (style) {
       case TextFieldStyle.profile:
-        return isDark ? const Color(0xFF1c2a38) : const Color(0xFFe7eef3);
+        return AppColors.getInputBackgroundProfile(isDark);
       case TextFieldStyle.delivery:
         return isDark
-            ? const Color(0xFF182430)
-            : Colors.white.withValues(alpha: 0.5);
+            ? AppColors.inputBackgroundDarkDelivery
+            : AppColors.cardLight.withValues(alpha: 0.5);
     }
   }
 
   Color _getBorderColor() {
-    return isDark ? const Color(0xFF374151) : Colors.grey.shade300;
+    return AppColors.getBorderColor(isDark);
   }
 
   Color _getHintColor() {
@@ -117,9 +118,9 @@ class UnifiedTextField extends StatelessWidget {
 
     switch (style) {
       case TextFieldStyle.profile:
-        return isDark ? const Color(0xFFa0b3c4) : const Color(0xFF4c779a);
+        return AppColors.getInputHintProfile(isDark);
       case TextFieldStyle.delivery:
-        return isDark ? const Color(0xFF9badbd) : Colors.grey;
+        return isDark ? AppColors.inputHintDarkDelivery : Colors.grey;
     }
   }
 
@@ -130,9 +131,9 @@ class UnifiedTextField extends StatelessWidget {
 
     switch (style) {
       case TextFieldStyle.profile:
-        return isDark ? Colors.white : const Color(0xFF0d151b);
+        return isDark ? Colors.white : AppColors.inputTextLightProfile;
       case TextFieldStyle.delivery:
-        return isDark ? const Color(0xFFf6f7f8) : const Color(0xFF111518);
+        return AppColors.getTextPrimaryColor(isDark);
     }
   }
 

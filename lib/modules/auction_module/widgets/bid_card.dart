@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/core/models/bid.dart';
 import 'package:throw_user/modules/auction_module/typedefs/bid_action.dart';
@@ -160,7 +161,7 @@ class _BidCardState extends State<BidCard> {
                   '\u20B9${widget.bid.price.toStringAsFixed(2)}',
                   style: widget.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF2694ed),
+                    color: AppColors.primary,
                     fontSize: priceFontSize,
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class GridButtonItem extends StatelessWidget {
   final String iconImageUrl;
@@ -18,8 +19,8 @@ class GridButtonItem extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Color definitions
-    final cardColor = isDark ? const Color(0xFF182430) : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black87;
+    final cardColor = AppColors.getCardColor(isDark);
+    final textColor = AppColors.getTextPrimaryColor(isDark);
 
     // Responsive dimensions
     final padding = isVerySmallScreen ? 12.0 : 16.0;
@@ -43,7 +44,7 @@ class GridButtonItem extends StatelessWidget {
                 width: iconContainerSize,
                 height: iconContainerSize,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2694ed).withValues(alpha: 0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(
                     isVerySmallScreen ? 16 : 24,
                   ),

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class TransactionItem extends StatelessWidget {
   final IconData icon;
@@ -27,7 +28,7 @@ class TransactionItem extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(isSmallScreen ? 16 : 20),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF101a22) : Colors.white,
+        color: isDark ? AppColors.backgroundDark : Colors.white,
         borderRadius: BorderRadius.circular(isSmallScreen ? 12 : 16),
         border: isDark
             ? Border.all(color: Colors.white.withValues(alpha: 0.1), width: 1)
@@ -50,15 +51,13 @@ class TransactionItem extends StatelessWidget {
             height: isSmallScreen ? 48 : 56,
             decoration: BoxDecoration(
               color: isPositive
-                  ? const Color(0xFF2694ed).withValues(alpha: 0.1)
-                  : const Color(0xFFef4444).withValues(alpha: 0.1),
+                  ? AppColors.primary.withValues(alpha: 0.1)
+                  : AppColors.error.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(isSmallScreen ? 24 : 28),
             ),
             child: Icon(
               icon,
-              color: isPositive
-                  ? const Color(0xFF2694ed)
-                  : const Color(0xFFef4444),
+              color: isPositive ? AppColors.primary : AppColors.error,
               size: isSmallScreen ? 24 : 28,
             ),
           ),
@@ -75,7 +74,7 @@ class TransactionItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: isSmallScreen ? 16 : 18,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : const Color(0xFF101a22),
+                    color: isDark ? Colors.white : AppColors.textPrimaryLight,
                   ),
                 ),
                 SizedBox(height: isSmallScreen ? 4 : 6),
@@ -85,7 +84,7 @@ class TransactionItem extends StatelessWidget {
                     fontSize: isSmallScreen ? 14 : 16,
                     color: isDark
                         ? Colors.white.withValues(alpha: 0.6)
-                        : const Color(0xFF101a22).withValues(alpha: 0.6),
+                        : AppColors.textPrimaryLight.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -101,8 +100,9 @@ class TransactionItem extends StatelessWidget {
               fontSize: isSmallScreen ? 16 : 18,
               fontWeight: FontWeight.w600,
               color: isPositive
-                  ? const Color(0xFF10b981) // Green for positive
-                  : const Color(0xFFef4444), // Red for negative
+                  ? AppColors
+                        .success // Green for positive
+                  : AppColors.error, // Red for negative
             ),
           ),
         ],

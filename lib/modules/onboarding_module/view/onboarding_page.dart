@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/onboarding_module/models/onboarding_page_data.dart';
 import 'package:throw_user/modules/onboarding_module/utils/onboarding_helper.dart';
 
@@ -8,7 +9,8 @@ class OnboardingPage extends StatefulWidget {
   @override
   State<OnboardingPage> createState() => _OnboardingPageState();
 
-  static MaterialPageRoute route() => MaterialPageRoute(builder: (_) => OnboardingPage());
+  static MaterialPageRoute route() =>
+      MaterialPageRoute(builder: (_) => OnboardingPage());
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
@@ -77,9 +79,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
     final bottomSectionFlex = isLandscape ? 1 : 2;
 
     // Color definitions
-    final primaryColor = const Color(0xFF2694ed);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101a22);
+    // Color definitions
+    final primaryColor = AppColors.primary;
+    final backgroundLight = AppColors.backgroundLight;
+    final backgroundDark = AppColors.backgroundDark;
 
     return Scaffold(
       backgroundColor: isDark ? backgroundDark : backgroundLight,

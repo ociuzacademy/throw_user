@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/home_module/widgets/account_item.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -13,17 +14,11 @@ class ProfileWidget extends StatelessWidget {
     final isVerySmallScreen = screenWidth < 400;
 
     // Color definitions
-    final primaryColor = const Color(0xFF2694ed);
-    final backgroundColor = isDark
-        ? const Color(0xFF101a22)
-        : const Color(0xFFf6f7f8);
-    final cardColor = isDark ? const Color(0xFF182430) : Colors.white;
-    final textPrimaryColor = isDark
-        ? const Color(0xFFf6f7f8)
-        : const Color(0xFF111518);
-    final textSecondaryColor = isDark
-        ? const Color(0xFF9badbd)
-        : const Color(0xFF617789);
+    final primaryColor = AppColors.primary;
+    final backgroundColor = AppColors.getBackgroundColor(isDark);
+    final cardColor = AppColors.getCardColor(isDark);
+    final textPrimaryColor = AppColors.getTextPrimaryColor(isDark);
+    final textSecondaryColor = AppColors.getTextSecondaryColor(isDark);
 
     // Responsive dimensions
     final horizontalPadding = isSmallScreen ? 16.0 : 24.0;

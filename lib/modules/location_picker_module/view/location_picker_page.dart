@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:throw_user/modules/location_picker_module/utils/location_picker_helper.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class LocationPickerPage extends StatefulWidget {
   final String title;
@@ -114,7 +115,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            backgroundColor: const Color(0xFF2694ed),
+            backgroundColor: AppColors.primary,
             actions: [
               IconButton(
                 icon: Icon(
@@ -248,7 +249,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                   ),
                   child: FloatingActionButton.extended(
                     onPressed: _locationPickerHelper.confirmLocation,
-                    backgroundColor: const Color(0xFF2694ed),
+                    backgroundColor: AppColors.primary,
                     icon: Icon(
                       Icons.check,
                       color: Colors.white,

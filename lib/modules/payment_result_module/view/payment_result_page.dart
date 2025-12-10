@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/core/models/bid.dart';
 import 'package:throw_user/modules/home_module/view/home_page.dart';
@@ -22,14 +23,17 @@ class PaymentResultPage extends StatefulWidget {
   @override
   State<PaymentResultPage> createState() => _PaymentResultPageState();
 
-  static MaterialPageRoute route({required bool isSuccess, Bid? bid, String? transactionId}) =>
-      MaterialPageRoute(
-        builder: (context) => PaymentResultPage(
-          isSuccess: isSuccess,
-          bid: bid,
-          transactionId: transactionId,
-        ),
-      );
+  static MaterialPageRoute route({
+    required bool isSuccess,
+    Bid? bid,
+    String? transactionId,
+  }) => MaterialPageRoute(
+    builder: (context) => PaymentResultPage(
+      isSuccess: isSuccess,
+      bid: bid,
+      transactionId: transactionId,
+    ),
+  );
 }
 
 class _PaymentResultPageState extends State<PaymentResultPage>
@@ -84,15 +88,11 @@ class _PaymentResultPageState extends State<PaymentResultPage>
     final transactionSpacing = isSmallScreen ? 8.0 : 16.0;
 
     // Color definitions based on HTML
-    final primaryColor = const Color(0xFF2694ed);
-    final errorColor = const Color(0xFFef4444);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101a22);
-    final textLight = const Color(0xFF111518);
-    final textDark = Colors.white;
+    final primaryColor = AppColors.primary;
+    final errorColor = AppColors.error;
 
-    final backgroundColor = isDark ? backgroundDark : backgroundLight;
-    final textColor = isDark ? textDark : textLight;
+    final backgroundColor = AppColors.getBackgroundColor(isDark);
+    final textColor = AppColors.getTextPrimaryColor(isDark);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -197,7 +197,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                         ),
                         decoration: BoxDecoration(
                           color: isDark
-                              ? const Color(0xFF1f2937)
+                              ? AppColors.inactiveBackgroundDark
                               : Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: [

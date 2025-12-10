@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/home_module/widgets/home_page_bottom_navigation_bar.dart';
 import 'package:throw_user/modules/home_module/widgets/home_tab_widget.dart';
 import 'package:throw_user/modules/home_module/widgets/profile_widget.dart';
@@ -11,7 +12,8 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 
-  static MaterialPageRoute route() => MaterialPageRoute(builder: (context) => HomePage());
+  static MaterialPageRoute route() =>
+      MaterialPageRoute(builder: (context) => HomePage());
 }
 
 class _HomePageState extends State<HomePage> {
@@ -36,13 +38,9 @@ class _HomePageState extends State<HomePage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Color definitions
-    final backgroundColor = isDark
-        ? const Color(0xFF101a22)
-        : const Color(0xFFf6f7f8);
-    final cardColor = isDark ? const Color(0xFF182430) : Colors.white;
-    final textPrimaryColor = isDark
-        ? const Color(0xFFf6f7f8)
-        : const Color(0xFF111518);
+    final backgroundColor = AppColors.getBackgroundColor(isDark);
+    final cardColor = AppColors.getCardColor(isDark);
+    final textPrimaryColor = AppColors.getTextPrimaryColor(isDark);
 
     return Scaffold(
       backgroundColor: backgroundColor,

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/core/models/bid.dart';
 import 'package:throw_user/modules/payment_module/utils/payment_helper.dart';
@@ -47,9 +48,10 @@ class _PaymentPageState extends State<PaymentPage> {
     final innerSpacing = isSmallScreen ? 8.0 : 16.0;
 
     // Color definitions based on the HTML
-    final primaryColor = const Color(0xFF2694ed);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101a22);
+    // Color definitions based on the HTML
+    final primaryColor = AppColors.primary;
+    final backgroundLight = AppColors.backgroundLight;
+    final backgroundDark = AppColors.backgroundDark;
 
     return Scaffold(
       backgroundColor: isDark ? backgroundDark : backgroundLight,

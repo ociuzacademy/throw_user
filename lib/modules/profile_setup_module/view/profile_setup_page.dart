@@ -1,6 +1,7 @@
 // profile_setup_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/widgets/text_field/unified_text_field.dart';
 import 'package:throw_user/modules/profile_setup_module/providers/profile_setup_provider.dart';
 import 'package:throw_user/modules/profile_setup_module/utils/profile_setup_helper.dart';
@@ -27,13 +28,10 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Color definitions
-    final backgroundColor = isDark
-        ? const Color(0xFF101a22)
-        : const Color(0xFFf6f7f8);
-    final cardColor = isDark ? const Color(0xFF182430) : Colors.white;
-    final textPrimaryColor = isDark
-        ? const Color(0xFFf6f7f8)
-        : const Color(0xFF111518);
+    // Color definitions
+    final backgroundColor = AppColors.getBackgroundColor(isDark);
+    final cardColor = AppColors.getCardColor(isDark);
+    final textPrimaryColor = AppColors.getTextPrimaryColor(isDark);
 
     // Responsive padding calculations
     final horizontalPadding = ProfileSetupHelper.getResponsivePadding(
@@ -160,8 +158,8 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                     color: isDark
-                                        ? const Color(0xFFa0b3c4)
-                                        : const Color(0xFF4c779a),
+                                        ? AppColors.inputHintDarkProfile
+                                        : AppColors.inputHintLightProfile,
                                   ),
                                   onPressed: provider.togglePasswordVisibility,
                                 ),

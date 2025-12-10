@@ -1,6 +1,7 @@
 // profile_image_section.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class ProfileImageSection extends StatelessWidget {
   final bool isDark;
@@ -66,11 +67,11 @@ class ProfileImageSection extends StatelessWidget {
                     width: uploadButtonSize,
                     height: uploadButtonSize,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2694ed),
+                      color: AppColors.primary,
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF2694ed).withValues(alpha: 0.3),
+                          color: AppColors.primary.withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -93,7 +94,7 @@ class ProfileImageSection extends StatelessWidget {
             style: TextStyle(
               fontSize: titleFontSize,
               fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : const Color(0xFF0d151b),
+              color: isDark ? Colors.white : AppColors.textPrimaryLight,
             ),
           ),
           SizedBox(height: _getSpacing(screenWidth) * 0.5),
@@ -102,7 +103,9 @@ class ProfileImageSection extends StatelessWidget {
             'Add a photo so other users can recognize you',
             style: TextStyle(
               fontSize: descriptionFontSize,
-              color: isDark ? const Color(0xFFa0b3c4) : const Color(0xFF4c779a),
+              color: isDark
+                  ? AppColors.inputHintDarkProfile
+                  : AppColors.inputHintLightProfile,
             ),
             textAlign: TextAlign.center,
           ),

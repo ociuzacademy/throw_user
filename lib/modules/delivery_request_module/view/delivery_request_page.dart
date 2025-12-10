@@ -1,5 +1,6 @@
 // delivery_request_page.dart (updated)
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:throw_user/modules/delivery_request_module/providers/delivery_request_provider.dart';
 import 'package:throw_user/modules/delivery_request_module/services/delivery_request_service.dart';
@@ -30,24 +31,27 @@ class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
     return ChangeNotifierProvider(
       create: (context) => DeliveryRequestProvider(),
       child: Scaffold(
-        backgroundColor: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xFF101a22)
-            : const Color(0xFFf6f7f8),
+        backgroundColor: AppColors.getBackgroundColor(
+          Theme.of(context).brightness == Brightness.dark,
+        ),
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppColors.textPrimaryDark,
+            ),
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(
             'Create Delivery Request',
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.textPrimaryDark,
               fontSize: MediaQuery.of(context).size.width < 375 ? 18 : 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           centerTitle: true,
-          backgroundColor: const Color(0xFF2694ed),
+          backgroundColor: AppColors.primary,
           elevation: 0,
         ),
         body: Consumer<DeliveryRequestProvider>(

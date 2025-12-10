@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/core/models/bid.dart';
 import 'package:throw_user/modules/auction_module/typedefs/submit_bargain.dart';
@@ -132,7 +133,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2694ed),
+                      backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_request_module/typedefs/validate_text_input.dart';
 
 class ResponsiveFormField extends StatelessWidget {
@@ -35,8 +36,8 @@ class ResponsiveFormField extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(
           color: Theme.of(context).brightness == Brightness.dark
-              ? const Color(0xFF9ca3af)
-              : const Color(0xFF6b7280),
+              ? AppColors.textSecondaryDark
+              : AppColors.textSecondaryLight,
         ),
         suffixIcon: suffixIcon,
       ),

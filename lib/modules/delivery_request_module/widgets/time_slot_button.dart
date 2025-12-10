@@ -1,5 +1,6 @@
 // time_slot_button.dart
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class TimeSlotButton extends StatelessWidget {
   final String time;
@@ -21,12 +22,12 @@ class TimeSlotButton extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF2694ed) : Colors.transparent,
+          color: isSelected ? AppColors.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(6),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF2694ed).withValues(alpha: 0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -40,7 +41,7 @@ class TimeSlotButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: isSelected ? Colors.white : mutedTextColor,
+              color: isSelected ? AppColors.textPrimaryDark : mutedTextColor,
             ),
           ),
         ),

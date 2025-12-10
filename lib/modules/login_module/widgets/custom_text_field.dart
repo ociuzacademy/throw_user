@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_request_module/typedefs/validate_text_input.dart';
 
 enum TextFieldStyle { delivery, login }
@@ -36,13 +37,14 @@ class CustomTextField extends StatelessWidget {
     final isSmallScreen = screenWidth < 375;
 
     // Colors based on theme and style
-    final backgroundColor = isDark ? const Color(0xFF182430) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF374151) : Colors.grey.shade300;
+    final backgroundColor = isDark
+        ? AppColors.inputBackgroundDarkDelivery
+        : AppColors.cardLight;
+    final borderColor = AppColors.getBorderColor(isDark);
     final hintColor =
-        textSecondaryColor ?? (isDark ? const Color(0xFF9badbd) : Colors.grey);
-    final textColor =
-        textPrimaryColor ??
-        (isDark ? const Color(0xFFf6f7f8) : const Color(0xFF111518));
+        textSecondaryColor ??
+        (isDark ? AppColors.inputHintDarkDelivery : Colors.grey);
+    final textColor = textPrimaryColor ?? AppColors.getTextPrimaryColor(isDark);
 
     return Container(
       decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class ResponsiveCard extends StatelessWidget {
   final bool isDark;
@@ -19,9 +20,9 @@ class ResponsiveCard extends StatelessWidget {
     return Container(
       height: height,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1f2937) : Colors.white,
+        color: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
         border: Border.all(
-          color: isDark ? const Color(0xFF374151) : const Color(0xFFe5e7eb),
+          color: isDark ? AppColors.borderDark : AppColors.borderLight,
         ),
         borderRadius: BorderRadius.circular(12),
       ),

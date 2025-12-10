@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 enum SnackbarType { normal, success, error }
 
@@ -23,27 +24,39 @@ class CustomSnackbar {
     switch (type) {
       case SnackbarType.success:
         backgroundColor = isDark
-            ? const Color(0xFF052E16)
-            : const Color(0xFFF0FDF4);
-        textColor = isDark ? const Color(0xFFBBF7D0) : const Color(0xFF166534);
+            ? AppColors.snackbarSuccessBackgroundDark
+            : AppColors.snackbarSuccessBackgroundLight;
+        textColor = isDark
+            ? AppColors.snackbarSuccessTextDark
+            : AppColors.snackbarSuccessTextLight;
         icon = Icons.check_circle;
-        iconColor = isDark ? const Color(0xFF4ADE80) : const Color(0xFF16A34A);
+        iconColor = isDark
+            ? AppColors.snackbarSuccessIconDark
+            : AppColors.snackbarSuccessIconLight;
         break;
       case SnackbarType.error:
         backgroundColor = isDark
-            ? const Color(0xFF450A0A)
-            : const Color(0xFFFEF2F2);
-        textColor = isDark ? const Color(0xFFFECACA) : const Color(0xFF991B1B);
+            ? AppColors.snackbarErrorBackgroundDark
+            : AppColors.snackbarErrorBackgroundLight;
+        textColor = isDark
+            ? AppColors.snackbarErrorTextDark
+            : AppColors.snackbarErrorTextLight;
         icon = Icons.error;
-        iconColor = isDark ? const Color(0xFFF87171) : const Color(0xFFDC2626);
+        iconColor = isDark
+            ? AppColors.snackbarErrorIconDark
+            : AppColors.snackbarErrorIconLight;
         break;
       case SnackbarType.normal:
         backgroundColor = isDark
-            ? const Color(0xFF1E293B)
-            : const Color(0xFFF8FAFC);
-        textColor = isDark ? const Color(0xFFE2E8F0) : const Color(0xFF475569);
+            ? AppColors.snackbarInfoBackgroundDark
+            : AppColors.snackbarInfoBackgroundLight;
+        textColor = isDark
+            ? AppColors.snackbarInfoTextDark
+            : AppColors.snackbarInfoTextLight;
         icon = Icons.info;
-        iconColor = isDark ? const Color(0xFF60A5FA) : const Color(0xFF3B82F6);
+        iconColor = isDark
+            ? AppColors.snackbarInfoIconDark
+            : AppColors.snackbarInfoIconLight;
         break;
     }
 

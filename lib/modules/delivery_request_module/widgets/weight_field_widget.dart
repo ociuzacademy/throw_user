@@ -1,6 +1,7 @@
 // delivery_request_page.dart (updated)
 
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_request_module/providers/delivery_request_provider.dart';
 
 class WeightFieldWidget extends StatelessWidget {
@@ -18,9 +19,9 @@ class WeightFieldWidget extends StatelessWidget {
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1f2937) : Colors.white,
+        color: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
         border: Border.all(
-          color: isDark ? const Color(0xFF374151) : const Color(0xFFe5e7eb),
+          color: isDark ? AppColors.borderDark : AppColors.borderLight,
         ),
         borderRadius: BorderRadius.circular(8),
       ),
@@ -33,7 +34,9 @@ class WeightFieldWidget extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           hintText: 'Weight (kg)',
           hintStyle: TextStyle(
-            color: isDark ? const Color(0xFF9ca3af) : const Color(0xFF6b7280),
+            color: isDark
+                ? AppColors.textSecondaryDark
+                : AppColors.textSecondaryLight,
           ),
         ),
         validator: (value) {

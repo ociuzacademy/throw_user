@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/home_module/widgets/delivery_card.dart';
 
 class RecentDeliveriesWidget extends StatelessWidget {
@@ -12,12 +13,8 @@ class RecentDeliveriesWidget extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Color definitions
-    final backgroundColor = isDark
-        ? const Color(0xFF101a22)
-        : const Color(0xFFf6f7f8);
-    final textPrimaryColor = isDark
-        ? const Color(0xFFf6f7f8)
-        : const Color(0xFF111518);
+    final backgroundColor = AppColors.getBackgroundColor(isDark);
+    final textPrimaryColor = AppColors.getTextPrimaryColor(isDark);
 
     // Responsive dimensions
     final padding = isSmallScreen ? 16.0 : 24.0;

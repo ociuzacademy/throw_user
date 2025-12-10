@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class TimeOption extends StatelessWidget {
   final String text;
@@ -20,7 +21,7 @@ class TimeOption extends StatelessWidget {
           margin: const EdgeInsets.all(4),
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF2694ed) : Colors.transparent,
+            color: isSelected ? AppColors.primary : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
@@ -29,7 +30,7 @@ class TimeOption extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: isSelected ? Colors.white : const Color(0xFF6b7280),
+              color: isSelected ? Colors.white : AppColors.textSecondaryLight,
             ),
           ),
         ),

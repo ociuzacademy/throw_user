@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_request_module/view/delivery_request_page.dart';
 import 'package:throw_user/modules/home_module/models/carousel_data_model.dart';
 import 'package:throw_user/modules/home_module/models/grid_button_item_model.dart';
@@ -76,7 +77,7 @@ class _HomeTabWidgetState extends State<HomeTabWidget> {
     final spacing = isVerySmallScreen ? 16.0 : 24.0;
 
     return Container(
-      color: isDark ? const Color(0xFF101a22) : const Color(0xFFf6f7f8),
+      color: AppColors.getBackgroundColor(isDark),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(padding),
         child: Column(

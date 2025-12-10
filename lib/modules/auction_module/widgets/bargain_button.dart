@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class BargainButton extends StatelessWidget {
   const BargainButton({
@@ -27,8 +28,8 @@ class BargainButton extends StatelessWidget {
           ? showBargainBottomSheet
           : null,
       style: OutlinedButton.styleFrom(
-        foregroundColor: const Color(0xFF2694ed),
-        side: const BorderSide(color: Color(0xFF2694ed)),
+        foregroundColor: AppColors.primary,
+        side: const BorderSide(color: AppColors.primary),
         padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding,
           vertical: verticalPadding,

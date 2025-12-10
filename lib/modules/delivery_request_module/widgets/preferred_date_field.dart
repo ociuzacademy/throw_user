@@ -1,5 +1,6 @@
 // preferred_date_field.dart
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class PreferredDateField extends StatelessWidget {
   final TextEditingController? preferredDateController;
@@ -18,9 +19,11 @@ class PreferredDateField extends StatelessWidget {
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1f2937) : const Color(0xFFf6f7f8),
+        color: isDark
+            ? AppColors.inactiveBackgroundDark
+            : AppColors.getBackgroundColor(false),
         border: Border.all(
-          color: isDark ? const Color(0xFF374151) : const Color(0xFFe5e7eb),
+          color: isDark ? AppColors.borderDark : AppColors.borderLight,
         ),
         borderRadius: BorderRadius.circular(8),
       ),
@@ -35,16 +38,22 @@ class PreferredDateField extends StatelessWidget {
           ),
           hintText: 'Date',
           hintStyle: TextStyle(
-            color: isDark ? const Color(0xFF9ca3af) : const Color(0xFF6b7280),
+            color: isDark
+                ? AppColors.textSecondaryDark
+                : AppColors.textSecondaryLight,
           ),
           prefixIcon: Icon(
             Icons.calendar_today,
-            color: isDark ? const Color(0xFF9ca3af) : const Color(0xFF6b7280),
+            color: isDark
+                ? AppColors.textSecondaryDark
+                : AppColors.textSecondaryLight,
             size: 20,
           ),
         ),
         style: TextStyle(
-          color: isDark ? const Color(0xFFf9fafb) : const Color(0xFF111827),
+          color: isDark
+              ? AppColors.textPrimaryDark
+              : AppColors.textPrimaryLight,
         ),
         onTap: onPreferredDateTap,
         validator: (value) {

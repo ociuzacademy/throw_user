@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/modules/home_module/typedefs/selecting_nav_tab.dart';
 
@@ -28,11 +29,9 @@ class HomePageNavItem extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     bool isSelected = currentIndex == index;
 
-    final primaryColor = const Color(0xFF2694ed);
+    final primaryColor = AppColors.primary;
     final selectedColor = primaryColor;
-    final unselectedColor = isDark
-        ? const Color(0xFF9badbd)
-        : const Color(0xFF617789);
+    final unselectedColor = AppColors.getTextSecondaryColor(isDark);
 
     return GestureDetector(
       onTap: () {

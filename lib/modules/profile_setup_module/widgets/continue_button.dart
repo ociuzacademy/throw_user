@@ -1,5 +1,6 @@
 // continue_button.dart
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/profile_setup_module/utils/profile_setup_helper.dart';
 
 class ContinueButton extends StatelessWidget {
@@ -22,18 +23,18 @@ class ContinueButton extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(buttonPadding),
-      color: Theme.of(context).brightness == Brightness.dark
-          ? const Color(0xFF101a22)
-          : const Color(0xFFf6f7f8),
+      color: AppColors.getBackgroundColor(
+        Theme.of(context).brightness == Brightness.dark,
+      ),
       child: Container(
         width: double.infinity,
         height: buttonHeight,
         decoration: BoxDecoration(
-          color: const Color(0xFF2694ed),
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF2694ed).withValues(alpha: 0.3),
+              color: AppColors.primary.withValues(alpha: 0.3),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/home_module/view/home_page.dart';
 
 class AuctionExpiredPage extends StatelessWidget {
@@ -14,17 +15,18 @@ class AuctionExpiredPage extends StatelessWidget {
     final padding = MediaQuery.of(context).padding;
 
     // Color definitions based on the HTML
-    final primaryColor = const Color(0xFF2694ed);
-    final backgroundLight = const Color(0xFFf6f7f8);
-    final backgroundDark = const Color(0xFF101a22);
-    final foregroundLight = const Color(0xFF111518);
-    final foregroundDark = const Color(0xFFe8eef3);
-    final cardLight = Colors.white;
-    final cardDark = const Color(0xFF18242f);
-    final subtleLight = const Color(0xFFe3e5e8);
-    final subtleDark = const Color(0xFF293d4f);
-    final mutedLight = const Color(0xFF617789);
-    final mutedDark = const Color(0xFF8b9eaf);
+    // Color definitions based on the HTML
+    final primaryColor = AppColors.primary;
+    final backgroundLight = AppColors.backgroundLight;
+    final backgroundDark = AppColors.backgroundDark;
+    final foregroundLight = AppColors.textPrimaryLight;
+    final foregroundDark = AppColors.textPrimaryDark;
+    final cardLight = AppColors.cardLight;
+    final cardDark = AppColors.cardDark;
+    final subtleLight = AppColors.borderLight;
+    final subtleDark = AppColors.borderDark;
+    final mutedLight = AppColors.textSecondaryLight;
+    final mutedDark = AppColors.textSecondaryDark;
 
     // Responsive dimensions
     final isSmallScreen = size.width < 375;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class CustomAlertDialog {
   static Future<void> showCustomDialog({
@@ -39,13 +40,11 @@ class CustomAlertDialog {
               iconBackgroundColor ?? primaryColor.withValues(alpha: 0.1),
           confirmButtonText: confirmButtonText,
           confirmButtonColor: confirmButtonColor ?? primaryColor,
-          confirmButtonTextColor: confirmButtonTextColor ?? Colors.white,
+          confirmButtonTextColor: confirmButtonTextColor ?? AppColors.cardLight,
           cancelButtonText: cancelButtonText ?? 'Cancel',
           cancelButtonColor: cancelButtonColor,
           cancelButtonTextColor:
-              cancelButtonTextColor ??
-              (isDark ? Colors.grey[300] : Colors.grey[700]) ??
-              Colors.grey,
+              cancelButtonTextColor ?? AppColors.getTextSecondaryColor(isDark),
           showCancelButton: showCancelButton,
           onConfirm: onConfirm,
           onCancel: onCancel,
@@ -145,7 +144,7 @@ class __CustomAlertDialogState extends State<_CustomAlertDialog>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundDark = const Color(0xFF101a22);
+    final backgroundDark = AppColors.backgroundDark;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -158,7 +157,7 @@ class __CustomAlertDialogState extends State<_CustomAlertDialog>
             width: widget.dialogWidth,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: isDark ? backgroundDark : Colors.white,
+              color: isDark ? backgroundDark : AppColors.cardLight,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -195,7 +194,7 @@ class __CustomAlertDialogState extends State<_CustomAlertDialog>
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black,
+                    color: AppColors.getTextPrimaryColor(isDark),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -210,7 +209,7 @@ class __CustomAlertDialogState extends State<_CustomAlertDialog>
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      color: AppColors.getTextSecondaryColor(isDark),
                       height: 1.4,
                     ),
                   ),
@@ -245,9 +244,7 @@ class __CustomAlertDialogState extends State<_CustomAlertDialog>
                               borderRadius: BorderRadius.circular(12),
                             ),
                             side: BorderSide(
-                              color: isDark
-                                  ? Colors.grey[700]!
-                                  : Colors.grey[300]!,
+                              color: AppColors.getBorderColor(isDark),
                             ),
                             backgroundColor: widget.cancelButtonColor,
                           ),

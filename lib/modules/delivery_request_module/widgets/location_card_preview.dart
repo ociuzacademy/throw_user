@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:throw_user/modules/delivery_request_module/utils/location_card_preview_helper.dart';
 
@@ -115,8 +116,8 @@ class _LocationCardPreviewState extends State<LocationCardPreview> {
             if (!isMapReady)
               Container(
                 color: widget.isDark
-                    ? const Color(0xFF374151)
-                    : const Color(0xFFf3f4f6),
+                    ? AppColors.borderDark
+                    : AppColors.backgroundLight,
                 child: const Center(child: CircularProgressIndicator()),
               )
             else
