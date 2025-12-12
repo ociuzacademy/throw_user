@@ -1,4 +1,4 @@
-package com.throwapp.user
+package com.throwapp.userapp
 
 import io.flutter.embedding.android.FlutterActivity
 
