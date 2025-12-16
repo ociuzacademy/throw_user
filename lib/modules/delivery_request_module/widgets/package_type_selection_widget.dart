@@ -17,7 +17,7 @@ class PackageTypeSelectionWidget extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return DropdownButtonFormField<String>(
-      value: selectedPackageType,
+      initialValue: selectedPackageType,
       decoration: InputDecoration(
         border: InputBorder.none,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),

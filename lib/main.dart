@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
+import 'package:throw_user/core/service/auth_service.dart';
+import 'package:throw_user/core/storage/app_storage_functions.dart';
+import 'package:throw_user/core/storage/auth_storage_functions.dart';
 import 'package:throw_user/modules/splash_screen_module/view/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -16,103 +21,129 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Throw',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: AppColors.primary,
-        cardColor: Colors.white,
-        scaffoldBackgroundColor: AppColors.backgroundLight,
-        textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
-          titleLarge: GoogleFonts.plusJakartaSans(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-          bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.black87),
-          bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[700]),
-          bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[600]),
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.backgroundLight.withValues(alpha: 0.8),
-          elevation: 0,
-          titleTextStyle: GoogleFonts.plusJakartaSans(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+    final AuthService authService = AuthService();
+    final AuthStorageFunctions authStorageFunctions = AuthStorageFunctions();
+
+    // Initialize auth service
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      authService.initialize();
+    });
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(
+            authService: authService,
+            authStorageFunctions: authStorageFunctions,
           ),
         ),
+      ],
+      child: MaterialApp(
+        title: 'Throw',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: AppColors.primary,
+          cardColor: Colors.white,
+          scaffoldBackgroundColor: AppColors.backgroundLight,
+          textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
+            titleLarge: GoogleFonts.plusJakartaSans(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+            bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.black87),
+            bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[700]),
+            bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[600]),
+          ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.backgroundLight.withValues(alpha: 0.8),
+            elevation: 0,
+            titleTextStyle: GoogleFonts.plusJakartaSans(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        darkTheme: ThemeData(
+          primaryColor: AppColors.primary,
+          cardColor: AppColors.cardDark,
+          scaffoldBackgroundColor: AppColors.backgroundDark,
+          textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
+            titleLarge: GoogleFonts.plusJakartaSans(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.white),
+            bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[300]),
+            bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[400]),
+          ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.backgroundDark.withValues(alpha: 0.8),
+            elevation: 0,
+            titleTextStyle: GoogleFonts.plusJakartaSans(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        home: const SplashScreenWrapper(),
       ),
-      darkTheme: ThemeData(
-        primaryColor: AppColors.primary,
-        cardColor: AppColors.cardDark,
-        scaffoldBackgroundColor: AppColors.backgroundDark,
-        textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
-          titleLarge: GoogleFonts.plusJakartaSans(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-          bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.white),
-          bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[300]),
-          bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[400]),
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.backgroundDark.withValues(alpha: 0.8),
-          elevation: 0,
-          titleTextStyle: GoogleFonts.plusJakartaSans(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      home: SplashScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class SplashScreenWrapper extends StatefulWidget {
+  const SplashScreenWrapper({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SplashScreenWrapper> createState() => _SplashScreenWrapperState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+class _SplashScreenWrapperState extends State<SplashScreenWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    // Dispatch check auth status event when the app starts
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AuthBloc>().add(const CheckAuthStatus());
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, authState) {
+        final isLoggedIn = authState is Authenticated;
 
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+        // Show loading state while checking auth
+        if (authState is Initial || authState is Loading) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: const Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        // Check if it's the first launch
+        return FutureBuilder<bool>(
+          future: AppStorageFunctions.getIntroScreenStatus(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                body: const Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            final isFirstLaunch = snapshot.data ?? true;
+
+            return SplashScreen(
+              isFirstLaunch: isFirstLaunch,
+              isLoggedIn: isLoggedIn,
+            );
+          },
+        );
+      },
     );
   }
 }

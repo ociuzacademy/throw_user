@@ -1,7 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/storage/app_storage_functions.dart';
 import 'package:throw_user/modules/login_module/view/login_page.dart';
-
 import 'package:throw_user/modules/onboarding_module/models/onboarding_page_data.dart';
 
 class OnboardingHelper {
@@ -32,7 +31,18 @@ class OnboardingHelper {
   }
 
   void completeOnboarding() {
-    // Save onboarding completion status and navigate to home
-    Navigator.of(context).pushReplacement(LoginPage.route());
+    // First, disable the intro screen for future launches
+    AppStorageFunctions.disableIntroScreen()
+        .then((_) {
+          // Then navigate to login page
+          if (!context.mounted) return;
+          Navigator.of(context).pushReplacement(LoginPage.route());
+        })
+        .catchError((error) {
+          // Even if storage fails, still navigate to login page
+          debugPrint('Error saving onboarding status: $error');
+          if (!context.mounted) return;
+          Navigator.of(context).pushReplacement(LoginPage.route());
+        });
   }
 }

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/modules/home_module/view/home_page.dart';
+import 'package:throw_user/modules/login_module/view/login_page.dart';
 import 'dart:async';
 
 import 'package:throw_user/modules/onboarding_module/view/onboarding_page.dart';
 import 'package:throw_user/modules/splash_screen_module/utils/splash_screen_helper.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final bool isFirstLaunch;
+  final bool isLoggedIn;
+  const SplashScreen({
+    super.key,
+    required this.isFirstLaunch,
+    required this.isLoggedIn,
+  });
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -49,7 +57,15 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToNextPage() {
-    Navigator.of(context).pushReplacement(OnboardingPage.route());
+    if (widget.isFirstLaunch) {
+      Navigator.of(context).pushReplacement(OnboardingPage.route());
+    } else {
+      if (widget.isLoggedIn) {
+        Navigator.of(context).pushReplacement(HomePage.route());
+      } else {
+        Navigator.of(context).pushReplacement(LoginPage.route());
+      }
+    }
   }
 
   @override

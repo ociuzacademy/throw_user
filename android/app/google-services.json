@@ -7,14 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:108928876199:android:abcd7751174b56b1886582",
+        "mobilesdk_app_id": "1:108928876199:android:83c186edcc997f3d886582",
         "android_client_info": {
-          "package_name": "com.throwapp.userapp"
+          "package_name": "com.throwapp.delivery"
         }
       },
       "oauth_client": [
         {
-          "client_id": "108928876199-tpva3jputhov6seu4cusqd41oumpfb66.apps.googleusercontent.com",
+          "client_id": "108928876199-kltv4ruh10h2ovjgrhuv2g3cm3tn1j9a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +27,59 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "108928876199-tpva3jputhov6seu4cusqd41oumpfb66.apps.googleusercontent.com",
+              "client_id": "108928876199-kltv4ruh10h2ovjgrhuv2g3cm3tn1j9a.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "108928876199-e7mkuefqruvji197trvft27396sv5ger.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.throwapp.delivery"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108928876199:android:abcd7751174b56b1886582",
+        "android_client_info": {
+          "package_name": "com.throwapp.userapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108928876199-ujvgpv4d5upmk2kqcucp3e1aeg0kdf83.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.throwapp.userapp",
+            "certificate_hash": "2e9d4e7706d06e8c85c08eaed784b69c1b521174"
+          }
+        },
+        {
+          "client_id": "108928876199-kltv4ruh10h2ovjgrhuv2g3cm3tn1j9a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyFmky3dngA9ZoQjq6JzeAJoG2CR8qS4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108928876199-kltv4ruh10h2ovjgrhuv2g3cm3tn1j9a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "108928876199-e7mkuefqruvji197trvft27396sv5ger.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.throwapp.delivery"
+              }
             }
           ]
         }

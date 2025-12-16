@@ -1,176 +1,207 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
-import 'package:throw_user/core/widgets/text_field/unified_text_field.dart';
-import 'package:throw_user/modules/login_module/utils/login_helper.dart';
-import 'package:throw_user/modules/login_module/widgets/custom_button.dart';
-import 'package:throw_user/modules/login_module/widgets/welcome_section.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
+import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
+import 'package:throw_user/modules/home_module/view/home_page.dart';
+import 'package:throw_user/modules/login_module/widgets/google_sign_in_button.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-
-  static Route route() =>
+  static MaterialPageRoute route() =>
       MaterialPageRoute(builder: (context) => const LoginPage());
-}
-
-class _LoginPageState extends State<LoginPage> {
-  late final LoginHelper _loginHelper;
-  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final ValueNotifier<bool> _isPasswordVisible = ValueNotifier<bool>(false);
-
-  @override
-  void initState() {
-    super.initState();
-    _loginHelper = LoginHelper(
-      context: context,
-      loginFormKey: _loginFormKey,
-      emailController: _emailController,
-      passwordController: _passwordController,
-      isPasswordVisible: _isPasswordVisible,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isSmallScreen = screenSize.width < 375;
-    final isLargeScreen = screenSize.width > 600;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        // Listen for authentication success to navigate to home
+        if (state is Authenticated) {
+          Navigator.of(context).pushReplacement(HomePage.route());
+        }
+      },
+      child: _LoginPageContent(),
+    );
+  }
+}
 
-    // Color definitions based on HTML
-    final primaryColor = AppColors.primary;
-    final backgroundLight = AppColors.backgroundLight;
-    final backgroundDark = AppColors.backgroundDark;
-    final cardLight = AppColors.cardLight;
-    final cardDark = AppColors.cardDark;
-    final textPrimaryLight = AppColors.textPrimaryLight;
-    final textPrimaryDark = AppColors.textPrimaryDark;
-    final textSecondaryLight = AppColors.textSecondaryLight;
-    final textSecondaryDark = AppColors.textSecondaryDark;
-
-    final backgroundColor = isDark ? backgroundDark : backgroundLight;
-    final textPrimaryColor = isDark ? textPrimaryDark : textPrimaryLight;
-    final textSecondaryColor = isDark ? textSecondaryDark : textSecondaryLight;
+class _LoginPageContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: AppBar(
-        backgroundColor: isDark ? cardDark : cardLight,
-        elevation: 2,
-        shadowColor: Colors.black.withValues(alpha: 0.1),
-
-        centerTitle: true,
-        title: Text(
-          'Throw',
-          style: TextStyle(
-            fontSize: isSmallScreen ? 20 : 24,
-            fontWeight: FontWeight.bold,
-            color: textPrimaryColor,
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(isSmallScreen ? 16 : 24),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Welcome Section
-                WelcomeSection(
-                  isSmallScreen: isSmallScreen,
-                  textPrimaryColor: textPrimaryColor,
-                  textSecondaryColor: textSecondaryColor,
-                ),
-
-                SizedBox(height: isSmallScreen ? 24 : 32),
-
-                // Input Section
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: isLargeScreen
-                        ? 400
-                        : isSmallScreen
-                        ? double.infinity
-                        : 300,
-                  ),
-                  child: Form(
-                    key: _loginFormKey,
+      backgroundColor: AppColors.getBackgroundColor(isDarkMode),
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          switch (state) {
+            case Authenticated _:
+              CustomSnackbar.showSuccess(
+                context: context,
+                message: 'User authenticated successfully.',
+              );
+              Navigator.of(
+                context,
+              ).pushAndRemoveUntil(HomePage.route(), (route) => false);
+              break;
+            case AuthErrorState(
+              message: final message,
+              details: final details,
+              code: _,
+            ):
+              debugPrint('Auth Error: $message');
+              debugPrint('details: $details');
+              CustomSnackbar.showError(
+                context: context,
+                message: details ?? 'Authentication error occurred.',
+              );
+              break;
+            default:
+          }
+        },
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
                     child: Column(
                       children: [
-                        // Email Field
-                        UnifiedTextField(
-                          controller: _emailController,
-                          hintText: 'Email',
-                          screenWidth: screenSize.width,
-                          isDark: isDark,
-                          style: TextFieldStyle.delivery,
-                          validator: _loginHelper.validateEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          textPrimaryColor: textPrimaryColor,
-                          textSecondaryColor: textSecondaryColor,
-                        ),
-
-                        SizedBox(height: isSmallScreen ? 12 : 16),
-
-                        // Password Field
-                        ValueListenableBuilder(
-                          valueListenable: _isPasswordVisible,
-                          builder: (context, isPasswordVisible, child) {
-                            return UnifiedTextField(
-                              controller: _passwordController,
-                              hintText: 'Password',
-                              screenWidth: screenSize.width,
-                              isDark: isDark,
-                              style: TextFieldStyle.delivery,
-                              obscureText: !isPasswordVisible,
-                              validator: _loginHelper.validatePassword,
-                              textPrimaryColor: textPrimaryColor,
-                              textSecondaryColor: textSecondaryColor,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: textSecondaryColor,
+                        // Header
+                        Container(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Center(
+                            child: Text(
+                              'Throw',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.getTextPrimaryColor(
+                                  isDarkMode,
                                 ),
-                                onPressed:
-                                    _loginHelper.togglePasswordVisibility,
                               ),
-                            );
-                          },
+                            ),
+                          ),
                         ),
 
-                        SizedBox(height: isSmallScreen ? 20 : 24),
+                        // Main Content
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth > 600 ? 100 : 24.0,
+                              vertical: 32.0,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Welcome Section
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Welcome to Throw',
+                                      style: TextStyle(
+                                        fontSize: screenWidth > 600 ? 36 : 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.getTextPrimaryColor(
+                                          isDarkMode,
+                                        ),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'Sign in to start sending and receiving packages',
+                                      style: TextStyle(
+                                        fontSize: screenWidth > 600 ? 16 : 14,
+                                        color: AppColors.getTextSecondaryColor(
+                                          isDarkMode,
+                                        ),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
 
-                        // Continue Button
-                        CustomButton(
-                          text: 'Continue',
-                          onPressed: _loginHelper.handleLogin,
-                          isSmallScreen: isSmallScreen,
-                          primaryColor: primaryColor,
+                                const SizedBox(height: 48),
+
+                                // Google Sign In Button
+                                SizedBox(
+                                  width: screenWidth > 600
+                                      ? 400
+                                      : double.infinity,
+                                  child: GoogleSignInButton(
+                                    isDarkMode: isDarkMode,
+                                  ),
+                                ),
+
+                                // Show loading indicator when authenticating
+                                BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, state) {
+                                    if (state is Loading) {
+                                      return const Padding(
+                                        padding: EdgeInsets.only(top: 16.0),
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // Footer
+                        Container(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Center(
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.getTextSecondaryColor(
+                                    isDarkMode,
+                                  ),
+                                ),
+                                children: [
+                                  const TextSpan(
+                                    text: 'By continuing, you agree to our ',
+                                  ),
+                                  TextSpan(
+                                    text: 'Terms of Service',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                  const TextSpan(text: ' and '),
+                                  TextSpan(
+                                    text: 'Privacy Policy',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                  const TextSpan(text: '.'),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _isPasswordVisible.dispose();
-    super.dispose();
   }
 }
