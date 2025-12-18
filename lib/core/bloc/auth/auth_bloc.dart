@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:throw_user/core/models/auth_response.dart';
@@ -64,21 +65,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final response = await _authService.signInWithGoogle();
 
-      response.when(
+      await response.when(
         success: (user, token) async {
           // Save user to storage
           final authResponse = AuthResponse.success(user: user, token: token);
           await _authStorageFunctions.saveUser(authResponse);
           emit(AuthState.authenticated(user: user));
         },
-        error: (code, message, details) {
+        error: (code, message, details) async {
+          debugPrint('Sign-in error: $message');
+          debugPrint('Sign-in error details: $details');
           emit(AuthState.error(message: message, details: details, code: code));
         },
-        cancelled: () {
+        cancelled: () async {
+          debugPrint('Sign-in cancelled');
           emit(const AuthState.unauthenticated());
         },
       );
     } catch (e) {
+      debugPrint('Sign-in error: ${e.toString()}');
       emit(
         AuthState.error(
           message: 'An unexpected error occurred',
@@ -97,18 +102,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final response = await _authService.trySilentSignIn();
 
-      response.when(
+      await response.when(
         success: (user, token) async {
           // Save user to storage
           final authResponse = AuthResponse.success(user: user, token: token);
           await _authStorageFunctions.saveUser(authResponse);
           emit(AuthState.authenticated(user: user));
         },
-        error: (code, message, details) {
+        error: (code, message, details) async {
           // Silent sign-in failed, just stay in unauthenticated state
           emit(const AuthState.unauthenticated());
         },
-        cancelled: () {
+        cancelled: () async {
           emit(const AuthState.unauthenticated());
         },
       );

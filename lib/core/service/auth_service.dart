@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:throw_user/core/models/auth_response.dart';
 
@@ -16,7 +17,7 @@ class AuthService {
           ? '108928876199-oi5o4hmum4g86f99p76mrhsfiuhims1q.apps.googleusercontent.com'
           : null,
       serverClientId: Platform.isAndroid
-          ? '108928876199-ujvgpv4d5upmk2kqcucp3e1aeg0kdf83.apps.googleusercontent.com' // Web Client ID
+          ? '108928876199-kltv4ruh10h2ovjgrhuv2g3cm3tn1j9a.apps.googleusercontent.com' // Web Client ID
           : null,
     );
   }
@@ -55,9 +56,11 @@ class AuthService {
       }
 
       // Start authentication flow
+      // authenticate() throws on cancellation.
       final googleSignInAccount = await _googleSignIn.authenticate();
 
       // Get authentication details
+      // await is safe here whether it returns a Future or value
       final authentication = googleSignInAccount.authentication;
 
       // Create a Firebase credential
@@ -99,6 +102,15 @@ class AuthService {
         details: e.toString(),
       );
     } catch (e) {
+      // Handle GoogleSignInException for cancellation
+      final errorString = e.toString();
+      // Check for code 'canceled' or specific exception string
+      if (errorString.contains('canceled') ||
+          errorString.contains('GoogleSignInExceptionCode.canceled') ||
+          errorString.contains('sign_in_canceled')) {
+        return const AuthResponse.cancelled();
+      }
+
       return AuthResponse.error(
         code: 'unknown',
         message: 'An unexpected error occurred',
@@ -147,6 +159,7 @@ class AuthService {
         message: 'Not signed in',
       );
     } catch (e) {
+      debugPrint('Silent sign-in error: $e');
       return const AuthResponse.error(
         code: 'silent-sign-in-failed',
         message: 'Silent sign-in failed',
