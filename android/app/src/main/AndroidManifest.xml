@@ -49,6 +49,8 @@
         <!-- Add these queries for WhatsApp -->
         <package android:name="com.whatsapp" />
         <package android:name="com.whatsapp.w4b" />
+        <!-- Add Google Play Services for Auth -->
+        <package android:name="com.google.android.gms" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />

@@ -6,6 +6,7 @@ import 'package:throw_user/core/exports/bloc_exports.dart';
 import 'package:throw_user/core/service/auth_service.dart';
 import 'package:throw_user/core/storage/app_storage_functions.dart';
 import 'package:throw_user/core/storage/auth_storage_functions.dart';
+import 'package:throw_user/modules/login_module/repository/user_repository.dart';
 import 'package:throw_user/modules/splash_screen_module/view/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthService authService = AuthService();
     final AuthStorageFunctions authStorageFunctions = AuthStorageFunctions();
+    final UserRepository userRepository = UserRepository();
 
     // Initialize auth service
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthBloc(
             authService: authService,
             authStorageFunctions: authStorageFunctions,
+            userRepository: userRepository,
           ),
         ),
       ],

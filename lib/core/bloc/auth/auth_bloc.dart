@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:throw_user/core/models/auth_response.dart';
 import 'package:throw_user/core/service/auth_service.dart';
 import 'package:throw_user/core/storage/auth_storage_functions.dart';
+import 'package:throw_user/modules/login_module/repository/user_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -12,12 +13,15 @@ part 'auth_bloc.freezed.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService _authService;
   final AuthStorageFunctions _authStorageFunctions;
+  final UserRepository _userRepository;
 
   AuthBloc({
     required AuthService authService,
     required AuthStorageFunctions authStorageFunctions,
+    required UserRepository userRepository,
   }) : _authService = authService,
        _authStorageFunctions = authStorageFunctions,
+       _userRepository = userRepository,
        super(const AuthState.initial()) {
     on<CheckAuthStatus>(_checkAuthStatus);
     on<SignInWithGoogle>(_signInWithGoogle);
@@ -38,15 +42,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (isSignedIn) {
         final user = await _authService.getCurrentUser();
         if (user != null) {
+          debugPrint(user.toString());
+          await _userRepository.createOrUpdateUser(user);
           emit(AuthState.authenticated(user: user));
         } else {
+          debugPrint('User not signed in.');
           emit(const AuthState.unauthenticated());
         }
       } else {
         // Try silent sign-in if not signed in
+        debugPrint('User not signed in. Trying silent sign-in.');
         add(const AuthEvent.trySilentSignIn());
       }
     } catch (e) {
+      debugPrint('Failed to check auth status: $e');
       emit(
         AuthState.error(
           message: 'Failed to check auth status',
@@ -67,6 +76,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       await response.when(
         success: (user, token) async {
+          // SAVE USER TO FIRESTORE HERE
+          try {
+            await _userRepository.createOrUpdateUser(user);
+          } catch (e) {
+            debugPrint('Failed to save user to Firestore: $e');
+            // Continue with auth even if Firestore save fails
+            // rethrow; // Removed rethrow to allow login to proceed
+          }
+
           // Save user to storage
           final authResponse = AuthResponse.success(user: user, token: token);
           await _authStorageFunctions.saveUser(authResponse);
@@ -104,6 +122,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       await response.when(
         success: (user, token) async {
+          // SAVE USER TO FIRESTORE HERE
+          try {
+            await _userRepository.createOrUpdateUser(user);
+          } catch (e) {
+            debugPrint('Failed to save user to Firestore: $e');
+            // Continue with auth even if Firestore save fails
+            // rethrow; // Removed rethrow to allow login to proceed
+          }
+
           // Save user to storage
           final authResponse = AuthResponse.success(user: user, token: token);
           await _authStorageFunctions.saveUser(authResponse);
