@@ -87,7 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
           // Save user to storage
           final authResponse = AuthResponse.success(user: user, token: token);
-          await _authStorageFunctions.saveUser(authResponse);
+          await _authStorageFunctions.saveUid(authResponse);
           emit(AuthState.authenticated(user: user));
         },
         error: (code, message, details) async {
@@ -133,7 +133,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
           // Save user to storage
           final authResponse = AuthResponse.success(user: user, token: token);
-          await _authStorageFunctions.saveUser(authResponse);
+          await _authStorageFunctions.saveUid(authResponse);
           emit(AuthState.authenticated(user: user));
         },
         error: (code, message, details) async {
