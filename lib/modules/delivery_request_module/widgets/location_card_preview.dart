@@ -90,7 +90,7 @@ class _LocationCardPreviewState extends State<LocationCardPreview> {
                 ),
                 staticPoints: [
                   StaticPositionGeoPoint(
-                    "marker",
+                    'marker',
                     MarkerIcon(
                       icon: Icon(
                         Icons.location_pin,

@@ -124,7 +124,7 @@ class FakeData {
   // Alternative function that returns a fixed number of high-quality fake bids
   static List<Bid> generateSampleBids() {
     return [
-      Bid(
+      const Bid(
         name: 'Ethan Carter',
         rating: 4.8,
         eta: '15 min ETA',
@@ -133,7 +133,7 @@ class FakeData {
             'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
         bargainedPrice: 11.75,
       ),
-      Bid(
+      const Bid(
         name: 'Liam Harper',
         rating: 4.9,
         eta: '12 min ETA',
@@ -141,7 +141,7 @@ class FakeData {
         imageUrl:
             'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
       ),
-      Bid(
+      const Bid(
         name: 'Noah Bennett',
         rating: 4.7,
         eta: '18 min ETA',
@@ -150,7 +150,7 @@ class FakeData {
             'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
         agentLeftAuction: true,
       ),
-      Bid(
+      const Bid(
         name: 'Oliver Chen',
         rating: 4.6,
         eta: '10 min ETA',
@@ -159,7 +159,7 @@ class FakeData {
             'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
         bargainedPrice: 13.50,
       ),
-      Bid(
+      const Bid(
         name: 'James Rodriguez',
         rating: 4.5,
         eta: '25 min ETA',

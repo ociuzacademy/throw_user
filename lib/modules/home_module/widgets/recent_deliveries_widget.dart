@@ -40,7 +40,7 @@ class RecentDeliveriesWidget extends StatelessWidget {
             SizedBox(height: spacing),
 
             // Delivery Cards
-            DeliveryCard(
+            const DeliveryCard(
               status: 'In Progress',
               title: 'Package to 123 Main St',
               description: 'Estimated delivery: 2 hours',
@@ -48,7 +48,7 @@ class RecentDeliveriesWidget extends StatelessWidget {
             ),
             SizedBox(height: spacing),
 
-            DeliveryCard(
+            const DeliveryCard(
               status: 'Completed',
               title: 'Groceries to 456 Oak Ave',
               description: 'Delivered on time',
@@ -57,7 +57,7 @@ class RecentDeliveriesWidget extends StatelessWidget {
             SizedBox(height: spacing),
 
             // Additional delivery cards for better UX
-            DeliveryCard(
+            const DeliveryCard(
               status: 'Completed',
               title: 'Documents to Office',
               description: 'Signed and delivered',

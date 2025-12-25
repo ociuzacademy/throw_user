@@ -16,17 +16,17 @@ class AuctionExpiredPage extends StatelessWidget {
 
     // Color definitions based on the HTML
     // Color definitions based on the HTML
-    final primaryColor = AppColors.primary;
-    final backgroundLight = AppColors.backgroundLight;
-    final backgroundDark = AppColors.backgroundDark;
-    final foregroundLight = AppColors.textPrimaryLight;
-    final foregroundDark = AppColors.textPrimaryDark;
-    final cardLight = AppColors.cardLight;
-    final cardDark = AppColors.cardDark;
-    final subtleLight = AppColors.borderLight;
-    final subtleDark = AppColors.borderDark;
-    final mutedLight = AppColors.textSecondaryLight;
-    final mutedDark = AppColors.textSecondaryDark;
+    const primaryColor = AppColors.primary;
+    const backgroundLight = AppColors.backgroundLight;
+    const backgroundDark = AppColors.backgroundDark;
+    const foregroundLight = AppColors.textPrimaryLight;
+    const foregroundDark = AppColors.textPrimaryDark;
+    const cardLight = AppColors.cardLight;
+    const cardDark = AppColors.cardDark;
+    const subtleLight = AppColors.borderLight;
+    const subtleDark = AppColors.borderDark;
+    const mutedLight = AppColors.textSecondaryLight;
+    const mutedDark = AppColors.textSecondaryDark;
 
     // Responsive dimensions
     final isSmallScreen = size.width < 375;

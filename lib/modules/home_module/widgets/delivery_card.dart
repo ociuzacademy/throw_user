@@ -68,7 +68,7 @@ class DeliveryCard extends StatelessWidget {
                           : AppColors.success,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   // Title
                   Text(
                     title,
@@ -78,7 +78,7 @@ class DeliveryCard extends StatelessWidget {
                       color: textPrimaryColor,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   // Description
                   Text(
                     description,

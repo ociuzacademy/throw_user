@@ -145,7 +145,7 @@ class DeliveryRequestBody extends StatelessWidget {
               child: TextButton(
                 onPressed: () =>
                     deliveryRequestService.submitForm(provider, formKey),
-                child: Text(
+                child: const Text(
                   'Create Request',
                   style: TextStyle(
                     color: Colors.white,

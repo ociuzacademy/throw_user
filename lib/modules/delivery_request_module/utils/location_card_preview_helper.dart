@@ -15,7 +15,7 @@ class LocationCardPreviewHelper {
   Future<void> onMapReady(bool isReady) async {
     if (isReady && !isMapReady.value) {
       try {
-        debugPrint("Static map ready for: $selectedLocation");
+        debugPrint('Static map ready for: $selectedLocation');
 
         // Now that the map is ready, we can set the zoom
         if (selectedLocation != null) {

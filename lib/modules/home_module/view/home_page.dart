@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 
   static MaterialPageRoute route() =>
-      MaterialPageRoute(builder: (context) => HomePage());
+      MaterialPageRoute(builder: (context) => const HomePage());
 }
 
 class _HomePageState extends State<HomePage> {
@@ -26,10 +26,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     _tabs = [
-      HomeTabWidget(),
-      RecentDeliveriesWidget(),
-      WalletWidget(),
-      ProfileWidget(),
+      const HomeTabWidget(),
+      const RecentDeliveriesWidget(),
+      const WalletWidget(),
+      const ProfileWidget(),
     ];
   }
 

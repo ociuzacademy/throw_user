@@ -16,7 +16,7 @@ class ProgressStepHelper {
 
     // Format phone number (remove spaces, special characters, etc.)
     String? formattedPhone;
-    debugPrint("Phone Number: $phoneNumber");
+    debugPrint('Phone Number: $phoneNumber');
     formattedPhone = phoneNumber
         .replaceAll(RegExp(r'[+\s\-()]'), '') // Remove +, spaces, -, (, )
         .replaceAll(RegExp(r'^0+'), ''); // Remove leading zeros
@@ -30,7 +30,7 @@ class ProgressStepHelper {
     String whatsappUrl;
     String whatsappBusinessUrl;
 
-    debugPrint("Formatted Phone Number: $formattedPhone");
+    debugPrint('Formatted Phone Number: $formattedPhone');
     if (formattedPhone.isNotEmpty) {
       // WhatsApp URL with specific phone number
       whatsappUrl =

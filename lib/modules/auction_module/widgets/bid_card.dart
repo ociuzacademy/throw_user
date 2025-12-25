@@ -192,7 +192,7 @@ class _BidCardState extends State<BidCard> {
                               horizontalPadding: buttonHorizontalPadding,
                               verticalPadding: buttonVerticalPadding,
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             AcceptButton(
                               isAuctionActive: widget.isAuctionActive,
                               agentLeftAuction: widget.bid.agentLeftAuction,

@@ -11,7 +11,7 @@ class DeliveryDetailsPage extends StatefulWidget {
   const DeliveryDetailsPage({super.key});
 
   static MaterialPageRoute route() =>
-      MaterialPageRoute(builder: (_) => DeliveryDetailsPage());
+      MaterialPageRoute(builder: (_) => const DeliveryDetailsPage());
 
   @override
   State<DeliveryDetailsPage> createState() => _DeliveryDetailsPageState();
@@ -59,15 +59,15 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
     final spacing = isSmallScreen ? 16.0 : 24.0;
 
     // Color definitions based on HTML
-    final primaryColor = AppColors.primary;
-    final backgroundLight = AppColors.backgroundLight;
-    final backgroundDark = AppColors.backgroundDark;
-    final cardLight = AppColors.cardLight;
-    final cardDark = AppColors.cardDark;
-    final textPrimaryLight = AppColors.textPrimaryLight;
-    final textPrimaryDark = AppColors.textPrimaryDark;
-    final textSecondaryLight = AppColors.textSecondaryLight;
-    final textSecondaryDark = AppColors.textSecondaryDark;
+    const primaryColor = AppColors.primary;
+    const backgroundLight = AppColors.backgroundLight;
+    const backgroundDark = AppColors.backgroundDark;
+    const cardLight = AppColors.cardLight;
+    const cardDark = AppColors.cardDark;
+    const textPrimaryLight = AppColors.textPrimaryLight;
+    const textPrimaryDark = AppColors.textPrimaryDark;
+    const textSecondaryLight = AppColors.textSecondaryLight;
+    const textSecondaryDark = AppColors.textSecondaryDark;
 
     final backgroundColor = isDark ? backgroundDark : backgroundLight;
     final cardColor = isDark ? cardDark : cardLight;

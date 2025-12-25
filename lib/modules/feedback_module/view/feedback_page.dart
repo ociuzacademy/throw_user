@@ -139,7 +139,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         color: foregroundColor,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // Star Rating with ValueListenableBuilder
                     ValueListenableBuilder<int>(
@@ -201,7 +201,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         color: foregroundColor,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // Comment Text Field
                     Container(

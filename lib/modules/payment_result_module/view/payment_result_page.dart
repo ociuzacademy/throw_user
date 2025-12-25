@@ -88,8 +88,8 @@ class _PaymentResultPageState extends State<PaymentResultPage>
     final transactionSpacing = isSmallScreen ? 8.0 : 16.0;
 
     // Color definitions based on HTML
-    final primaryColor = AppColors.primary;
-    final errorColor = AppColors.error;
+    const primaryColor = AppColors.primary;
+    const errorColor = AppColors.error;
 
     final backgroundColor = AppColors.getBackgroundColor(isDark);
     final textColor = AppColors.getTextPrimaryColor(isDark);

@@ -93,9 +93,9 @@ class _SplashScreenState extends State<SplashScreen>
     final spacing = SplashScreenHelper.getSpacing(screenSize.width);
 
     // Color definitions
-    final primaryColor = AppColors.primary;
-    final backgroundLight = AppColors.backgroundLight;
-    final backgroundDark = AppColors.backgroundDark;
+    const primaryColor = AppColors.primary;
+    const backgroundLight = AppColors.backgroundLight;
+    const backgroundDark = AppColors.backgroundDark;
 
     return Scaffold(
       backgroundColor: isDark ? backgroundDark : backgroundLight,

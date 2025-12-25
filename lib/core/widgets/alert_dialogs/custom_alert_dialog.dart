@@ -144,7 +144,7 @@ class __CustomAlertDialogState extends State<_CustomAlertDialog>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundDark = AppColors.backgroundDark;
+    const backgroundDark = AppColors.backgroundDark;
 
     return Dialog(
       backgroundColor: Colors.transparent,

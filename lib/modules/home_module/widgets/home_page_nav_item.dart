@@ -29,8 +29,8 @@ class HomePageNavItem extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     bool isSelected = currentIndex == index;
 
-    final primaryColor = AppColors.primary;
-    final selectedColor = primaryColor;
+    const primaryColor = AppColors.primary;
+    const selectedColor = primaryColor;
     final unselectedColor = AppColors.getTextSecondaryColor(isDark);
 
     return GestureDetector(

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:throw_user/core/models/auth_response.dart';
+import 'package:throw_user/core/models/user_profile_model.dart';
 
 class UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instanceFor(
@@ -39,11 +40,11 @@ class UserRepository {
   }
 
   // Get user by UID
-  Future<Map<String, dynamic>?> getUserByUid(String uid) async {
+  Future<UserProfileModel?> getUserByUid(String uid) async {
     try {
       final doc = await _firestore.collection(usersCollection).doc(uid).get();
 
-      return doc.exists ? doc.data() : null;
+      return doc.exists ? UserProfileModel.fromJson(doc.data()!) : null;
     } catch (e) {
       debugPrint('Error getting user: $e');
       return null;

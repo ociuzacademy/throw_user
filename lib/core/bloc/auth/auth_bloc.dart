@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:throw_user/core/models/auth_response.dart';
 import 'package:throw_user/core/service/auth_service.dart';
 import 'package:throw_user/core/storage/auth_storage_functions.dart';
-import 'package:throw_user/modules/login_module/repository/user_repository.dart';
+import 'package:throw_user/core/repository/user_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

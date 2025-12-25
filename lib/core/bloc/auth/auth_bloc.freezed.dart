@@ -12,11 +12,17 @@ part of 'auth_bloc.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$AuthEvent {
+mixin _$AuthEvent implements DiagnosticableTreeMixin {
 
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthEvent'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -28,7 +34,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthEvent()';
 }
 
@@ -192,7 +198,7 @@ return resetError();case _:
 /// @nodoc
 
 
-class CheckAuthStatus implements AuthEvent {
+class CheckAuthStatus with DiagnosticableTreeMixin implements AuthEvent {
   const CheckAuthStatus();
   
 
@@ -200,6 +206,12 @@ class CheckAuthStatus implements AuthEvent {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthEvent.checkAuthStatus'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -211,7 +223,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthEvent.checkAuthStatus()';
 }
 
@@ -224,7 +236,7 @@ String toString() {
 /// @nodoc
 
 
-class SignInWithGoogle implements AuthEvent {
+class SignInWithGoogle with DiagnosticableTreeMixin implements AuthEvent {
   const SignInWithGoogle();
   
 
@@ -232,6 +244,12 @@ class SignInWithGoogle implements AuthEvent {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthEvent.signInWithGoogle'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -243,7 +261,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthEvent.signInWithGoogle()';
 }
 
@@ -256,7 +274,7 @@ String toString() {
 /// @nodoc
 
 
-class TrySilentSignIn implements AuthEvent {
+class TrySilentSignIn with DiagnosticableTreeMixin implements AuthEvent {
   const TrySilentSignIn();
   
 
@@ -264,6 +282,12 @@ class TrySilentSignIn implements AuthEvent {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthEvent.trySilentSignIn'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -275,7 +299,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthEvent.trySilentSignIn()';
 }
 
@@ -288,7 +312,7 @@ String toString() {
 /// @nodoc
 
 
-class SignOut implements AuthEvent {
+class SignOut with DiagnosticableTreeMixin implements AuthEvent {
   const SignOut();
   
 
@@ -296,6 +320,12 @@ class SignOut implements AuthEvent {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthEvent.signOut'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -307,7 +337,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthEvent.signOut()';
 }
 
@@ -320,7 +350,7 @@ String toString() {
 /// @nodoc
 
 
-class ResetError implements AuthEvent {
+class ResetError with DiagnosticableTreeMixin implements AuthEvent {
   const ResetError();
   
 
@@ -328,6 +358,12 @@ class ResetError implements AuthEvent {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthEvent.resetError'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -339,7 +375,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthEvent.resetError()';
 }
 
@@ -350,11 +386,17 @@ String toString() {
 
 
 /// @nodoc
-mixin _$AuthState {
+mixin _$AuthState implements DiagnosticableTreeMixin {
 
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -366,7 +408,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState()';
 }
 
@@ -530,7 +572,7 @@ return error(_that.message,_that.details,_that.code);case _:
 /// @nodoc
 
 
-class Initial implements AuthState {
+class Initial with DiagnosticableTreeMixin implements AuthState {
   const Initial();
   
 
@@ -538,6 +580,12 @@ class Initial implements AuthState {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState.initial'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -549,7 +597,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState.initial()';
 }
 
@@ -562,7 +610,7 @@ String toString() {
 /// @nodoc
 
 
-class Loading implements AuthState {
+class Loading with DiagnosticableTreeMixin implements AuthState {
   const Loading();
   
 
@@ -570,6 +618,12 @@ class Loading implements AuthState {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState.loading'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -581,7 +635,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState.loading()';
 }
 
@@ -594,7 +648,7 @@ String toString() {
 /// @nodoc
 
 
-class Authenticated implements AuthState {
+class Authenticated with DiagnosticableTreeMixin implements AuthState {
   const Authenticated({required this.user});
   
 
@@ -607,18 +661,24 @@ class Authenticated implements AuthState {
 $AuthenticatedCopyWith<Authenticated> get copyWith => _$AuthenticatedCopyWithImpl<Authenticated>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState.authenticated'))
+    ..add(DiagnosticsProperty('user', user));
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Authenticated&&const DeepCollectionEquality().equals(other.user, user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Authenticated&&(identical(other.user, user) || other.user == user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(user));
+int get hashCode => Object.hash(runtimeType,user);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState.authenticated(user: $user)';
 }
 
@@ -634,7 +694,7 @@ $Res call({
 });
 
 
-
+$UserProfileCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -647,20 +707,29 @@ class _$AuthenticatedCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? user = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? user = null,}) {
   return _then(Authenticated(
-user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserProfile,
   ));
 }
 
-
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserProfileCopyWith<$Res> get user {
+  
+  return $UserProfileCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 /// @nodoc
 
 
-class Unauthenticated implements AuthState {
+class Unauthenticated with DiagnosticableTreeMixin implements AuthState {
   const Unauthenticated();
   
 
@@ -668,6 +737,12 @@ class Unauthenticated implements AuthState {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState.unauthenticated'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -679,7 +754,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState.unauthenticated()';
 }
 
@@ -692,7 +767,7 @@ String toString() {
 /// @nodoc
 
 
-class AuthErrorState implements AuthState {
+class AuthErrorState with DiagnosticableTreeMixin implements AuthState {
   const AuthErrorState({required this.message, this.details, this.code});
   
 
@@ -707,6 +782,12 @@ class AuthErrorState implements AuthState {
 $AuthErrorStateCopyWith<AuthErrorState> get copyWith => _$AuthErrorStateCopyWithImpl<AuthErrorState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState.error'))
+    ..add(DiagnosticsProperty('message', message))..add(DiagnosticsProperty('details', details))..add(DiagnosticsProperty('code', code));
+}
 
 @override
 bool operator ==(Object other) {
@@ -718,7 +799,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,message,details,code);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState.error(message: $message, details: $details, code: $code)';
 }
 

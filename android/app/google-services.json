@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "108928876199-847r9hna9mth030afnqqu273h39ro1ul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.throwapp.delivery",
+            "certificate_hash": "2e9d4e7706d06e8c85c08eaed784b69c1b521174"
+          }
+        },
+        {
           "client_id": "108928876199-kltv4ruh10h2ovjgrhuv2g3cm3tn1j9a.apps.googleusercontent.com",
           "client_type": 3
         }

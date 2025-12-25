@@ -49,9 +49,9 @@ class _PaymentPageState extends State<PaymentPage> {
 
     // Color definitions based on the HTML
     // Color definitions based on the HTML
-    final primaryColor = AppColors.primary;
-    final backgroundLight = AppColors.backgroundLight;
-    final backgroundDark = AppColors.backgroundDark;
+    const primaryColor = AppColors.primary;
+    const backgroundLight = AppColors.backgroundLight;
+    const backgroundDark = AppColors.backgroundDark;
 
     return Scaffold(
       backgroundColor: isDark ? backgroundDark : backgroundLight,
@@ -61,7 +61,7 @@ class _PaymentPageState extends State<PaymentPage> {
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(verticalPadding),
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: const BoxDecoration(color: primaryColor),
             child: SafeArea(
               bottom: false,
               child: Stack(

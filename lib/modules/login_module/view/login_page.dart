@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
           default:
         }
       },
-      child: LoginPageContent(),
+      child: const LoginPageContent(),
     );
   }
 }

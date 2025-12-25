@@ -51,7 +51,7 @@ class LocationPickerHelper {
     try {
       return await mapController.myLocation();
     } catch (e) {
-      debugPrint("Error getting current location: $e");
+      debugPrint('Error getting current location: $e');
       return null;
     }
   }
@@ -74,7 +74,7 @@ class LocationPickerHelper {
 
       isMapReady.value = true;
     } catch (e) {
-      debugPrint("Error using current location: $e");
+      debugPrint('Error using current location: $e');
       isMapReady.value = true;
     }
   }

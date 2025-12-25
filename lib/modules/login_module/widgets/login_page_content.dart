@@ -119,8 +119,8 @@ class LoginPageContent extends StatelessWidget {
                                   isDarkMode,
                                 ),
                               ),
-                              children: [
-                                const TextSpan(
+                              children: const [
+                                TextSpan(
                                   text: 'By continuing, you agree to our ',
                                 ),
                                 TextSpan(
@@ -130,7 +130,7 @@ class LoginPageContent extends StatelessWidget {
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                const TextSpan(text: ' and '),
+                                TextSpan(text: ' and '),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
@@ -138,7 +138,7 @@ class LoginPageContent extends StatelessWidget {
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                const TextSpan(text: '.'),
+                                TextSpan(text: '.'),
                               ],
                             ),
                           ),

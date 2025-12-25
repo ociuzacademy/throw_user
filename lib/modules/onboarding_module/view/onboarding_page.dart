@@ -10,7 +10,7 @@ class OnboardingPage extends StatefulWidget {
   State<OnboardingPage> createState() => _OnboardingPageState();
 
   static MaterialPageRoute route() =>
-      MaterialPageRoute(builder: (_) => OnboardingPage());
+      MaterialPageRoute(builder: (_) => const OnboardingPage());
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
@@ -80,9 +80,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
     // Color definitions
     // Color definitions
-    final primaryColor = AppColors.primary;
-    final backgroundLight = AppColors.backgroundLight;
-    final backgroundDark = AppColors.backgroundDark;
+    const primaryColor = AppColors.primary;
+    const backgroundLight = AppColors.backgroundLight;
+    const backgroundDark = AppColors.backgroundDark;
 
     return Scaffold(
       backgroundColor: isDark ? backgroundDark : backgroundLight,

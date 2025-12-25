@@ -69,7 +69,7 @@ class BidCardHelper {
       },
       barrierDismissible: true, // Allow tapping outside to dismiss
       // Optional: Add an icon for better visual appeal
-      icon: Icon(Icons.check_circle_outline, size: 40),
+      icon: const Icon(Icons.check_circle_outline, size: 40),
       iconColor: Theme.of(context).primaryColor,
       iconBackgroundColor: Theme.of(
         context,

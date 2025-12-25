@@ -91,7 +91,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
                 border: OutlineInputBorder(),
                 prefixText: '\u20B9',
               ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
             const SizedBox(height: 24),
 

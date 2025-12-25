@@ -162,7 +162,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                 ),
                 onMapIsReady: (ready) {
                   if (ready) {
-                    debugPrint("Map is ready");
+                    debugPrint('Map is ready');
                   }
                 },
                 onMapMoved: (region) {
@@ -220,7 +220,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                   child: const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Text(
-                      "Move the map to select a location",
+                      'Move the map to select a location',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -256,7 +256,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                       size: buttonIconSize,
                     ),
                     label: Text(
-                      "Confirm Location",
+                      'Confirm Location',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: buttonTextSize,
