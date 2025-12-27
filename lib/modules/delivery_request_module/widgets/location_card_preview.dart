@@ -42,6 +42,18 @@ class _LocationCardPreviewState extends State<LocationCardPreview> {
   }
 
   @override
+  void didUpdateWidget(covariant LocationCardPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedLocation != oldWidget.selectedLocation &&
+        widget.selectedLocation != null) {
+      _locationCardPreviewHelper.selectedLocation = widget.selectedLocation;
+      if (_isMapReady.value) {
+        _mapController.moveTo(widget.selectedLocation!);
+      }
+    }
+  }
+
+  @override
   void dispose() {
     _mapController.dispose();
     _isMapReady.dispose();

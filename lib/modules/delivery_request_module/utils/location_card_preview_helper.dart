@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class LocationCardPreviewHelper {
-  final GeoPoint? selectedLocation;
+  GeoPoint? selectedLocation;
   final MapController mapController;
   final ValueNotifier<bool> isMapReady;
-  const LocationCardPreviewHelper({
+  LocationCardPreviewHelper({
     this.selectedLocation,
     required this.mapController,
     required this.isMapReady,
@@ -20,6 +20,7 @@ class LocationCardPreviewHelper {
         // Now that the map is ready, we can set the zoom
         if (selectedLocation != null) {
           await mapController.setZoom(zoomLevel: 15);
+          await mapController.moveTo(selectedLocation!);
         }
 
         isMapReady.value = true;
