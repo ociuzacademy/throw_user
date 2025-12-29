@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/date_field.dart';
-import 'package:throw_user/modules/delivery_request_module/widgets/preferred_date_field.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/time_field.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/location_card_preview.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/phone_field.dart';
@@ -57,8 +56,6 @@ class LocationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final screenSize = MediaQuery.of(context).size;
-    final isMediumScreen = screenSize.width < 600;
 
     return Container(
       decoration: BoxDecoration(
@@ -188,46 +185,29 @@ class LocationSection extends StatelessWidget {
                 ),
 
                 // Date/Time Fields
-                if (showDateTime) ...[
-                  const SizedBox(height: 16),
-                  isMediumScreen
-                      ? Column(
-                          children: [
-                            DateField(
-                              dateController: dateController,
-                              onDateTap: onDateTap,
-                            ),
-                            const SizedBox(height: 16),
-                            TimeField(
-                              timeController: timeController,
-                              onTimeTap: onTimeTap,
-                            ),
-                          ],
-                        )
-                      : Row(
-                          children: [
-                            Expanded(
-                              child: DateField(
-                                dateController: dateController,
-                                onDateTap: onDateTap,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: TimeField(
-                                timeController: timeController,
-                                onTimeTap: onTimeTap,
-                              ),
-                            ),
-                          ],
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DateField(
+                        dateController: isPickup
+                            ? dateController
+                            : preferredDateController,
+                        onDateTap: isPickup ? onDateTap : onPreferredDateTap,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    if (isPickup)
+                      Expanded(
+                        child: TimeField(
+                          timeController: timeController,
+                          onTimeTap: onTimeTap,
                         ),
-                ] else ...[
-                  const SizedBox(height: 16),
-                  PreferredDateField(
-                    preferredDateController: preferredDateController,
-                    onPreferredDateTap: onPreferredDateTap,
-                  ),
-                ],
+                      )
+                    else
+                      const Spacer(),
+                  ],
+                ),
               ],
             ),
           ),

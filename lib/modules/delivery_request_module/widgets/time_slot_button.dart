@@ -7,6 +7,7 @@ class TimeSlotButton extends StatelessWidget {
   final String selectedTime;
   final Color mutedTextColor;
   final VoidCallback onSelectingTimeSlot;
+
   const TimeSlotButton({
     super.key,
     required this.time,
@@ -20,10 +21,10 @@ class TimeSlotButton extends StatelessWidget {
     final isSelected = time == selectedTime;
     return Expanded(
       child: Container(
-        margin: const EdgeInsets.all(4),
+        margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(8),
           boxShadow: isSelected
               ? [
                   BoxShadow(
@@ -34,14 +35,19 @@ class TimeSlotButton extends StatelessWidget {
                 ]
               : null,
         ),
-        child: TextButton(
-          onPressed: onSelectingTimeSlot,
-          child: Text(
-            time,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: isSelected ? AppColors.textPrimaryDark : mutedTextColor,
+        child: InkWell(
+          onTap: onSelectingTimeSlot,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              time,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: isSelected ? Colors.white : mutedTextColor,
+              ),
             ),
           ),
         ),

@@ -38,23 +38,23 @@ class AppColors {
   static const Color cardLight = Colors.white;
 
   /// Dark theme card color
-  static const Color cardDark = Color(0xFF182430);
+  static const Color cardDark = Color(0xFF1F2937);
 
   // ============================================================================
   // TEXT COLORS
   // ============================================================================
 
   /// Primary text color for light theme
-  static const Color textPrimaryLight = Color(0xFF111518);
+  static const Color textPrimaryLight = Color(0xFF111827);
 
   /// Primary text color for dark theme
-  static const Color textPrimaryDark = Color(0xFFF6F7F8);
+  static const Color textPrimaryDark = Color(0xFFF9FAFB);
 
   /// Secondary text color for light theme
-  static const Color textSecondaryLight = Color(0xFF617789);
+  static const Color textSecondaryLight = Color(0xFF6B7280);
 
   /// Secondary text color for dark theme
-  static const Color textSecondaryDark = Color(0xFF9BADBD);
+  static const Color textSecondaryDark = Color(0xFF9CA3AF);
 
   // ============================================================================
   // INPUT FIELD COLORS

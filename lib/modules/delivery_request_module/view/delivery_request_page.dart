@@ -36,17 +36,14 @@ class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
         ),
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: AppColors.textPrimaryDark,
-            ),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text(
+          title: const Text(
             'Create Delivery Request',
             style: TextStyle(
-              color: AppColors.textPrimaryDark,
-              fontSize: MediaQuery.of(context).size.width < 375 ? 18 : 20,
+              color: Colors.white,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),

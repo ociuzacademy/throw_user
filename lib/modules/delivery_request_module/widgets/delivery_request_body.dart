@@ -112,6 +112,53 @@ class DeliveryRequestBody extends StatelessWidget {
                   isDark: isDark,
                   provider: provider,
                 ),
+
+                SizedBox(height: isSmallScreen ? 12 : 16),
+
+                // Base Price Field
+                Container(
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? AppColors.inactiveBackgroundDark
+                        : AppColors.backgroundLight,
+                    border: Border.all(
+                      color: isDark
+                          ? AppColors.borderDark
+                          : AppColors.borderLight,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextFormField(
+                    controller: provider.basePriceController,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 18,
+                      ),
+                      hintText: 'Base Price',
+                      hintStyle: TextStyle(
+                        color: isDark
+                            ? AppColors.textSecondaryDark
+                            : AppColors.textSecondaryLight,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.attach_money,
+                        color: isDark
+                            ? AppColors.textSecondaryDark
+                            : AppColors.textSecondaryLight,
+                      ),
+                    ),
+                    style: TextStyle(
+                      color: isDark
+                          ? AppColors.textPrimaryDark
+                          : AppColors.textPrimaryLight,
+                    ),
+                  ),
+                ),
               ],
             ),
 

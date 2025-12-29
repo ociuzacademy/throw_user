@@ -29,6 +29,7 @@ class DeliveryRequestProvider extends ChangeNotifier {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController recipientPhoneController =
       TextEditingController();
+  final TextEditingController basePriceController = TextEditingController();
 
   // Getters
   GeoPoint? get pickupLocation => _pickupLocation;
@@ -132,6 +133,7 @@ class DeliveryRequestProvider extends ChangeNotifier {
     dropOffPreferredDateController.clear();
     weightController.clear();
     recipientPhoneController.clear();
+    basePriceController.clear();
 
     notifyListeners();
   }
@@ -147,6 +149,7 @@ class DeliveryRequestProvider extends ChangeNotifier {
     dropOffPreferredDateController.dispose();
     weightController.dispose();
     recipientPhoneController.dispose();
+    basePriceController.dispose();
     super.dispose();
   }
 }
