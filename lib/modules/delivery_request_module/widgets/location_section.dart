@@ -213,17 +213,17 @@ class LocationSection extends StatelessWidget {
                         validator: dateValidator,
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    if (isPickup)
+                    if (isPickup) ...[
+                      const SizedBox(width: 16),
                       Expanded(
                         child: TimeField(
                           timeController: timeController,
                           onTimeTap: onTimeTap,
                           validator: timeValidator,
                         ),
-                      )
-                    else
-                      const Spacer(),
+                      ),
+                    ] /*else
+                      const Spacer(),*/,
                   ],
                 ),
               ],

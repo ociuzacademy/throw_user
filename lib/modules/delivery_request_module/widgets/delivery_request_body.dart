@@ -30,6 +30,8 @@ class DeliveryRequestBody extends StatelessWidget {
     final isMediumScreen = screenSize.width < 600;
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
+    const IconData rupeeSymbol = IconData(0x20B9, fontFamily: 'MaterialIcons');
+
     return Form(
       key: formKey,
       child: SingleChildScrollView(
@@ -155,7 +157,7 @@ class DeliveryRequestBody extends StatelessWidget {
                             : AppColors.textSecondaryLight,
                       ),
                       prefixIcon: Icon(
-                        Icons.attach_money,
+                        rupeeSymbol,
                         color: isDark
                             ? AppColors.textSecondaryDark
                             : AppColors.textSecondaryLight,

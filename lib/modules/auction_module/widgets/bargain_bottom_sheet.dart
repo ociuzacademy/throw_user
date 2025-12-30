@@ -59,7 +59,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
               'Bargain with ${bid.name}',
               style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black,
+                color: AppColors.getTextPrimaryColor(isDark),
               ),
             ),
             const SizedBox(height: 16),
@@ -68,7 +68,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
             Text(
               'Current Bid: \u20B9${bid.price.toStringAsFixed(2)}',
               style: textTheme.bodyMedium!.copyWith(
-                color: isDark ? Colors.white : Colors.black,
+                color: AppColors.getTextPrimaryColor(isDark),
               ),
             ),
 
@@ -77,21 +77,23 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
               const SizedBox(height: 8),
               Text(
                 'Previous Bargain: \u20B9${bid.bargainedPrice!.toStringAsFixed(2)}',
-                style: textTheme.bodyMedium?.copyWith(color: Colors.green),
+                style: textTheme.bodyMedium?.copyWith(color: AppColors.success),
               ),
             ],
 
             const SizedBox(height: 16),
             TextFormField(
               controller: _bargainController,
-              style: TextStyle(color: isDark ? Colors.white : Colors.black),
+              style: TextStyle(color: AppColors.getTextPrimaryColor(isDark)),
               decoration: const InputDecoration(
                 labelText: 'Your Bargain Amount',
                 hintText: 'Enter your counter offer',
                 border: OutlineInputBorder(),
                 prefixText: '\u20B9',
               ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
             ),
             const SizedBox(height: 24),
 
@@ -127,7 +129,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Please enter a valid amount'),
-                            backgroundColor: Colors.red,
+                            backgroundColor: AppColors.error,
                           ),
                         );
                       }

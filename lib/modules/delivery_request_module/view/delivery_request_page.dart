@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:provider/provider.dart';
-import 'package:throw_user/core/widgets/loaders/overlay_loader.dart';
-import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
 import 'package:throw_user/modules/auction_module/view/auction_page.dart';
 import 'package:throw_user/modules/delivery_request_module/providers/delivery_request_provider.dart';
 import 'package:throw_user/modules/delivery_request_module/services/delivery_request_service.dart';
 import 'package:throw_user/modules/delivery_request_module/utils/delivery_request_helper.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/delivery_request_body.dart';
 
-import '../../../core/exports/bloc_exports.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
+import 'package:throw_user/core/exports/custom_widget_exports.dart';
 
 class DeliveryRequestPage extends StatefulWidget {
   const DeliveryRequestPage({super.key});
@@ -79,9 +78,14 @@ class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
                   context: context,
                   message: 'Delivery request created successfully',
                 );
-                Navigator.push(context, AuctionPage.route(requestId));
+                Navigator.pushReplacement(
+                  context,
+                  AuctionPage.route(requestId),
+                );
                 break;
               default:
+                OverlayLoader.hide();
+                break;
             }
           },
           child: Consumer<DeliveryRequestProvider>(

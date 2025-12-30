@@ -2,14 +2,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
 import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
-import 'package:throw_user/modules/auction_expired_module/view/auction_expired_page.dart';
 
 import 'package:throw_user/core/models/bid.dart';
 import 'package:throw_user/modules/payment_module/view/payment_page.dart';
 
 class AuctionHelper {
   final BuildContext context;
+  final String requestId;
   // Timer variables
   Timer? timer;
   // 3 minutes in seconds
@@ -19,11 +21,17 @@ class AuctionHelper {
 
   AuctionHelper({
     required this.context,
+    required this.requestId,
     this.timer,
     required this.bids,
     required this.remainingSeconds,
     required this.isTimerActive,
   });
+
+  void reset() {
+    final DeliveryRequestBloc bloc = context.read<DeliveryRequestBloc>();
+    bloc.add(const DeliveryRequestEvent.reset());
+  }
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -32,7 +40,7 @@ class AuctionHelper {
       } else {
         isTimerActive.value = false;
         timer.cancel();
-        _showAuctionEndedSnackbar();
+        _cancelDeliveryRequest();
       }
     });
   }
@@ -41,17 +49,9 @@ class AuctionHelper {
     timer?.cancel();
   }
 
-  void _showAuctionEndedSnackbar() {
-    if (context.mounted) {
-      CustomSnackbar.showError(
-        context: context,
-        message: 'Auction has ended!',
-        onActionPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          Navigator.push(context, AuctionExpiredPage.route());
-        },
-      );
-    }
+  void _cancelDeliveryRequest() {
+    final DeliveryRequestBloc bloc = context.read<DeliveryRequestBloc>();
+    bloc.add(DeliveryRequestEvent.cancelRequest(requestId));
   }
 
   // Update a bid by replacing it in the list and notifying listeners

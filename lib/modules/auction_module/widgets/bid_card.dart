@@ -1,5 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/core/models/bid.dart';
@@ -10,7 +10,6 @@ import 'package:throw_user/modules/auction_module/widgets/bargain_button.dart';
 
 class BidCard extends StatefulWidget {
   final Bid bid;
-  final ColorScheme colorScheme;
   final TextTheme textTheme;
   final bool isAuctionActive;
   final bool isSmallScreen;
@@ -22,7 +21,6 @@ class BidCard extends StatefulWidget {
   const BidCard({
     super.key,
     required this.bid,
-    required this.colorScheme,
     required this.textTheme,
     required this.isAuctionActive,
     required this.isSmallScreen,
@@ -70,16 +68,37 @@ class _BidCardState extends State<BidCard> {
 
     return Card(
       elevation: 2,
-      color: widget.isDark ? widget.colorScheme.surface : Colors.white,
+      color: AppColors.getCardColor(widget.isDark),
       margin: EdgeInsets.only(bottom: widget.isSmallScreen ? 8.0 : 12.0),
       child: Padding(
         padding: EdgeInsets.all(widget.isSmallScreen ? 12.0 : 16.0),
         child: Row(
           children: [
             // Profile image
-            CircleAvatar(
-              radius: avatarRadius,
-              backgroundImage: NetworkImage(widget.bid.imageUrl),
+            CachedNetworkImage(
+              imageUrl: widget.bid.imageUrl,
+              imageBuilder: (context, imageProvider) => CircleAvatar(
+                radius: avatarRadius,
+                backgroundImage: imageProvider,
+              ),
+              placeholder: (context, url) => CircleAvatar(
+                radius: avatarRadius,
+                backgroundColor: AppColors.getInactiveBackgroundColor(
+                  widget.isDark,
+                ),
+                child: const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+              errorWidget: (context, url, error) => CircleAvatar(
+                radius: avatarRadius,
+                backgroundColor: AppColors.getInactiveBackgroundColor(
+                  widget.isDark,
+                ),
+                child: const Icon(Icons.person),
+              ),
             ),
             SizedBox(width: widget.isSmallScreen ? 8.0 : 12.0),
 
@@ -93,7 +112,7 @@ class _BidCardState extends State<BidCard> {
                     style: widget.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: nameFontSize,
-                      color: widget.isDark ? Colors.white : Colors.black,
+                      color: AppColors.getTextPrimaryColor(widget.isDark),
                     ),
                   ),
                   SizedBox(height: widget.isSmallScreen ? 2.0 : 4.0),
@@ -115,9 +134,7 @@ class _BidCardState extends State<BidCard> {
                       Text(
                         widget.bid.eta,
                         style: widget.textTheme.bodySmall?.copyWith(
-                          color: widget.colorScheme.onSurface.withValues(
-                            alpha: 0.6,
-                          ),
+                          color: AppColors.getTextSecondaryColor(widget.isDark),
                           fontSize: widget.isSmallScreen ? 12.0 : 14.0,
                         ),
                       ),
@@ -130,7 +147,7 @@ class _BidCardState extends State<BidCard> {
                     Text(
                       'Bargained: \u20B9${widget.bid.bargainedPrice!.toStringAsFixed(2)}',
                       style: widget.textTheme.bodySmall?.copyWith(
-                        color: Colors.green,
+                        color: AppColors.success,
                         fontWeight: FontWeight.w500,
                         fontSize: widget.isSmallScreen ? 11.0 : 12.0,
                       ),
@@ -143,7 +160,7 @@ class _BidCardState extends State<BidCard> {
                     Text(
                       'Agent left the auction',
                       style: widget.textTheme.bodySmall?.copyWith(
-                        color: Colors.red,
+                        color: AppColors.error,
                         fontWeight: FontWeight.w500,
                         fontSize: widget.isSmallScreen ? 11.0 : 12.0,
                       ),
@@ -172,7 +189,7 @@ class _BidCardState extends State<BidCard> {
                   Text(
                     'No longer available',
                     style: widget.textTheme.bodySmall?.copyWith(
-                      color: Colors.red,
+                      color: AppColors.error,
                       fontStyle: FontStyle.italic,
                       fontSize: widget.isSmallScreen ? 10.0 : 12.0,
                     ),

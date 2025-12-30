@@ -31,7 +31,7 @@ class AcceptButton extends StatelessWidget {
           : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.onPrimary,
         padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding,
           vertical: verticalPadding,

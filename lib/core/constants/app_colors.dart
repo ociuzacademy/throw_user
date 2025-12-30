@@ -17,6 +17,9 @@ class AppColors {
   /// Success color - Green
   static const Color success = Color(0xFF10B981);
 
+  /// Color for text/icons on top of primary color
+  static const Color onPrimary = Colors.white;
+
   /// Error color - Red
   static const Color error = Colors.red;
 

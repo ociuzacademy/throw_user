@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/constants/app_colors.dart';
 
 class TimeUnit extends StatelessWidget {
   const TimeUnit({
@@ -18,7 +19,6 @@ class TimeUnit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     final numberFontSize = isSmallScreen
@@ -38,15 +38,17 @@ class TimeUnit extends StatelessWidget {
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: numberFontSize,
-              color: isDark ? Colors.white : Colors.black, // Fixed number color
+              color: AppColors.getTextPrimaryColor(
+                isDark,
+              ), // Fixed number color
             ),
           ),
           Text(
             label,
             style: textTheme.labelSmall?.copyWith(
-              color: isDark
-                  ? colorScheme.onSurface.withValues(alpha: 0.6)
-                  : const Color(0xFF6b7280), // Fixed label color
+              color: AppColors.getTextSecondaryColor(
+                isDark,
+              ), // Fixed label color
               fontSize: labelFontSize,
             ),
           ),
