@@ -8,10 +8,12 @@ import 'package:throw_user/modules/auction_module/widgets/time_unit.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AuctionPage extends StatefulWidget {
-  const AuctionPage({super.key});
+  final String auctionId;
+  const AuctionPage({super.key, required this.auctionId});
 
-  static MaterialPageRoute route() =>
-      MaterialPageRoute(builder: (context) => const AuctionPage());
+  static MaterialPageRoute route(String auctionId) => MaterialPageRoute(
+    builder: (context) => AuctionPage(auctionId: auctionId),
+  );
 
   @override
   State<AuctionPage> createState() => _AuctionPageState();

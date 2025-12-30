@@ -39,16 +39,7 @@ class WeightFieldWidget extends StatelessWidget {
                 : AppColors.textSecondaryLight,
           ),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter weight';
-          }
-          final weight = double.tryParse(value);
-          if (weight == null || weight <= 0) {
-            return 'Please enter a valid weight';
-          }
-          return null;
-        },
+        validator: provider.validateWeight,
       ),
     );
   }

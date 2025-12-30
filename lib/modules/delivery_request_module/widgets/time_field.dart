@@ -5,11 +5,13 @@ import 'package:throw_user/core/constants/app_colors.dart';
 class TimeField extends StatelessWidget {
   final TextEditingController? timeController;
   final VoidCallback? onTimeTap;
+  final String? Function(String?)? validator;
 
   const TimeField({
     super.key,
     required this.timeController,
     required this.onTimeTap,
+    this.validator,
   });
 
   @override
@@ -56,12 +58,7 @@ class TimeField extends StatelessWidget {
               : AppColors.textPrimaryLight,
         ),
         onTap: onTimeTap,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please select time';
-          }
-          return null;
-        },
+        validator: validator,
       ),
     );
   }

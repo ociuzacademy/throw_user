@@ -5,11 +5,13 @@ import 'package:throw_user/core/constants/app_colors.dart';
 class DateField extends StatelessWidget {
   final TextEditingController? dateController;
   final VoidCallback? onDateTap;
+  final String? Function(String?)? validator;
 
   const DateField({
     super.key,
     required this.dateController,
     required this.onDateTap,
+    this.validator,
   });
 
   @override
@@ -56,12 +58,7 @@ class DateField extends StatelessWidget {
               : AppColors.textPrimaryLight,
         ),
         onTap: onDateTap,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please select date';
-          }
-          return null;
-        },
+        validator: validator,
       ),
     );
   }

@@ -4,8 +4,9 @@ import 'package:throw_user/core/constants/app_colors.dart';
 
 class PhoneField extends StatelessWidget {
   final TextEditingController phoneController;
+  final String? Function(String?)? validator;
 
-  const PhoneField({super.key, required this.phoneController});
+  const PhoneField({super.key, required this.phoneController, this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +16,7 @@ class PhoneField extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         color: AppColors.getPhoneFieldBackground(isDark),
-        border: Border.all(
-          color: AppColors.getBorderColor(isDark),
-        ),
+        border: Border.all(color: AppColors.getBorderColor(isDark)),
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextFormField(
@@ -30,24 +29,15 @@ class PhoneField extends StatelessWidget {
             vertical: 10,
           ),
           hintText: "Recipient's phone number",
-          hintStyle: TextStyle(
-            color: AppColors.getGrayColor(isDark),
-          ),
+          hintStyle: TextStyle(color: AppColors.getGrayColor(isDark)),
           prefixIcon: Icon(
             Icons.phone,
             color: AppColors.getGrayColor(isDark),
             size: 20,
           ),
         ),
-        style: TextStyle(
-          color: AppColors.getTextPrimaryColor(isDark),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter phone number';
-          }
-          return null;
-        },
+        style: TextStyle(color: AppColors.getTextPrimaryColor(isDark)),
+        validator: validator,
       ),
     );
   }

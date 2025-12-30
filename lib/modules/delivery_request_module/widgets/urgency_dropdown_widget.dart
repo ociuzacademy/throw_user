@@ -31,6 +31,7 @@ class UrgencyDropdownWidget extends StatelessWidget {
         onSelectingUrgency: (value) {
           provider.setSelectedUrgency(value);
         },
+        validator: provider.validateUrgency,
       ),
     );
   }

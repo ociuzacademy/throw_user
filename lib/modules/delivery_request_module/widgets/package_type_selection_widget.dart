@@ -5,11 +5,13 @@ import 'package:throw_user/core/constants/app_colors.dart';
 class PackageTypeSelectionWidget extends StatelessWidget {
   final String? selectedPackageType;
   final Function(String?) onSelectingPackageType;
+  final String? Function(String?)? validator;
 
   const PackageTypeSelectionWidget({
     super.key,
     required this.selectedPackageType,
     required this.onSelectingPackageType,
+    this.validator,
   });
 
   @override
@@ -38,12 +40,7 @@ class PackageTypeSelectionWidget extends StatelessWidget {
             ? AppColors.textSecondaryDark
             : AppColors.textSecondaryLight,
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please select a package type';
-        }
-        return null;
-      },
+      validator: validator,
       items: const [
         DropdownMenuItem(value: 'Document', child: Text('Document')),
         DropdownMenuItem(value: 'Small Box', child: Text('Small Box')),

@@ -5,11 +5,13 @@ import 'package:throw_user/core/constants/app_colors.dart';
 class UrgencyDropdown extends StatelessWidget {
   final String? selectedUrgency;
   final Function(String?) onSelectingUrgency;
+  final String? Function(String?)? validator;
 
   const UrgencyDropdown({
     super.key,
     required this.selectedUrgency,
     required this.onSelectingUrgency,
+    this.validator,
   });
 
   @override
@@ -38,12 +40,7 @@ class UrgencyDropdown extends StatelessWidget {
             ? AppColors.textSecondaryDark
             : AppColors.textSecondaryLight,
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please select urgency';
-        }
-        return null;
-      },
+      validator: validator,
       items: const [
         DropdownMenuItem(value: 'Standard', child: Text('Standard')),
         DropdownMenuItem(value: 'Express', child: Text('Express')),

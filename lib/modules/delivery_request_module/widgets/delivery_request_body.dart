@@ -14,14 +14,14 @@ class DeliveryRequestBody extends StatelessWidget {
     super.key,
     required this.formKey,
     required this.deliveryRequestService,
-    required this.context,
     required this.provider,
+    required this.onSubmit,
   });
 
   final GlobalKey<FormState> formKey;
   final DeliveryRequestService deliveryRequestService;
-  final BuildContext context;
   final DeliveryRequestProvider provider;
+  final VoidCallback onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +48,10 @@ class DeliveryRequestBody extends StatelessWidget {
               remarksController: provider.pickupRemarksController,
               dateController: provider.pickupDateController,
               timeController: provider.pickupTimeController,
+              addressValidator: provider.validateAddress,
+              remarksValidator: provider.validateRemarks,
+              dateValidator: provider.validateDate,
+              timeValidator: provider.validateTime,
               onMapTap: () =>
                   deliveryRequestService.selectLocation(true, provider),
               onDateTap: () =>
@@ -70,6 +74,10 @@ class DeliveryRequestBody extends StatelessWidget {
               remarksController: provider.dropOffRemarksController,
               preferredDateController: provider.dropOffPreferredDateController,
               recipientPhoneController: provider.recipientPhoneController,
+              addressValidator: provider.validateAddress,
+              remarksValidator: provider.validateRemarks,
+              dateValidator: provider.validateDate,
+              phoneValidator: provider.validatePhone,
               onMapTap: () =>
                   deliveryRequestService.selectLocation(false, provider),
               onPreferredDateTap: () =>
@@ -100,6 +108,7 @@ class DeliveryRequestBody extends StatelessWidget {
                     onSelectingPackageType: (value) {
                       provider.setSelectedPackageType(value);
                     },
+                    validator: provider.validatePackageType,
                   ),
                 ),
 
@@ -157,6 +166,7 @@ class DeliveryRequestBody extends StatelessWidget {
                           ? AppColors.textPrimaryDark
                           : AppColors.textPrimaryLight,
                     ),
+                    validator: provider.validateBasePrice,
                   ),
                 ),
               ],
@@ -190,8 +200,7 @@ class DeliveryRequestBody extends StatelessWidget {
                 ],
               ),
               child: TextButton(
-                onPressed: () =>
-                    deliveryRequestService.submitForm(provider, formKey),
+                onPressed: onSubmit,
                 child: const Text(
                   'Create Request',
                   style: TextStyle(
