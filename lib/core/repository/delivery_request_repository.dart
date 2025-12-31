@@ -68,7 +68,7 @@ class DeliveryRequestRepository {
           deliveryRequestData.pickupLocation.latitude,
           deliveryRequestData.pickupLocation.longitude,
         ),
-        'pickupPhone': deliveryRequestData.pickupPhone,
+        'pickupPhoneNumber': deliveryRequestData.pickupPhone,
         'pickupRemarks': deliveryRequestData.pickupRemarks,
         'preferredDeliveryTime':
             deliveryRequestData.preferredDeliveryTime.value,
