@@ -24,6 +24,7 @@ class DeliveryRequestModel {
   final String dropOffAddress;
   final Timestamp dropOffDate;
   final String dropOffRemarks;
+  final double minimumDeliveryCharge;
   final String? otp;
   final String packageType;
   final double packageWeight;
@@ -48,6 +49,7 @@ class DeliveryRequestModel {
     required this.dropOffAddress,
     required this.dropOffDate,
     required this.dropOffRemarks,
+    required this.minimumDeliveryCharge,
     this.otp,
     required this.packageType,
     required this.packageWeight,
@@ -73,6 +75,7 @@ class DeliveryRequestModel {
     String? dropOffAddress,
     Timestamp? dropOffDate,
     String? dropOffRemarks,
+    double? minimumDeliveryCharge,
     dynamic otp,
     String? packageType,
     double? packageWeight,
@@ -96,6 +99,7 @@ class DeliveryRequestModel {
     dropOffAddress: dropOffAddress ?? this.dropOffAddress,
     dropOffDate: dropOffDate ?? this.dropOffDate,
     dropOffRemarks: dropOffRemarks ?? this.dropOffRemarks,
+    minimumDeliveryCharge: minimumDeliveryCharge ?? this.minimumDeliveryCharge,
     otp: otp ?? this.otp,
     packageType: packageType ?? this.packageType,
     packageWeight: packageWeight ?? this.packageWeight,
@@ -125,6 +129,7 @@ class DeliveryRequestModel {
         dropOffAddress: json['dropOffAddress'],
         dropOffDate: Timestamp.fromDate(json['dropOffDate']),
         dropOffRemarks: json['dropOffRemarks'],
+        minimumDeliveryCharge: json['minimumDeliveryCharge']?.toDouble(),
         otp: json['otp'],
         packageType: json['packageType'],
         packageWeight: json['packageWeight']?.toDouble(),
@@ -159,6 +164,7 @@ class DeliveryRequestModel {
     'dropOffDate':
         "${dropOffDate.toDate().year.toString().padLeft(4, '0')}-${dropOffDate.toDate().month.toString().padLeft(2, '0')}-${dropOffDate.toDate().day.toString().padLeft(2, '0')}",
     'dropOffRemarks': dropOffRemarks,
+    'minimumDeliveryCharge': minimumDeliveryCharge,
     'otp': otp,
     'packageType': packageType,
     'packageWeight': packageWeight,
