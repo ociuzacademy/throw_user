@@ -121,18 +121,15 @@ class DeliveryRequestModel {
   factory DeliveryRequestModel.fromJson(Map<String, dynamic> json) =>
       DeliveryRequestModel(
         agreedDeliveryCharge: json['agreedDeliveryCharge']?.toDouble(),
-        auctionStartingTime: Timestamp.fromDate(json['auctionStartingTime']),
+        auctionStartingTime: json['auctionStartingTime'] as Timestamp,
         baseDeliveryCharge: json['baseDeliveryCharge']?.toDouble(),
-        createdAt: Timestamp.fromDate(json['createdAt']),
+        createdAt: json['createdAt'] as Timestamp,
         deliveryAgentId: json['deliveryAgentId'],
-        deliveryLocation: GeoPoint(
-          json['deliveryLocation']['latitude'],
-          json['deliveryLocation']['longitude'],
-        ),
+        deliveryLocation: json['deliveryLocation'] as GeoPoint,
         deliveryRequestId: json['deliveryRequestId'],
         deliveryStatus: DeliveryStatus.fromString(json['deliveryStatus']),
         dropOffAddress: json['dropOffAddress'],
-        dropOffDate: Timestamp.fromDate(json['dropOffDate']),
+        dropOffDate: json['dropOffDate'] as Timestamp,
         dropOffRemarks: json['dropOffRemarks'],
         minimumDeliveryCharge: json['minimumDeliveryCharge']?.toDouble(),
         otp: json['otp'],
@@ -140,15 +137,12 @@ class DeliveryRequestModel {
         packageWeight: json['packageWeight']?.toDouble(),
         paymentStatus: PaymentStatus.fromString(json['paymentStatus']),
         pickupAddress: json['pickupAddress'],
-        pickupDate: Timestamp.fromDate(json['pickupDate']),
-        pickupLocation: GeoPoint(
-          json['pickupLocation']['latitude'],
-          json['pickupLocation']['longitude'],
-        ),
+        pickupDate: json['pickupDate'] as Timestamp,
+        pickupLocation: json['pickupLocation'] as GeoPoint,
         pickupRemarks: json['pickupRemarks'],
         preferredDeliveryTime: json['preferredDeliveryTime'],
         requestStatus: RequestStatus.fromString(json['requestStatus']),
-        updatedAt: Timestamp.fromDate(json['updatedAt']),
+        updatedAt: json['updatedAt'] as Timestamp,
         urgency: Urgency.fromString(json['urgency']),
       );
 
