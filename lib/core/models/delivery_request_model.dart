@@ -27,7 +27,7 @@ class DeliveryRequestModel {
   final String dropOffRemarks;
   final double minimumDeliveryCharge;
   final String? otp;
-  final String packageType;
+  final PackageType packageType;
   final double packageWeight;
   final PaymentStatus paymentStatus;
   final String pickupAddress;
@@ -37,7 +37,7 @@ class DeliveryRequestModel {
   final String preferredDeliveryTime;
   final RequestStatus requestStatus;
   final Timestamp updatedAt;
-  final String urgency;
+  final Urgency urgency;
 
   DeliveryRequestModel({
     this.agreedDeliveryCharge,
@@ -80,7 +80,7 @@ class DeliveryRequestModel {
     String? dropOffRemarks,
     double? minimumDeliveryCharge,
     dynamic otp,
-    String? packageType,
+    PackageType? packageType,
     double? packageWeight,
     PaymentStatus? paymentStatus,
     String? pickupAddress,
@@ -90,7 +90,7 @@ class DeliveryRequestModel {
     String? preferredDeliveryTime,
     RequestStatus? requestStatus,
     Timestamp? updatedAt,
-    String? urgency,
+    Urgency? urgency,
   }) => DeliveryRequestModel(
     agreedDeliveryCharge: agreedDeliveryCharge ?? this.agreedDeliveryCharge,
     auctionStartingTime: auctionStartingTime ?? this.auctionStartingTime,
@@ -136,7 +136,7 @@ class DeliveryRequestModel {
         dropOffRemarks: json['dropOffRemarks'],
         minimumDeliveryCharge: json['minimumDeliveryCharge']?.toDouble(),
         otp: json['otp'],
-        packageType: json['packageType'],
+        packageType: PackageType.fromString(json['packageType']),
         packageWeight: json['packageWeight']?.toDouble(),
         paymentStatus: PaymentStatus.fromString(json['paymentStatus']),
         pickupAddress: json['pickupAddress'],
@@ -149,7 +149,7 @@ class DeliveryRequestModel {
         preferredDeliveryTime: json['preferredDeliveryTime'],
         requestStatus: RequestStatus.fromString(json['requestStatus']),
         updatedAt: Timestamp.fromDate(json['updatedAt']),
-        urgency: json['urgency'],
+        urgency: Urgency.fromString(json['urgency']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -172,7 +172,7 @@ class DeliveryRequestModel {
     'dropOffRemarks': dropOffRemarks,
     'minimumDeliveryCharge': minimumDeliveryCharge,
     'otp': otp,
-    'packageType': packageType,
+    'packageType': packageType.value,
     'packageWeight': packageWeight,
     'paymentStatus': paymentStatus.value,
     'pickupAddress': pickupAddress,
@@ -187,6 +187,6 @@ class DeliveryRequestModel {
     'requestStatus': requestStatus.value,
     'updatedAt':
         "${updatedAt.toDate().year.toString().padLeft(4, '0')}-${updatedAt.toDate().month.toString().padLeft(2, '0')}-${updatedAt.toDate().day.toString().padLeft(2, '0')}",
-    'urgency': urgency,
+    'urgency': urgency.value,
   };
 }
