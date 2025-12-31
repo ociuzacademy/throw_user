@@ -1,11 +1,12 @@
 // urgency_dropdown.dart
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
 
 class UrgencyDropdown extends StatelessWidget {
-  final String? selectedUrgency;
-  final Function(String?) onSelectingUrgency;
-  final String? Function(String?)? validator;
+  final Urgency? selectedUrgency;
+  final Function(Urgency?) onSelectingUrgency;
+  final String? Function(Urgency?)? validator;
 
   const UrgencyDropdown({
     super.key,
@@ -18,7 +19,7 @@ class UrgencyDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return DropdownButtonFormField<String>(
+    return DropdownButtonFormField<Urgency>(
       initialValue: selectedUrgency,
       decoration: InputDecoration(
         border: InputBorder.none,
@@ -41,11 +42,12 @@ class UrgencyDropdown extends StatelessWidget {
             : AppColors.textSecondaryLight,
       ),
       validator: validator,
-      items: const [
-        DropdownMenuItem(value: 'Standard', child: Text('Standard')),
-        DropdownMenuItem(value: 'Express', child: Text('Express')),
-        DropdownMenuItem(value: 'Overnight', child: Text('Overnight')),
-      ],
+      items: Urgency.values
+          .map(
+            (urgency) =>
+                DropdownMenuItem(value: urgency, child: Text(urgency.value)),
+          )
+          .toList(),
       onChanged: onSelectingUrgency,
     );
   }

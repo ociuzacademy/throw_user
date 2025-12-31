@@ -1,6 +1,7 @@
 // delivery_request_provider.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_request_module/data/delivery_request_data.dart';
 
 class DeliveryRequestProvider extends ChangeNotifier {
@@ -12,8 +13,8 @@ class DeliveryRequestProvider extends ChangeNotifier {
   DateTime? _pickUpDate;
   TimeOfDay? _pickUpTime;
   DateTime? _dropOffDate;
-  String? _selectedPackageType;
-  String? _selectedUrgency;
+  PackageType? _selectedPackageType;
+  Urgency? _selectedUrgency;
   String _selectedTime = 'Afternoon';
 
   // Text editing controllers
@@ -38,8 +39,8 @@ class DeliveryRequestProvider extends ChangeNotifier {
   DateTime? get pickUpDate => _pickUpDate;
   TimeOfDay? get pickUpTime => _pickUpTime;
   DateTime? get dropOffDate => _dropOffDate;
-  String? get selectedPackageType => _selectedPackageType;
-  String? get selectedUrgency => _selectedUrgency;
+  PackageType? get selectedPackageType => _selectedPackageType;
+  Urgency? get selectedUrgency => _selectedUrgency;
   String get selectedTime => _selectedTime;
 
   // Setters
@@ -77,12 +78,12 @@ class DeliveryRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedPackageType(String? type) {
+  void setSelectedPackageType(PackageType? type) {
     _selectedPackageType = type;
     notifyListeners();
   }
 
-  void setSelectedUrgency(String? urgency) {
+  void setSelectedUrgency(Urgency? urgency) {
     _selectedUrgency = urgency;
     notifyListeners();
   }
@@ -131,15 +132,15 @@ class DeliveryRequestProvider extends ChangeNotifier {
     return null;
   }
 
-  String? validatePackageType(String? value) {
-    if (value == null || value.isEmpty) {
+  String? validatePackageType(PackageType? value) {
+    if (value == null) {
       return 'Please select a package type';
     }
     return null;
   }
 
-  String? validateUrgency(String? value) {
-    if (value == null || value.isEmpty) {
+  String? validateUrgency(Urgency? value) {
+    if (value == null) {
       return 'Please select urgency';
     }
     return null;

@@ -1,11 +1,12 @@
 // package_type_selection_widget.dart
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
 
 class PackageTypeSelectionWidget extends StatelessWidget {
-  final String? selectedPackageType;
-  final Function(String?) onSelectingPackageType;
-  final String? Function(String?)? validator;
+  final PackageType? selectedPackageType;
+  final Function(PackageType?) onSelectingPackageType;
+  final String? Function(PackageType?)? validator;
 
   const PackageTypeSelectionWidget({
     super.key,
@@ -18,7 +19,7 @@ class PackageTypeSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return DropdownButtonFormField<String>(
+    return DropdownButtonFormField<PackageType>(
       initialValue: selectedPackageType,
       decoration: InputDecoration(
         border: InputBorder.none,
@@ -41,12 +42,9 @@ class PackageTypeSelectionWidget extends StatelessWidget {
             : AppColors.textSecondaryLight,
       ),
       validator: validator,
-      items: const [
-        DropdownMenuItem(value: 'Document', child: Text('Document')),
-        DropdownMenuItem(value: 'Small Box', child: Text('Small Box')),
-        DropdownMenuItem(value: 'Large Box', child: Text('Large Box')),
-        DropdownMenuItem(value: 'Fragile', child: Text('Fragile')),
-      ],
+      items: PackageType.values
+          .map((type) => DropdownMenuItem(value: type, child: Text(type.value)))
+          .toList(),
       onChanged: onSelectingPackageType,
     );
   }
