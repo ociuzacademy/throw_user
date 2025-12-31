@@ -20,7 +20,7 @@ class UrgencyDropdownWidget extends StatelessWidget {
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        color: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
+        color: isDark ? AppColors.cardDark : Colors.white,
         border: Border.all(
           color: isDark ? AppColors.borderDark : AppColors.borderLight,
         ),

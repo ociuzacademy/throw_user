@@ -5,8 +5,14 @@ import 'package:throw_user/core/constants/app_colors.dart';
 class PhoneField extends StatelessWidget {
   final TextEditingController phoneController;
   final String? Function(String?)? validator;
+  final String? hintText;
 
-  const PhoneField({super.key, required this.phoneController, this.validator});
+  const PhoneField({
+    super.key,
+    required this.phoneController,
+    this.validator,
+    this.hintText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class PhoneField extends StatelessWidget {
             horizontal: 16,
             vertical: 10,
           ),
-          hintText: "Recipient's phone number",
+          hintText: hintText ?? "Recipient's phone number",
           hintStyle: TextStyle(color: AppColors.getGrayColor(isDark)),
           prefixIcon: Icon(
             Icons.phone,

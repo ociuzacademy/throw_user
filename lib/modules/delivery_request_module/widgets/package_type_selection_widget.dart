@@ -19,33 +19,45 @@ class PackageTypeSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return DropdownButtonFormField<PackageType>(
-      initialValue: selectedPackageType,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-        hintText: 'Package Type',
-        hintStyle: TextStyle(
+    return Container(
+      height: 56,
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.cardDark : Colors.white,
+        border: Border.all(color: AppColors.getBorderColor(isDark)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: DropdownButtonFormField<PackageType>(
+        initialValue: selectedPackageType,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          hintText: 'Package Type',
+          hintStyle: TextStyle(
+            color: isDark
+                ? AppColors.textSecondaryDark
+                : AppColors.textSecondaryLight,
+          ),
+        ),
+        dropdownColor: isDark ? AppColors.cardDark : Colors.white,
+        style: TextStyle(
+          color: isDark
+              ? AppColors.textPrimaryDark
+              : AppColors.textPrimaryLight,
+        ),
+        icon: Icon(
+          Icons.arrow_drop_down,
           color: isDark
               ? AppColors.textSecondaryDark
               : AppColors.textSecondaryLight,
         ),
+        validator: validator,
+        items: PackageType.values
+            .map(
+              (type) => DropdownMenuItem(value: type, child: Text(type.value)),
+            )
+            .toList(),
+        onChanged: onSelectingPackageType,
       ),
-      dropdownColor: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
-      style: TextStyle(
-        color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-      ),
-      icon: Icon(
-        Icons.arrow_drop_down,
-        color: isDark
-            ? AppColors.textSecondaryDark
-            : AppColors.textSecondaryLight,
-      ),
-      validator: validator,
-      items: PackageType.values
-          .map((type) => DropdownMenuItem(value: type, child: Text(type.value)))
-          .toList(),
-      onChanged: onSelectingPackageType,
     );
   }
 }

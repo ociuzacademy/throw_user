@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/date_field.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/time_field.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/location_card_preview.dart';
@@ -15,11 +16,12 @@ class LocationSection extends StatelessWidget {
   final GeoPoint? selectedLocation;
   final bool isPickup;
   final VoidCallback onMapTap;
-  final String? selectedTime;
-  final Function(String)? onSelectingTime;
+  final PreferedDeliveryTime? selectedTime;
+  final Function(PreferedDeliveryTime)? onSelectingTime;
 
   // Controllers
   final TextEditingController? addressController;
+  final TextEditingController? phoneController;
   final TextEditingController? remarksController;
   final TextEditingController? dateController;
   final TextEditingController? timeController;
@@ -43,6 +45,7 @@ class LocationSection extends StatelessWidget {
     this.selectedTime,
     this.onSelectingTime,
     this.addressController,
+    this.phoneController,
     this.remarksController,
     this.dateController,
     this.timeController,
@@ -69,17 +72,18 @@ class LocationSection extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? AppColors.cardDark : Colors.white,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 2,
-            offset: const Offset(0, 1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
           Container(
@@ -91,19 +95,15 @@ class LocationSection extends StatelessWidget {
                 ),
               ),
             ),
-            child: Row(
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: isDark
-                        ? AppColors.textPrimaryDark
-                        : AppColors.textPrimaryLight,
-                  ),
-                ),
-              ],
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: isDark
+                    ? AppColors.textPrimaryDark
+                    : AppColors.textPrimaryLight,
+              ),
             ),
           ),
 
@@ -116,7 +116,7 @@ class LocationSection extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: isDark
-                        ? AppColors.inactiveBackgroundDark
+                        ? AppColors.cardDark
                         : AppColors.getBackgroundColor(false),
                     border: Border.all(
                       color: isDark
@@ -147,7 +147,7 @@ class LocationSection extends StatelessWidget {
                         addressValidator ??
                         (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter $addressHint';
+                            return 'Please enter address';
                           }
                           return null;
                         },
@@ -156,11 +156,19 @@ class LocationSection extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                // Phone Field (only for drop-off)
-                if (!isPickup && recipientPhoneController != null) ...[
+                // Phone Field
+                if (isPickup && phoneController != null) ...[
+                  PhoneField(
+                    phoneController: phoneController!,
+                    validator: phoneValidator,
+                    hintText: 'Pickup phone number',
+                  ),
+                  const SizedBox(height: 16),
+                ] else if (!isPickup && recipientPhoneController != null) ...[
                   PhoneField(
                     phoneController: recipientPhoneController!,
                     validator: phoneValidator,
+                    hintText: "Recipient's phone number",
                   ),
                   const SizedBox(height: 16),
                 ],
@@ -169,7 +177,7 @@ class LocationSection extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: isDark
-                        ? AppColors.inactiveBackgroundDark
+                        ? AppColors.cardDark
                         : AppColors.getBackgroundColor(false),
                     border: Border.all(
                       color: isDark
@@ -202,18 +210,16 @@ class LocationSection extends StatelessWidget {
 
                 // Date/Time Fields
                 const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: DateField(
-                        dateController: isPickup
-                            ? dateController
-                            : preferredDateController,
-                        onDateTap: isPickup ? onDateTap : onPreferredDateTap,
-                        validator: dateValidator,
+                if (isPickup)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DateField(
+                          dateController: dateController,
+                          onDateTap: onDateTap,
+                          validator: dateValidator,
+                        ),
                       ),
-                    ),
-                    if (isPickup) ...[
                       const SizedBox(width: 16),
                       Expanded(
                         child: TimeField(
@@ -222,10 +228,14 @@ class LocationSection extends StatelessWidget {
                           validator: timeValidator,
                         ),
                       ),
-                    ] /*else
-                      const Spacer(),*/,
-                  ],
-                ),
+                    ],
+                  )
+                else
+                  DateField(
+                    dateController: preferredDateController,
+                    onDateTap: onPreferredDateTap,
+                    validator: dateValidator,
+                  ),
               ],
             ),
           ),
@@ -235,8 +245,8 @@ class LocationSection extends StatelessWidget {
             onTap: onMapTap,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
               ),
               child: SizedBox(
                 height: 200,

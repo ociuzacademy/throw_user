@@ -18,12 +18,15 @@ class DeliveryRequestModel {
   final Timestamp auctionStartingTime;
   final double baseDeliveryCharge;
   final Timestamp createdAt;
+  final String customerAvatarUrl;
+  final String customerName;
   final String? deliveryAgentId;
   final GeoPoint deliveryLocation;
   final String deliveryRequestId;
   final DeliveryStatus deliveryStatus;
   final String dropOffAddress;
   final Timestamp dropOffDate;
+  final String dropOffPhoneNumber;
   final String dropOffRemarks;
   final double minimumDeliveryCharge;
   final String? otp;
@@ -33,8 +36,9 @@ class DeliveryRequestModel {
   final String pickupAddress;
   final Timestamp pickupDate;
   final GeoPoint pickupLocation;
+  final String pickupPhoneNumber;
   final String pickupRemarks;
-  final String preferredDeliveryTime;
+  final PreferedDeliveryTime preferredDeliveryTime;
   final RequestStatus requestStatus;
   final Timestamp updatedAt;
   final Urgency urgency;
@@ -43,6 +47,8 @@ class DeliveryRequestModel {
     this.agreedDeliveryCharge,
     required this.auctionStartingTime,
     required this.baseDeliveryCharge,
+    required this.customerAvatarUrl,
+    required this.customerName,
     required this.createdAt,
     this.deliveryAgentId,
     required this.deliveryLocation,
@@ -50,6 +56,7 @@ class DeliveryRequestModel {
     required this.deliveryStatus,
     required this.dropOffAddress,
     required this.dropOffDate,
+    required this.dropOffPhoneNumber,
     required this.dropOffRemarks,
     required this.minimumDeliveryCharge,
     this.otp,
@@ -59,6 +66,7 @@ class DeliveryRequestModel {
     required this.pickupAddress,
     required this.pickupDate,
     required this.pickupLocation,
+    required this.pickupPhoneNumber,
     required this.pickupRemarks,
     required this.preferredDeliveryTime,
     required this.requestStatus,
@@ -71,12 +79,15 @@ class DeliveryRequestModel {
     Timestamp? auctionStartingTime,
     double? baseDeliveryCharge,
     Timestamp? createdAt,
+    String? customerAvatarUrl,
+    String? customerName,
     dynamic deliveryAgentId,
     GeoPoint? deliveryLocation,
     String? deliveryRequestId,
     DeliveryStatus? deliveryStatus,
     String? dropOffAddress,
     Timestamp? dropOffDate,
+    String? dropOffPhoneNumber,
     String? dropOffRemarks,
     double? minimumDeliveryCharge,
     dynamic otp,
@@ -86,8 +97,9 @@ class DeliveryRequestModel {
     String? pickupAddress,
     Timestamp? pickupDate,
     GeoPoint? pickupLocation,
+    String? pickupPhoneNumber,
     String? pickupRemarks,
-    String? preferredDeliveryTime,
+    PreferedDeliveryTime? preferredDeliveryTime,
     RequestStatus? requestStatus,
     Timestamp? updatedAt,
     Urgency? urgency,
@@ -96,12 +108,15 @@ class DeliveryRequestModel {
     auctionStartingTime: auctionStartingTime ?? this.auctionStartingTime,
     baseDeliveryCharge: baseDeliveryCharge ?? this.baseDeliveryCharge,
     createdAt: createdAt ?? this.createdAt,
+    customerAvatarUrl: customerAvatarUrl ?? this.customerAvatarUrl,
+    customerName: customerName ?? this.customerName,
     deliveryAgentId: deliveryAgentId ?? this.deliveryAgentId,
     deliveryLocation: deliveryLocation ?? this.deliveryLocation,
     deliveryRequestId: deliveryRequestId ?? this.deliveryRequestId,
     deliveryStatus: deliveryStatus ?? this.deliveryStatus,
     dropOffAddress: dropOffAddress ?? this.dropOffAddress,
     dropOffDate: dropOffDate ?? this.dropOffDate,
+    dropOffPhoneNumber: dropOffPhoneNumber ?? this.dropOffPhoneNumber,
     dropOffRemarks: dropOffRemarks ?? this.dropOffRemarks,
     minimumDeliveryCharge: minimumDeliveryCharge ?? this.minimumDeliveryCharge,
     otp: otp ?? this.otp,
@@ -111,6 +126,7 @@ class DeliveryRequestModel {
     pickupAddress: pickupAddress ?? this.pickupAddress,
     pickupDate: pickupDate ?? this.pickupDate,
     pickupLocation: pickupLocation ?? this.pickupLocation,
+    pickupPhoneNumber: pickupPhoneNumber ?? this.pickupPhoneNumber,
     pickupRemarks: pickupRemarks ?? this.pickupRemarks,
     preferredDeliveryTime: preferredDeliveryTime ?? this.preferredDeliveryTime,
     requestStatus: requestStatus ?? this.requestStatus,
@@ -124,12 +140,15 @@ class DeliveryRequestModel {
         auctionStartingTime: json['auctionStartingTime'] as Timestamp,
         baseDeliveryCharge: json['baseDeliveryCharge']?.toDouble(),
         createdAt: json['createdAt'] as Timestamp,
+        customerAvatarUrl: json['customerAvatarUrl'],
+        customerName: json['customerName'],
         deliveryAgentId: json['deliveryAgentId'],
         deliveryLocation: json['deliveryLocation'] as GeoPoint,
         deliveryRequestId: json['deliveryRequestId'],
         deliveryStatus: DeliveryStatus.fromString(json['deliveryStatus']),
         dropOffAddress: json['dropOffAddress'],
         dropOffDate: json['dropOffDate'] as Timestamp,
+        dropOffPhoneNumber: json['dropOffPhoneNumber'],
         dropOffRemarks: json['dropOffRemarks'],
         minimumDeliveryCharge: json['minimumDeliveryCharge']?.toDouble(),
         otp: json['otp'],
@@ -139,8 +158,11 @@ class DeliveryRequestModel {
         pickupAddress: json['pickupAddress'],
         pickupDate: json['pickupDate'] as Timestamp,
         pickupLocation: json['pickupLocation'] as GeoPoint,
+        pickupPhoneNumber: json['pickupPhoneNumber'],
         pickupRemarks: json['pickupRemarks'],
-        preferredDeliveryTime: json['preferredDeliveryTime'],
+        preferredDeliveryTime: PreferedDeliveryTime.fromString(
+          json['preferredDeliveryTime'],
+        ),
         requestStatus: RequestStatus.fromString(json['requestStatus']),
         updatedAt: json['updatedAt'] as Timestamp,
         urgency: Urgency.fromString(json['urgency']),
@@ -153,6 +175,8 @@ class DeliveryRequestModel {
     'baseDeliveryCharge': baseDeliveryCharge,
     'createdAt':
         "${createdAt.toDate().year.toString().padLeft(4, '0')}-${createdAt.toDate().month.toString().padLeft(2, '0')}-${createdAt.toDate().day.toString().padLeft(2, '0')}",
+    'customerAvatarUrl': customerAvatarUrl,
+    'customerName': customerName,
     'deliveryAgentId': deliveryAgentId,
     'deliveryLocation': {
       'latitude': deliveryLocation.latitude,
@@ -163,6 +187,7 @@ class DeliveryRequestModel {
     'dropOffAddress': dropOffAddress,
     'dropOffDate':
         "${dropOffDate.toDate().year.toString().padLeft(4, '0')}-${dropOffDate.toDate().month.toString().padLeft(2, '0')}-${dropOffDate.toDate().day.toString().padLeft(2, '0')}",
+    'dropOffPhoneNumber': dropOffPhoneNumber,
     'dropOffRemarks': dropOffRemarks,
     'minimumDeliveryCharge': minimumDeliveryCharge,
     'otp': otp,
@@ -176,8 +201,9 @@ class DeliveryRequestModel {
       'latitude': pickupLocation.latitude,
       'longitude': pickupLocation.longitude,
     },
+    'pickupPhoneNumber': pickupPhoneNumber,
     'pickupRemarks': pickupRemarks,
-    'preferredDeliveryTime': preferredDeliveryTime,
+    'preferredDeliveryTime': preferredDeliveryTime.value,
     'requestStatus': requestStatus.value,
     'updatedAt':
         "${updatedAt.toDate().year.toString().padLeft(4, '0')}-${updatedAt.toDate().month.toString().padLeft(2, '0')}-${updatedAt.toDate().day.toString().padLeft(2, '0')}",

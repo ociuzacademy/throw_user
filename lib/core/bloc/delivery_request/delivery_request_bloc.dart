@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:throw_user/core/repository/delivery_request_repository.dart';
+import 'package:throw_user/core/storage/auth_storage_functions.dart';
 import 'package:throw_user/modules/delivery_request_module/data/delivery_request_data.dart';
 
 part 'delivery_request_event.dart';
@@ -26,8 +27,15 @@ class DeliveryRequestBloc
   ) async {
     emit(const DeliveryRequestState.loading());
     try {
+      final String? userUid = await AuthStorageFunctions().getUid();
+      if (userUid == null) {
+        emit(const DeliveryRequestState.error(message: 'User not found'));
+        return;
+      }
+
       final requestId = await deliveryRequestRepository.createDeliveryRequest(
         event.deliveryRequestData,
+        userUid,
       );
       emit(
         DeliveryRequestState.createDeliveryRequestSuccess(requestId: requestId),

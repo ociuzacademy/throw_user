@@ -1,11 +1,12 @@
 // time_selection_widget.dart
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_request_module/widgets/time_slot_button.dart';
 
 class TimeSelectionWidget extends StatelessWidget {
-  final String selectedTime;
-  final Function(String) onSelectingTime;
+  final PreferedDeliveryTime selectedTime;
+  final Function(PreferedDeliveryTime) onSelectingTime;
 
   const TimeSelectionWidget({
     super.key,
@@ -32,38 +33,52 @@ class TimeSelectionWidget extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Container(
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: isDark ? AppColors.inactiveBackgroundDark : Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: isDark ? AppColors.borderDark : AppColors.borderLight,
-            ),
+            color: isDark ? AppColors.cardDark : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Row(
             children: [
-              TimeSlotButton(
-                time: 'Morning',
-                selectedTime: selectedTime,
-                mutedTextColor: isDark
-                    ? AppColors.textSecondaryDark
-                    : AppColors.textSecondaryLight,
-                onSelectingTimeSlot: () => onSelectingTime('Morning'),
+              Expanded(
+                child: TimeSlotButton(
+                  time: PreferedDeliveryTime.morning,
+                  selectedTime: selectedTime,
+                  mutedTextColor: isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondaryLight,
+                  onSelectingTimeSlot: () =>
+                      onSelectingTime(PreferedDeliveryTime.morning),
+                ),
               ),
-              TimeSlotButton(
-                time: 'Afternoon',
-                selectedTime: selectedTime,
-                mutedTextColor: isDark
-                    ? AppColors.textSecondaryDark
-                    : AppColors.textSecondaryLight,
-                onSelectingTimeSlot: () => onSelectingTime('Afternoon'),
+              Expanded(
+                child: TimeSlotButton(
+                  time: PreferedDeliveryTime.afternoon,
+                  selectedTime: selectedTime,
+                  mutedTextColor: isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondaryLight,
+                  onSelectingTimeSlot: () =>
+                      onSelectingTime(PreferedDeliveryTime.afternoon),
+                ),
               ),
-              TimeSlotButton(
-                time: 'Evening',
-                selectedTime: selectedTime,
-                mutedTextColor: isDark
-                    ? AppColors.textSecondaryDark
-                    : AppColors.textSecondaryLight,
-                onSelectingTimeSlot: () => onSelectingTime('Evening'),
+              Expanded(
+                child: TimeSlotButton(
+                  time: PreferedDeliveryTime.evening,
+                  selectedTime: selectedTime,
+                  mutedTextColor: isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondaryLight,
+                  onSelectingTimeSlot: () =>
+                      onSelectingTime(PreferedDeliveryTime.evening),
+                ),
               ),
             ],
           ),

@@ -47,6 +47,7 @@ class DeliveryRequestBody extends StatelessWidget {
               selectedLocation: provider.pickupLocation,
               isPickup: true,
               addressController: provider.pickupAddressController,
+              phoneController: provider.pickupPhoneController,
               remarksController: provider.pickupRemarksController,
               dateController: provider.pickupDateController,
               timeController: provider.pickupTimeController,
@@ -54,6 +55,7 @@ class DeliveryRequestBody extends StatelessWidget {
               remarksValidator: provider.validateRemarks,
               dateValidator: provider.validateDate,
               timeValidator: provider.validateTime,
+              phoneValidator: provider.validatePhone,
               onMapTap: () =>
                   deliveryRequestService.selectLocation(true, provider),
               onDateTap: () =>
@@ -96,22 +98,12 @@ class DeliveryRequestBody extends StatelessWidget {
             Column(
               children: [
                 // Package Type Dropdown
-                Container(
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? AppColors.getInactiveBackgroundColor(isDark)
-                        : AppColors.cardLight,
-                    border: Border.all(color: AppColors.getBorderColor(isDark)),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: PackageTypeSelectionWidget(
-                    selectedPackageType: provider.selectedPackageType,
-                    onSelectingPackageType: (value) {
-                      provider.setSelectedPackageType(value);
-                    },
-                    validator: provider.validatePackageType,
-                  ),
+                PackageTypeSelectionWidget(
+                  selectedPackageType: provider.selectedPackageType,
+                  onSelectingPackageType: (value) {
+                    provider.setSelectedPackageType(value);
+                  },
+                  validator: provider.validatePackageType,
                 ),
 
                 SizedBox(height: isSmallScreen ? 12 : 16),
@@ -129,9 +121,7 @@ class DeliveryRequestBody extends StatelessWidget {
                 // Base Price Field
                 Container(
                   decoration: BoxDecoration(
-                    color: isDark
-                        ? AppColors.inactiveBackgroundDark
-                        : AppColors.backgroundLight,
+                    color: isDark ? AppColors.cardDark : Colors.white,
                     border: Border.all(
                       color: isDark
                           ? AppColors.borderDark
@@ -207,14 +197,14 @@ class DeliveryRequestBody extends StatelessWidget {
                   'Create Request',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
 
-            SizedBox(height: isSmallScreen ? 16 : 24),
+            const SizedBox(height: 32),
           ],
         ),
       ),

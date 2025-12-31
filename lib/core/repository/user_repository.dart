@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:throw_user/core/exports/exception_exports.dart';
 import 'package:throw_user/core/models/auth_response.dart';
 import 'package:throw_user/core/models/user_profile_model.dart';
 
@@ -9,7 +10,6 @@ class UserRepository {
     app: Firebase.app(),
     databaseId: 'throw',
   );
-
   // Collection reference
   static const String usersCollection = 'users';
 
@@ -35,7 +35,9 @@ class UserRepository {
           ); // merge: true updates instead of overwriting
     } catch (e) {
       debugPrint('Error saving user to Firestore: $e');
-      rethrow;
+      throw UserRepositoryException(
+        message: 'Failed to save user to Firestore: ${e.toString()}',
+      );
     }
   }
 
@@ -47,7 +49,9 @@ class UserRepository {
       return doc.exists ? UserProfileModel.fromJson(doc.data()!) : null;
     } catch (e) {
       debugPrint('Error getting user: $e');
-      return null;
+      throw UserRepositoryException(
+        message: 'Failed to get user from Firestore: ${e.toString()}',
+      );
     }
   }
 
@@ -58,7 +62,10 @@ class UserRepository {
 
       return doc.exists;
     } catch (e) {
-      return false;
+      debugPrint('Error checking user existence: $e');
+      throw UserRepositoryException(
+        message: 'Failed to check user existence: ${e.toString()}',
+      );
     }
   }
 }

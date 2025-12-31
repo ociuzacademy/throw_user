@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:throw_user/core/exports/enum_exports.dart';
+import 'package:throw_user/core/exports/exception_exports.dart';
 import 'package:throw_user/core/models/delivery_request_model.dart';
+import 'package:throw_user/core/models/user_profile_model.dart';
 import 'package:throw_user/modules/delivery_request_module/data/delivery_request_data.dart';
 
 class DeliveryRequestRepository {
@@ -12,11 +14,13 @@ class DeliveryRequestRepository {
   );
 
   // Collection reference
+  static const String userCollection = 'users';
   static const String deliveryRequestCollection = 'deliveryRequest';
 
   // Create or update delivery request in Firestore
   Future<String> createDeliveryRequest(
     DeliveryRequestData deliveryRequestData,
+    String userUid,
   ) async {
     try {
       final DateTime pickupDate = DateTime(
@@ -26,20 +30,36 @@ class DeliveryRequestRepository {
         deliveryRequestData.pickupTime.hour,
         deliveryRequestData.pickupTime.minute,
       );
+
+      final userDoc = await _firestore
+          .collection(userCollection)
+          .doc(userUid)
+          .get();
+
+      if (!userDoc.exists) {
+        throw Exception('User profile not found for ID: $userUid');
+      }
+
+      final UserProfileModel userProfileModel = UserProfileModel.fromJson(
+        userDoc.data()!,
+      );
       final userData = {
         'auctionStartingTime': FieldValue.serverTimestamp(),
         'baseDeliveryCharge': deliveryRequestData.baseDeliveryCharge,
         'createdAt': FieldValue.serverTimestamp(),
+        'customerAvatarUrl': userProfileModel.photoUrl,
+        'customerName': userProfileModel.displayName,
         'deliveryLocation': GeoPoint(
           deliveryRequestData.deliveryLocation.latitude,
           deliveryRequestData.deliveryLocation.longitude,
         ),
+        'dropOffPhoneNumber': deliveryRequestData.dropOffPhone,
         'deliveryStatus': DeliveryStatus.pending.value,
         'dropOffAddress': deliveryRequestData.dropOffAddress,
         'dropOffDate': Timestamp.fromDate(deliveryRequestData.dropOffDate),
         'dropOffRemarks': deliveryRequestData.dropOffRemarks,
         'minimumDeliveryCharge': deliveryRequestData.baseDeliveryCharge,
-        'packageType': deliveryRequestData.packageType,
+        'packageType': deliveryRequestData.packageType.value,
         'packageWeight': deliveryRequestData.packageWeight,
         'paymentStatus': PaymentStatus.pending.value,
         'pickupAddress': deliveryRequestData.pickupAddress,
@@ -48,11 +68,13 @@ class DeliveryRequestRepository {
           deliveryRequestData.pickupLocation.latitude,
           deliveryRequestData.pickupLocation.longitude,
         ),
+        'pickupPhone': deliveryRequestData.pickupPhone,
         'pickupRemarks': deliveryRequestData.pickupRemarks,
-        'preferredDeliveryTime': deliveryRequestData.preferredDeliveryTime,
+        'preferredDeliveryTime':
+            deliveryRequestData.preferredDeliveryTime.value,
         'requestStatus': RequestStatus.requestCreated.value,
         'updatedAt': FieldValue.serverTimestamp(),
-        'urgency': deliveryRequestData.urgency,
+        'urgency': deliveryRequestData.urgency.value,
       };
 
       // Generate a document reference with auto-generated ID
@@ -69,7 +91,9 @@ class DeliveryRequestRepository {
       return docRef.id;
     } catch (e) {
       debugPrint('Error saving user to Firestore: $e');
-      rethrow;
+      throw DeliveryRequestRepositoryException(
+        message: 'Failed to save user to Firestore: ${e.toString()}',
+      );
     }
   }
 
@@ -84,7 +108,9 @@ class DeliveryRequestRepository {
           });
     } catch (e) {
       debugPrint('Error canceling request: $e');
-      rethrow;
+      throw DeliveryRequestRepositoryException(
+        message: 'Failed to cancel request: ${e.toString()}',
+      );
     }
   }
 
@@ -105,7 +131,9 @@ class DeliveryRequestRepository {
           });
     } catch (e) {
       debugPrint('Error accepting request: $e');
-      rethrow;
+      throw DeliveryRequestRepositoryException(
+        message: 'Failed to accept request: ${e.toString()}',
+      );
     }
   }
 
@@ -120,7 +148,9 @@ class DeliveryRequestRepository {
           });
     } catch (e) {
       debugPrint('Error transferring escrow amount: $e');
-      rethrow;
+      throw DeliveryRequestRepositoryException(
+        message: 'Failed to transfer escrow amount: ${e.toString()}',
+      );
     }
   }
 
@@ -135,7 +165,9 @@ class DeliveryRequestRepository {
           });
     } catch (e) {
       debugPrint('Error setting delivery on the way: $e');
-      rethrow;
+      throw DeliveryRequestRepositoryException(
+        message: 'Failed to set delivery on the way: ${e.toString()}',
+      );
     }
   }
 
@@ -153,8 +185,10 @@ class DeliveryRequestRepository {
 
       return doc.exists ? DeliveryRequestModel.fromJson(doc.data()!) : null;
     } catch (e) {
-      debugPrint('Error getting user: $e');
-      return null;
+      debugPrint('Error getting delivery request details: $e');
+      throw DeliveryRequestRepositoryException(
+        message: 'Failed to get delivery request details: ${e.toString()}',
+      );
     }
   }
 
@@ -168,7 +202,10 @@ class DeliveryRequestRepository {
 
       return doc.exists;
     } catch (e) {
-      return false;
+      debugPrint('Error checking delivery request existence: $e');
+      throw DeliveryRequestRepositoryException(
+        message: 'Failed to check delivery request existence: ${e.toString()}',
+      );
     }
   }
 }

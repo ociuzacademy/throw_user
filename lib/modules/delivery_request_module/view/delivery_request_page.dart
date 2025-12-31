@@ -39,9 +39,7 @@ class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
     return ChangeNotifierProvider(
       create: (context) => DeliveryRequestProvider(),
       child: Scaffold(
-        backgroundColor: AppColors.getBackgroundColor(
-          Theme.of(context).brightness == Brightness.dark,
-        ),
+        backgroundColor: AppColors.backgroundLight,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -56,8 +54,13 @@ class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
             ),
           ),
           centerTitle: true,
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.primary.withValues(alpha: 0.95),
           elevation: 0,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.95),
+            ),
+          ),
         ),
         body: BlocListener<DeliveryRequestBloc, DeliveryRequestState>(
           listener: (context, state) {

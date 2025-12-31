@@ -15,10 +15,11 @@ class DeliveryRequestProvider extends ChangeNotifier {
   DateTime? _dropOffDate;
   PackageType? _selectedPackageType;
   Urgency? _selectedUrgency;
-  String _selectedTime = 'Afternoon';
+  PreferedDeliveryTime _selectedTime = PreferedDeliveryTime.afternoon;
 
   // Text editing controllers
   final TextEditingController pickupAddressController = TextEditingController();
+  final TextEditingController pickupPhoneController = TextEditingController();
   final TextEditingController pickupRemarksController = TextEditingController();
   final TextEditingController pickupDateController = TextEditingController();
   final TextEditingController pickupTimeController = TextEditingController();
@@ -41,7 +42,7 @@ class DeliveryRequestProvider extends ChangeNotifier {
   DateTime? get dropOffDate => _dropOffDate;
   PackageType? get selectedPackageType => _selectedPackageType;
   Urgency? get selectedUrgency => _selectedUrgency;
-  String get selectedTime => _selectedTime;
+  PreferedDeliveryTime get selectedTime => _selectedTime;
 
   // Setters
   void setPickupLocation(GeoPoint? location) {
@@ -88,7 +89,7 @@ class DeliveryRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedTime(String time) {
+  void setSelectedTime(PreferedDeliveryTime time) {
     _selectedTime = time;
     notifyListeners();
   }
@@ -195,12 +196,14 @@ class DeliveryRequestProvider extends ChangeNotifier {
       dropOffAddress: dropOffAddressController.text.trim(),
       dropOffDate: dropOffDate!,
       dropOffRemarks: dropOffRemarksController.text.trim(),
+      dropOffPhone: recipientPhoneController.text.trim(),
       packageType: selectedPackageType!,
       packageWeight: double.parse(weightController.text.trim()),
       pickupAddress: pickupAddressController.text.trim(),
       pickupDate: pickUpDate!,
       pickupLocation: pickupLocation!,
       pickupRemarks: pickupRemarksController.text.trim(),
+      pickupPhone: pickupPhoneController.text.trim(),
       pickupTime: pickUpTime!,
       preferredDeliveryTime: selectedTime,
       urgency: selectedUrgency!,
@@ -221,9 +224,10 @@ class DeliveryRequestProvider extends ChangeNotifier {
     _dropOffDate = null;
     _selectedPackageType = null;
     _selectedUrgency = null;
-    _selectedTime = 'Afternoon';
+    _selectedTime = PreferedDeliveryTime.afternoon;
 
     pickupAddressController.clear();
+    pickupPhoneController.clear();
     pickupRemarksController.clear();
     pickupDateController.clear();
     pickupTimeController.clear();
@@ -240,6 +244,7 @@ class DeliveryRequestProvider extends ChangeNotifier {
   @override
   void dispose() {
     pickupAddressController.dispose();
+    pickupPhoneController.dispose();
     pickupRemarksController.dispose();
     pickupDateController.dispose();
     pickupTimeController.dispose();

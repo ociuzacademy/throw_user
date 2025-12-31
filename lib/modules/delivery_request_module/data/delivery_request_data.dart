@@ -8,6 +8,7 @@ class DeliveryRequestData {
   final String dropOffAddress;
   final DateTime dropOffDate;
   final String dropOffRemarks;
+  final String dropOffPhone;
   final PackageType packageType;
   final double packageWeight;
   final String pickupAddress;
@@ -15,7 +16,8 @@ class DeliveryRequestData {
   final TimeOfDay pickupTime;
   final GeoPoint pickupLocation;
   final String pickupRemarks;
-  final String preferredDeliveryTime;
+  final String pickupPhone;
+  final PreferedDeliveryTime preferredDeliveryTime;
   final Urgency urgency;
 
   DeliveryRequestData({
@@ -24,12 +26,14 @@ class DeliveryRequestData {
     required this.dropOffAddress,
     required this.dropOffDate,
     required this.dropOffRemarks,
+    required this.dropOffPhone,
     required this.packageType,
     required this.packageWeight,
     required this.pickupAddress,
     required this.pickupDate,
     required this.pickupLocation,
     required this.pickupRemarks,
+    required this.pickupPhone,
     required this.pickupTime,
     required this.preferredDeliveryTime,
     required this.urgency,
