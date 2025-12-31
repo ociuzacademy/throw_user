@@ -20,6 +20,7 @@ class DeliveryRequestModel {
   final Timestamp createdAt;
   final String? deliveryAgentId;
   final GeoPoint deliveryLocation;
+  final String deliveryRequestId;
   final DeliveryStatus deliveryStatus;
   final String dropOffAddress;
   final Timestamp dropOffDate;
@@ -45,6 +46,7 @@ class DeliveryRequestModel {
     required this.createdAt,
     this.deliveryAgentId,
     required this.deliveryLocation,
+    required this.deliveryRequestId,
     required this.deliveryStatus,
     required this.dropOffAddress,
     required this.dropOffDate,
@@ -71,6 +73,7 @@ class DeliveryRequestModel {
     Timestamp? createdAt,
     dynamic deliveryAgentId,
     GeoPoint? deliveryLocation,
+    String? deliveryRequestId,
     DeliveryStatus? deliveryStatus,
     String? dropOffAddress,
     Timestamp? dropOffDate,
@@ -95,6 +98,7 @@ class DeliveryRequestModel {
     createdAt: createdAt ?? this.createdAt,
     deliveryAgentId: deliveryAgentId ?? this.deliveryAgentId,
     deliveryLocation: deliveryLocation ?? this.deliveryLocation,
+    deliveryRequestId: deliveryRequestId ?? this.deliveryRequestId,
     deliveryStatus: deliveryStatus ?? this.deliveryStatus,
     dropOffAddress: dropOffAddress ?? this.dropOffAddress,
     dropOffDate: dropOffDate ?? this.dropOffDate,
@@ -125,6 +129,7 @@ class DeliveryRequestModel {
           json['deliveryLocation']['latitude'],
           json['deliveryLocation']['longitude'],
         ),
+        deliveryRequestId: json['deliveryRequestId'],
         deliveryStatus: DeliveryStatus.fromString(json['deliveryStatus']),
         dropOffAddress: json['dropOffAddress'],
         dropOffDate: Timestamp.fromDate(json['dropOffDate']),
@@ -159,6 +164,7 @@ class DeliveryRequestModel {
       'latitude': deliveryLocation.latitude,
       'longitude': deliveryLocation.longitude,
     },
+    'deliveryRequestId': deliveryRequestId,
     'deliveryStatus': deliveryStatus.value,
     'dropOffAddress': dropOffAddress,
     'dropOffDate':

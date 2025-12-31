@@ -60,6 +60,8 @@ class DeliveryRequestRepository {
           .collection(deliveryRequestCollection)
           .doc(); // This creates a new doc with auto-generated ID
 
+      userData['deliveryRequestId'] = docRef.id;
+
       // Save the data with the generated ID
       await docRef.set(userData, SetOptions(merge: true));
 
