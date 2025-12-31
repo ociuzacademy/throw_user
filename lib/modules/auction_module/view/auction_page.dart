@@ -30,7 +30,7 @@ class _AuctionPageState extends State<AuctionPage> {
   final ValueNotifier<List<Bid>> _bids = ValueNotifier<List<Bid>>([]);
 
   // Timer variables as ValueNotifiers
-  final ValueNotifier<int> _remainingSeconds = ValueNotifier<int>(1 * 60);
+  final ValueNotifier<int> _remainingSeconds = ValueNotifier<int>(5 * 60);
   final ValueNotifier<bool> _isTimerActive = ValueNotifier<bool>(true);
 
   @override
@@ -152,7 +152,7 @@ class _AuctionPageState extends State<AuctionPage> {
                                 : null,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
+                                color: Colors.black.withValues(alpha: 0.05),
                                 blurRadius: 1,
                                 offset: const Offset(0, 1),
                               ),

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 
-import 'package:throw_user/modules/delivery_details_module/utils/progress_step_helper.dart';
+// import 'package:throw_user/modules/delivery_details_module/utils/progress_step_helper.dart';
 import 'package:throw_user/modules/feedback_module/view/feedback_page.dart';
 
 class ProgressStep extends StatelessWidget {
@@ -167,20 +167,22 @@ class ProgressStep extends StatelessWidget {
                         ),
                         if (showShareIcon)
                           IconButton(
-                            onPressed: () async {
-                              if (phoneNumber != null) {
-                                final success =
-                                    await ProgressStepHelper.shareOtpToWhatsApp(
-                                      context,
-                                      otp,
-                                      phoneNumber: phoneNumber!,
-                                    );
+                            onPressed: () /*async*/ {
+                              debugPrint('Share OTP via WhatsApp tapped');
+                              onOtpShared?.call();
+                              // if (phoneNumber != null) {
+                              //   final success =
+                              //       await ProgressStepHelper.shareOtpToWhatsApp(
+                              //         context,
+                              //         otp,
+                              //         phoneNumber: phoneNumber!,
+                              //       );
 
-                                // If OTP was successfully shared, call the callback
-                                if (success && onOtpShared != null) {
-                                  onOtpShared!();
-                                }
-                              }
+                              //   // If OTP was successfully shared, call the callback
+                              //   if (success && onOtpShared != null) {
+                              //     onOtpShared!();
+                              //   }
+                              // }
                             },
                             icon: Icon(
                               Icons.share,
