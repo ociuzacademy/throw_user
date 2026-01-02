@@ -134,91 +134,213 @@ class _PaymentPageState extends State<PaymentPage> {
               break;
           }
         },
-        child: Column(
-          children: [
-            // Main content
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(horizontalPadding),
-                child: Column(
-                  children: [
-                    // Payment Confirmation Section
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(cardPadding),
-                      decoration: BoxDecoration(
-                        color: AppColors.getCardColor(isDark),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
-                            blurRadius: 1,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Main content
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(horizontalPadding),
+                  child: Column(
+                    children: [
+                      // Payment Confirmation Section
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(cardPadding),
+                        decoration: BoxDecoration(
+                          color: AppColors.getCardColor(isDark),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 1,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Payment Confirmation',
+                              style: GoogleFonts.inter(
+                                fontSize: titleFontSize,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.getTextPrimaryColor(isDark),
+                              ),
+                            ),
+                            SizedBox(height: isSmallScreen ? 2 : 4),
+                            Text(
+                              'You are about to make a secure escrow payment.',
+                              style: GoogleFonts.inter(
+                                fontSize: bodyFontSize,
+                                color: AppColors.getTextSecondaryColor(isDark),
+                              ),
+                            ),
+                            SizedBox(height: innerSpacing),
+                            Container(
+                              padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? Colors.black.withValues(alpha: 0.2)
+                                    : backgroundLight,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Escrow Payment',
+                                          style: GoogleFonts.inter(
+                                            fontSize: isSmallScreen ? 12 : 14,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                AppColors.getTextSecondaryColor(
+                                                  isDark,
+                                                ),
+                                          ),
+                                        ),
+                                        SizedBox(height: isSmallScreen ? 2 : 4),
+                                        Text(
+                                          '\u20B9${widget.bid.bargainAmount ?? widget.bid.bidAmount.toStringAsFixed(2)}',
+                                          style: GoogleFonts.inter(
+                                            fontSize: amountFontSize,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                AppColors.getTextPrimaryColor(
+                                                  isDark,
+                                                ),
+                                          ),
+                                        ),
+                                        SizedBox(height: isSmallScreen ? 4 : 8),
+                                        Text(
+                                          'Payment will be released to the agent upon your confirmation of delivery.',
+                                          style: GoogleFonts.inter(
+                                            fontSize: isSmallScreen ? 10 : 12,
+                                            color:
+                                                AppColors.getTextSecondaryColor(
+                                                  isDark,
+                                                ),
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
+                      SizedBox(height: spacing),
+
+                      // Agent Information Section
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Payment Confirmation',
-                            style: GoogleFonts.inter(
-                              fontSize: titleFontSize,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.getTextPrimaryColor(isDark),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isSmallScreen ? 8 : 16,
+                            ),
+                            child: Text(
+                              'Agent Information',
+                              style: GoogleFonts.inter(
+                                fontSize: titleFontSize,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.getTextPrimaryColor(isDark),
+                              ),
                             ),
                           ),
-                          SizedBox(height: isSmallScreen ? 2 : 4),
-                          Text(
-                            'You are about to make a secure escrow payment.',
-                            style: GoogleFonts.inter(
-                              fontSize: bodyFontSize,
-                              color: AppColors.getTextSecondaryColor(isDark),
-                            ),
-                          ),
-                          SizedBox(height: innerSpacing),
+                          SizedBox(height: isSmallScreen ? 4 : 8),
                           Container(
+                            width: double.infinity,
                             padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
                             decoration: BoxDecoration(
-                              color: isDark
-                                  ? Colors.black.withValues(alpha: 0.2)
-                                  : backgroundLight,
-                              borderRadius: BorderRadius.circular(8),
+                              color: AppColors.getCardColor(isDark),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 1,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
                             ),
                             child: Row(
                               children: [
+                                // Agent Avatar
+                                CachedNetworkImage(
+                                  imageUrl: widget.bid.agentAvatarUrl,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                        width: avatarSize,
+                                        height: avatarSize,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                  placeholder: (context, url) => SizedBox(
+                                    width: avatarSize,
+                                    height: avatarSize,
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                        width: avatarSize,
+                                        height: avatarSize,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: isDark
+                                              ? Colors.grey[800]
+                                              : Colors.grey[200],
+                                        ),
+                                        child: Icon(
+                                          Icons.person,
+                                          color: isDark
+                                              ? Colors.grey[400]
+                                              : Colors.grey[600],
+                                          size: avatarSize * 0.6,
+                                        ),
+                                      ),
+                                ),
+                                SizedBox(width: isSmallScreen ? 12 : 16),
+                                // Agent Info
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Escrow Payment',
+                                        widget.bid.agentName,
                                         style: GoogleFonts.inter(
-                                          fontSize: isSmallScreen ? 12 : 14,
-                                          fontWeight: FontWeight.w500,
-                                          color:
-                                              AppColors.getTextSecondaryColor(
-                                                isDark,
-                                              ),
-                                        ),
-                                      ),
-                                      SizedBox(height: isSmallScreen ? 2 : 4),
-                                      Text(
-                                        '\u20B9${widget.bid.bargainAmount ?? widget.bid.bidAmount.toStringAsFixed(2)}',
-                                        style: GoogleFonts.inter(
-                                          fontSize: amountFontSize,
+                                          fontSize: isSmallScreen ? 14 : 16,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.getTextPrimaryColor(
                                             isDark,
                                           ),
                                         ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      SizedBox(height: isSmallScreen ? 4 : 8),
+                                      SizedBox(height: isSmallScreen ? 1 : 2),
                                       Text(
-                                        'Payment will be released to the agent upon your confirmation of delivery.',
+                                        'Delivery Agent',
                                         style: GoogleFonts.inter(
-                                          fontSize: isSmallScreen ? 10 : 12,
+                                          fontSize: isSmallScreen ? 12 : 14,
                                           color:
                                               AppColors.getTextSecondaryColor(
                                                 isDark,
@@ -235,179 +357,65 @@ class _PaymentPageState extends State<PaymentPage> {
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: spacing),
-
-                    // Agent Information Section
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: isSmallScreen ? 8 : 16,
-                          ),
-                          child: Text(
-                            'Agent Information',
-                            style: GoogleFonts.inter(
-                              fontSize: titleFontSize,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.getTextPrimaryColor(isDark),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: isSmallScreen ? 4 : 8),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
-                          decoration: BoxDecoration(
-                            color: AppColors.getCardColor(isDark),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.05),
-                                blurRadius: 1,
-                                offset: const Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              // Agent Avatar
-                              CachedNetworkImage(
-                                imageUrl: widget.bid.agentAvatarUrl,
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                      width: avatarSize,
-                                      height: avatarSize,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                placeholder: (context, url) => SizedBox(
-                                  width: avatarSize,
-                                  height: avatarSize,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) => Container(
-                                  width: avatarSize,
-                                  height: avatarSize,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: isDark
-                                        ? Colors.grey[800]
-                                        : Colors.grey[200],
-                                  ),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: isDark
-                                        ? Colors.grey[400]
-                                        : Colors.grey[600],
-                                    size: avatarSize * 0.6,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: isSmallScreen ? 12 : 16),
-                              // Agent Info
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      widget.bid.agentName,
-                                      style: GoogleFonts.inter(
-                                        fontSize: isSmallScreen ? 14 : 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.getTextPrimaryColor(
-                                          isDark,
-                                        ),
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(height: isSmallScreen ? 1 : 2),
-                                    Text(
-                                      'Delivery Agent',
-                                      style: GoogleFonts.inter(
-                                        fontSize: isSmallScreen ? 12 : 14,
-                                        color: AppColors.getTextSecondaryColor(
-                                          isDark,
-                                        ),
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: isSmallScreen ? 60 : 80,
-                    ), // Extra space for bottom button
-                  ],
+                      SizedBox(
+                        height: isSmallScreen ? 60 : 80,
+                      ), // Extra space for bottom button
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // Bottom Payment Button and Navigation
-            Column(
-              children: [
-                // Payment Button
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.fromLTRB(
-                    horizontalPadding,
-                    isSmallScreen ? 8 : 12,
-                    horizontalPadding,
-                    isSmallScreen ? 8 : 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? backgroundDark.withValues(alpha: 0.8)
-                        : AppColors.cardLight,
-                    border: Border(
-                      top: BorderSide(color: AppColors.getBorderColor(isDark)),
+              // Bottom Payment Button and Navigation
+              Column(
+                children: [
+                  // Payment Button
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      isSmallScreen ? 8 : 12,
+                      horizontalPadding,
+                      isSmallScreen ? 8 : 12,
                     ),
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _paymentHelper.showPaymentConfirmDialog();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(
-                        vertical: buttonVerticalPadding,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 4,
-                      shadowColor: primaryColor.withValues(alpha: 0.3),
-                    ),
-                    child: Text(
-                      'Proceed to Payment Gateway',
-                      style: GoogleFonts.inter(
-                        fontSize: buttonFontSize,
-                        fontWeight: FontWeight.bold,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? backgroundDark.withValues(alpha: 0.8)
+                          : AppColors.cardLight,
+                      border: Border(
+                        top: BorderSide(
+                          color: AppColors.getBorderColor(isDark),
+                        ),
                       ),
                     ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _paymentHelper.showPaymentConfirmDialog();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                          vertical: buttonVerticalPadding,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 4,
+                        shadowColor: primaryColor.withValues(alpha: 0.3),
+                      ),
+                      child: Text(
+                        'Proceed to Payment Gateway',
+                        style: GoogleFonts.inter(
+                          fontSize: buttonFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -135,219 +135,226 @@ class _AuctionPageState extends State<AuctionPage> {
             },
           ),
         ],
-        child: SingleChildScrollView(
-          child: Container(
-            constraints: BoxConstraints(minHeight: size.height),
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Auction Timer Section
-                ValueListenableBuilder<bool>(
-                  valueListenable: _isTimerActive,
-                  builder: (context, isTimerActive, _) {
-                    return ValueListenableBuilder<int>(
-                      valueListenable: _remainingSeconds,
-                      builder: (context, remainingSeconds, _) {
-                        final minutes = (remainingSeconds ~/ 60)
-                            .toString()
-                            .padLeft(2, '0');
-                        final seconds = (remainingSeconds % 60)
-                            .toString()
-                            .padLeft(2, '0');
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              constraints: BoxConstraints(minHeight: size.height),
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: verticalPadding,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Auction Timer Section
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _isTimerActive,
+                    builder: (context, isTimerActive, _) {
+                      return ValueListenableBuilder<int>(
+                        valueListenable: _remainingSeconds,
+                        builder: (context, remainingSeconds, _) {
+                          final minutes = (remainingSeconds ~/ 60)
+                              .toString()
+                              .padLeft(2, '0');
+                          final seconds = (remainingSeconds % 60)
+                              .toString()
+                              .padLeft(2, '0');
 
-                        return Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(cardPadding),
-                          decoration: BoxDecoration(
-                            color: AppColors.getCardColor(isDark),
-                            borderRadius: BorderRadius.circular(12),
-                            border: !isTimerActive
-                                ? Border.all(color: AppColors.error, width: 2)
-                                : null,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.05),
-                                blurRadius: 1,
-                                offset: const Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                isTimerActive
-                                    ? 'Auction ends in'
-                                    : 'Auction ended',
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: isTimerActive
-                                      ? AppColors.getTextSecondaryColor(isDark)
-                                      : AppColors.error,
-                                  fontWeight: isTimerActive
-                                      ? null
-                                      : FontWeight.bold,
-                                  fontSize: isSmallScreen ? 12.0 : 14.0,
+                          return Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(cardPadding),
+                            decoration: BoxDecoration(
+                              color: AppColors.getCardColor(isDark),
+                              borderRadius: BorderRadius.circular(12),
+                              border: !isTimerActive
+                                  ? Border.all(color: AppColors.error, width: 2)
+                                  : null,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 1,
+                                  offset: const Offset(0, 1),
                                 ),
-                              ),
-                              SizedBox(height: isSmallScreen ? 6.0 : 8.0),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  TimeUnit(
-                                    number: minutes,
-                                    label: 'Minutes',
-                                    isSmallScreen: isSmallScreen,
-                                    isLargeScreen: isLargeScreen,
-                                    isDark: isDark,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      bottom: isSmallScreen ? 2.0 : 4.0,
-                                    ),
-                                    child: Text(
-                                      ':',
-                                      style: TextStyle(
-                                        fontSize: isSmallScreen
-                                            ? 24.0
-                                            : isLargeScreen
-                                            ? 40.0
-                                            : 36.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.getTextPrimaryColor(
-                                          isDark,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  TimeUnit(
-                                    number: seconds,
-                                    label: 'Seconds',
-                                    isSmallScreen: isSmallScreen,
-                                    isLargeScreen: isLargeScreen,
-                                    isDark: isDark,
-                                  ),
-                                ],
-                              ),
-                              if (!isTimerActive) ...[
-                                SizedBox(height: isSmallScreen ? 6.0 : 8.0),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
                                 Text(
-                                  "Time's up!",
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.error,
+                                  isTimerActive
+                                      ? 'Auction ends in'
+                                      : 'Auction ended',
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: isTimerActive
+                                        ? AppColors.getTextSecondaryColor(
+                                            isDark,
+                                          )
+                                        : AppColors.error,
+                                    fontWeight: isTimerActive
+                                        ? null
+                                        : FontWeight.bold,
                                     fontSize: isSmallScreen ? 12.0 : 14.0,
                                   ),
                                 ),
+                                SizedBox(height: isSmallScreen ? 6.0 : 8.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    TimeUnit(
+                                      number: minutes,
+                                      label: 'Minutes',
+                                      isSmallScreen: isSmallScreen,
+                                      isLargeScreen: isLargeScreen,
+                                      isDark: isDark,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: isSmallScreen ? 2.0 : 4.0,
+                                      ),
+                                      child: Text(
+                                        ':',
+                                        style: TextStyle(
+                                          fontSize: isSmallScreen
+                                              ? 24.0
+                                              : isLargeScreen
+                                              ? 40.0
+                                              : 36.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.getTextPrimaryColor(
+                                            isDark,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TimeUnit(
+                                      number: seconds,
+                                      label: 'Seconds',
+                                      isSmallScreen: isSmallScreen,
+                                      isLargeScreen: isLargeScreen,
+                                      isDark: isDark,
+                                    ),
+                                  ],
+                                ),
+                                if (!isTimerActive) ...[
+                                  SizedBox(height: isSmallScreen ? 6.0 : 8.0),
+                                  Text(
+                                    "Time's up!",
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      color: AppColors.error,
+                                      fontSize: isSmallScreen ? 12.0 : 14.0,
+                                    ),
+                                  ),
+                                ],
                               ],
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-                SizedBox(height: isSmallScreen ? 16.0 : 24.0),
-                // Live Bids Header
-                BlocBuilder<DeliveryRequestBidsCubit, DeliveryRequestBidsState>(
-                  builder: (context, state) {
-                    final bidsCount = switch (state) {
-                      DeliveryRequestBidsLoaded(bids: final bids) =>
-                        bids.length,
-                      _ => 0,
-                    };
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Live Bids',
-                          style: textTheme.titleLarge?.copyWith(
-                            fontSize: isSmallScreen
-                                ? 18.0
-                                : isLargeScreen
-                                ? 22.0
-                                : 20.0,
-                            color: AppColors.getTextSecondaryColor(isDark),
-                          ),
-                        ),
-                        Text(
-                          '$bidsCount bids',
-                          style: textTheme.titleMedium?.copyWith(
-                            color: AppColors.getTextSecondaryColor(isDark),
-                            fontWeight: FontWeight.w500,
-                            fontSize: isSmallScreen ? 14.0 : 16.0,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                SizedBox(height: isSmallScreen ? 12.0 : 16.0),
-                // Bids List
-                ValueListenableBuilder<bool>(
-                  valueListenable: _isTimerActive,
-                  builder: (context, isTimerActive, child) {
-                    return BlocBuilder<
-                      DeliveryRequestBidsCubit,
-                      DeliveryRequestBidsState
-                    >(
-                      builder: (context, state) {
-                        return switch (state) {
-                          DeliveryRequestBidsInitial() =>
-                            const SizedBox.shrink(),
-                          DeliveryRequestBidsLoading() => const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: isSmallScreen ? 16.0 : 24.0),
+                  // Live Bids Header
+                  BlocBuilder<
+                    DeliveryRequestBidsCubit,
+                    DeliveryRequestBidsState
+                  >(
+                    builder: (context, state) {
+                      final bidsCount = switch (state) {
+                        DeliveryRequestBidsLoaded(bids: final bids) =>
+                          bids.length,
+                        _ => 0,
+                      };
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Live Bids',
+                            style: textTheme.titleLarge?.copyWith(
+                              fontSize: isSmallScreen
+                                  ? 18.0
+                                  : isLargeScreen
+                                  ? 22.0
+                                  : 20.0,
+                              color: AppColors.getTextSecondaryColor(isDark),
                             ),
                           ),
-                          DeliveryRequestBidsEmpty() => Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text(
-                                'No bids yet',
-                                style: textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.getTextSecondaryColor(
-                                    isDark,
+                          Text(
+                            '$bidsCount bids',
+                            style: textTheme.titleMedium?.copyWith(
+                              color: AppColors.getTextSecondaryColor(isDark),
+                              fontWeight: FontWeight.w500,
+                              fontSize: isSmallScreen ? 14.0 : 16.0,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(height: isSmallScreen ? 12.0 : 16.0),
+                  // Bids List
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _isTimerActive,
+                    builder: (context, isTimerActive, child) {
+                      return BlocBuilder<
+                        DeliveryRequestBidsCubit,
+                        DeliveryRequestBidsState
+                      >(
+                        builder: (context, state) {
+                          return switch (state) {
+                            DeliveryRequestBidsInitial() =>
+                              const SizedBox.shrink(),
+                            DeliveryRequestBidsLoading() => const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(20.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            DeliveryRequestBidsEmpty() => Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  'No bids yet',
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.getTextSecondaryColor(
+                                      isDark,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          DeliveryRequestBidsLoaded(bids: final bids) =>
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: bids.length,
-                              itemBuilder: (context, index) {
-                                final bid = bids[index];
-                                return BidCard(
-                                  bid: bid,
-                                  textTheme: textTheme,
-                                  isAuctionActive: isTimerActive,
-                                  onBidAccepted: _auctionHelper.acceptBid,
-                                  isSmallScreen: isSmallScreen,
-                                  isLargeScreen: isLargeScreen,
-                                  isDark: isDark,
-                                );
-                              },
-                            ),
-                          DeliveryRequestBidsError(message: final message) =>
-                            CustomErrorWidget(
-                              errorMessage: message,
-                              isDark: isDark,
-                              onRetry: () {
-                                // _auctionHelper.loadBids(auctionId);
-                              },
-                            ),
-                        };
-                      },
-                    );
-                  },
-                ),
-              ],
+                            DeliveryRequestBidsLoaded(bids: final bids) =>
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: bids.length,
+                                itemBuilder: (context, index) {
+                                  final bid = bids[index];
+                                  return BidCard(
+                                    bid: bid,
+                                    textTheme: textTheme,
+                                    isAuctionActive: isTimerActive,
+                                    onBidAccepted: _auctionHelper.acceptBid,
+                                    isSmallScreen: isSmallScreen,
+                                    isLargeScreen: isLargeScreen,
+                                    isDark: isDark,
+                                  );
+                                },
+                              ),
+                            DeliveryRequestBidsError(message: final message) =>
+                              CustomErrorWidget(
+                                errorMessage: message,
+                                isDark: isDark,
+                                onRetry: () {
+                                  // _auctionHelper.loadBids(auctionId);
+                                },
+                              ),
+                          };
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

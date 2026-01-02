@@ -128,118 +128,120 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
               ),
             ],
           ),
-          body: Stack(
-            children: [
-              OSMFlutter(
-                controller: _mapController,
-                osmOption: OSMOption(
-                  isPicker: true,
-                  userTrackingOption: const UserTrackingOption(
-                    enableTracking: false,
-                    unFollowUser: true,
-                  ),
-                  zoomOption: const ZoomOption(
-                    initZoom: 15,
-                    minZoomLevel: 3,
-                    maxZoomLevel: 18,
-                    stepZoom: 1.0,
-                  ),
-                  userLocationMarker: UserLocationMaker(
-                    personMarker: const MarkerIcon(
-                      icon: Icon(
-                        Icons.location_history,
-                        color: Colors.blue,
-                        size: 48,
-                      ),
+          body: SafeArea(
+            child: Stack(
+              children: [
+                OSMFlutter(
+                  controller: _mapController,
+                  osmOption: OSMOption(
+                    isPicker: true,
+                    userTrackingOption: const UserTrackingOption(
+                      enableTracking: false,
+                      unFollowUser: true,
                     ),
-                    directionArrowMarker: const MarkerIcon(
-                      icon: Icon(Icons.double_arrow, size: 48),
+                    zoomOption: const ZoomOption(
+                      initZoom: 15,
+                      minZoomLevel: 3,
+                      maxZoomLevel: 18,
+                      stepZoom: 1.0,
                     ),
-                  ),
-                  roadConfiguration: const RoadOption(
-                    roadColor: Colors.yellowAccent,
-                  ),
-                ),
-                onMapIsReady: (ready) {
-                  if (ready) {
-                    debugPrint('Map is ready');
-                  }
-                },
-                onMapMoved: (region) {
-                  _locationPickerHelper.onMapMoved();
-                },
-              ),
-
-              // Center pin indicator
-              Center(
-                child: Icon(
-                  Icons.location_pin,
-                  color: Colors.red,
-                  size: locationPinSize,
-                ),
-              ),
-
-              // Selected location coordinates
-              ValueListenableBuilder<GeoPoint?>(
-                valueListenable: _selectedLocation,
-                builder: (context, location, _) {
-                  if (location != null) {
-                    return Positioned(
-                      top: coordinateTop,
-                      left: 16,
-                      right: 16,
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(0, 0, 0, 178),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          'Selected: ${location.latitude.toStringAsFixed(6)}, ${location.longitude.toStringAsFixed(6)}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: coordinateFontSize,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                    userLocationMarker: UserLocationMaker(
+                      personMarker: const MarkerIcon(
+                        icon: Icon(
+                          Icons.location_history,
+                          color: Colors.blue,
+                          size: 48,
                         ),
                       ),
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-
-              // Instruction text
-              if (isReady)
-                Positioned(
-                  bottom: instructionBottom,
-                  left: 0,
-                  right: 0,
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'Move the map to select a location',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 4,
-                            color: Colors.black,
-                            offset: Offset(1, 1),
-                          ),
-                        ],
+                      directionArrowMarker: const MarkerIcon(
+                        icon: Icon(Icons.double_arrow, size: 48),
                       ),
                     ),
+                    roadConfiguration: const RoadOption(
+                      roadColor: Colors.yellowAccent,
+                    ),
+                  ),
+                  onMapIsReady: (ready) {
+                    if (ready) {
+                      debugPrint('Map is ready');
+                    }
+                  },
+                  onMapMoved: (region) {
+                    _locationPickerHelper.onMapMoved();
+                  },
+                ),
+
+                // Center pin indicator
+                Center(
+                  child: Icon(
+                    Icons.location_pin,
+                    color: Colors.red,
+                    size: locationPinSize,
                   ),
                 ),
 
-              if (!isReady) const Center(child: CircularProgressIndicator()),
-            ],
+                // Selected location coordinates
+                ValueListenableBuilder<GeoPoint?>(
+                  valueListenable: _selectedLocation,
+                  builder: (context, location, _) {
+                    if (location != null) {
+                      return Positioned(
+                        top: coordinateTop,
+                        left: 16,
+                        right: 16,
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(0, 0, 0, 178),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Selected: ${location.latitude.toStringAsFixed(6)}, ${location.longitude.toStringAsFixed(6)}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: coordinateFontSize,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+
+                // Instruction text
+                if (isReady)
+                  Positioned(
+                    bottom: instructionBottom,
+                    left: 0,
+                    right: 0,
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Move the map to select a location',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 4,
+                              color: Colors.black,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                if (!isReady) const Center(child: CircularProgressIndicator()),
+              ],
+            ),
           ),
           floatingActionButton: isReady
               ? Container(

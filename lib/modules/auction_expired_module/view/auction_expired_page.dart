@@ -68,207 +68,209 @@ class AuctionExpiredPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: isDark ? backgroundDark : backgroundLight,
-      body: Column(
-        children: [
-          // Header
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(
-              top: padding.top + 16,
-              bottom: 16,
-              left: 16,
-              right: 16,
-            ),
-            decoration: BoxDecoration(
-              color: isDark ? cardDark : cardLight,
-              border: Border(
-                bottom: BorderSide(color: isDark ? subtleDark : subtleLight),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(
+                top: padding.top + 16,
+                bottom: 16,
+                left: 16,
+                right: 16,
               ),
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                // Back button
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.close,
-                      color: isDark ? foregroundDark : foregroundLight,
-                      size: isSmallScreen ? 20.0 : 24.0,
+              decoration: BoxDecoration(
+                color: isDark ? cardDark : cardLight,
+                border: Border(
+                  bottom: BorderSide(color: isDark ? subtleDark : subtleLight),
+                ),
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Back button
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: isDark ? foregroundDark : foregroundLight,
+                        size: isSmallScreen ? 20.0 : 24.0,
+                      ),
                     ),
                   ),
-                ),
-                // Title
-                Text(
-                  'Auction Expired',
-                  style: TextStyle(
-                    fontSize: isSmallScreen ? 16.0 : 18.0,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? foregroundDark : foregroundLight,
+                  // Title
+                  Text(
+                    'Auction Expired',
+                    style: TextStyle(
+                      fontSize: isSmallScreen ? 16.0 : 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? foregroundDark : foregroundLight,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
 
-          // Main content
-          Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: verticalPadding,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Card
-                    Container(
-                      width: double.infinity,
-                      constraints: BoxConstraints(maxWidth: cardMaxWidth),
-                      padding: EdgeInsets.all(isSmallScreen ? 20.0 : 32.0),
-                      decoration: BoxDecoration(
-                        color: isDark ? cardDark : cardLight,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Icon section
-                          Container(
-                            margin: EdgeInsets.only(
-                              bottom: isSmallScreen ? 16.0 : 24.0,
+            // Main content
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: horizontalPadding,
+                    vertical: verticalPadding,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Card
+                      Container(
+                        width: double.infinity,
+                        constraints: BoxConstraints(maxWidth: cardMaxWidth),
+                        padding: EdgeInsets.all(isSmallScreen ? 20.0 : 32.0),
+                        decoration: BoxDecoration(
+                          color: isDark ? cardDark : cardLight,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
                             ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: iconContainerSize,
-                                  height: iconContainerSize,
-                                  decoration: BoxDecoration(
-                                    color: primaryColor.withValues(
-                                      alpha: isDark ? 0.2 : 0.1,
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Icon section
+                            Container(
+                              margin: EdgeInsets.only(
+                                bottom: isSmallScreen ? 16.0 : 24.0,
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: iconContainerSize,
+                                    height: iconContainerSize,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor.withValues(
+                                        alpha: isDark ? 0.2 : 0.1,
+                                      ),
+                                      shape: BoxShape.circle,
                                     ),
-                                    shape: BoxShape.circle,
+                                    child: Icon(
+                                      Icons.access_time,
+                                      size: iconSize,
+                                      color: primaryColor,
+                                    ),
                                   ),
-                                  child: Icon(
-                                    Icons.access_time,
-                                    size: iconSize,
-                                    color: primaryColor,
+                                  SizedBox(height: isSmallScreen ? 12.0 : 16.0),
+                                  Text(
+                                    'Auction Expired',
+                                    style: TextStyle(
+                                      fontSize: titleFontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: isDark
+                                          ? foregroundDark
+                                          : foregroundLight,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: isSmallScreen ? 6.0 : 8.0),
+                                  Text(
+                                    'No deal was finalized for this auction.',
+                                    style: TextStyle(
+                                      color: isDark ? mutedDark : mutedLight,
+                                      fontSize: bodyFontSize,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // Buttons
+                            Column(
+                              children: [
+                                // Repost button
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      // Handle repost functionality
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                      foregroundColor: Colors.white,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: buttonVerticalPadding,
+                                        horizontal: buttonHorizontalPadding,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      textStyle: TextStyle(
+                                        fontSize: buttonFontSize,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    child: const Text('Repost'),
                                   ),
                                 ),
-                                SizedBox(height: isSmallScreen ? 12.0 : 16.0),
-                                Text(
-                                  'Auction Expired',
-                                  style: TextStyle(
-                                    fontSize: titleFontSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: isDark
-                                        ? foregroundDark
-                                        : foregroundLight,
+                                SizedBox(height: isSmallScreen ? 8.0 : 12.0),
+
+                                // Cancel button
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      // Handle cancel functionality
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        HomePage.route(),
+                                        (route) => false,
+                                      );
+                                    },
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: isDark
+                                          ? mutedDark
+                                          : mutedLight,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: buttonVerticalPadding,
+                                        horizontal: buttonHorizontalPadding,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      textStyle: TextStyle(
+                                        fontSize: buttonFontSize,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    child: const Text('Cancel'),
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(height: isSmallScreen ? 6.0 : 8.0),
-                                Text(
-                                  'No deal was finalized for this auction.',
-                                  style: TextStyle(
-                                    color: isDark ? mutedDark : mutedLight,
-                                    fontSize: bodyFontSize,
-                                  ),
-                                  textAlign: TextAlign.center,
                                 ),
                               ],
                             ),
-                          ),
-
-                          // Buttons
-                          Column(
-                            children: [
-                              // Repost button
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    // Handle repost functionality
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: primaryColor,
-                                    foregroundColor: Colors.white,
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: buttonVerticalPadding,
-                                      horizontal: buttonHorizontalPadding,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    textStyle: TextStyle(
-                                      fontSize: buttonFontSize,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  child: const Text('Repost'),
-                                ),
-                              ),
-                              SizedBox(height: isSmallScreen ? 8.0 : 12.0),
-
-                              // Cancel button
-                              SizedBox(
-                                width: double.infinity,
-                                child: TextButton(
-                                  onPressed: () {
-                                    // Handle cancel functionality
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      HomePage.route(),
-                                      (route) => false,
-                                    );
-                                  },
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: isDark
-                                        ? mutedDark
-                                        : mutedLight,
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: buttonVerticalPadding,
-                                      horizontal: buttonHorizontalPadding,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    textStyle: TextStyle(
-                                      fontSize: buttonFontSize,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  child: const Text('Cancel'),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
 
-                    // Additional responsive spacing for very large screens
-                    if (isLargeScreen) SizedBox(height: size.height * 0.1),
-                  ],
+                      // Additional responsive spacing for very large screens
+                      if (isLargeScreen) SizedBox(height: size.height * 0.1),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

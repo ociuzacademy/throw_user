@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
       body: ValueListenableBuilder(
         valueListenable: _currentIndex,
         builder: (context, currentIndex, child) {
-          return _tabs[currentIndex];
+          return SafeArea(child: _tabs[currentIndex]);
         },
       ),
       bottomNavigationBar: ValueListenableBuilder(
