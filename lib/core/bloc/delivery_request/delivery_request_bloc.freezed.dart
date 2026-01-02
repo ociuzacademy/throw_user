@@ -252,12 +252,12 @@ _$CreateDeliveryRequestCopyWith<_CreateDeliveryRequest> get copyWith => __$Creat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateDeliveryRequest&&const DeepCollectionEquality().equals(other.deliveryRequestData, deliveryRequestData));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateDeliveryRequest&&(identical(other.deliveryRequestData, deliveryRequestData) || other.deliveryRequestData == deliveryRequestData));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(deliveryRequestData));
+int get hashCode => Object.hash(runtimeType,deliveryRequestData);
 
 @override
 String toString() {
@@ -289,9 +289,9 @@ class __$CreateDeliveryRequestCopyWithImpl<$Res>
 
 /// Create a copy of DeliveryRequestEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? deliveryRequestData = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? deliveryRequestData = null,}) {
   return _then(_CreateDeliveryRequest(
-freezed == deliveryRequestData ? _self.deliveryRequestData : deliveryRequestData // ignore: cast_nullable_to_non_nullable
+null == deliveryRequestData ? _self.deliveryRequestData : deliveryRequestData // ignore: cast_nullable_to_non_nullable
 as DeliveryRequestData,
   ));
 }

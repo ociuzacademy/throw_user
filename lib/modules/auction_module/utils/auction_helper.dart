@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/exports/bloc_exports.dart';
 import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
 
-import 'package:throw_user/core/models/bid.dart';
-import 'package:throw_user/modules/payment_module/view/payment_page.dart';
+import 'package:throw_user/core/models/bid_model.dart';
+import 'package:throw_user/core/repository/delivery_request_repository.dart';
 
 class AuctionHelper {
   final BuildContext context;
@@ -15,7 +15,6 @@ class AuctionHelper {
   // Timer variables
   Timer? timer;
   // 3 minutes in seconds
-  final ValueNotifier<List<Bid>> bids;
   final ValueNotifier<int> remainingSeconds;
   final ValueNotifier<bool> isTimerActive;
 
@@ -23,7 +22,6 @@ class AuctionHelper {
     required this.context,
     required this.requestId,
     this.timer,
-    required this.bids,
     required this.remainingSeconds,
     required this.isTimerActive,
   });
@@ -54,25 +52,31 @@ class AuctionHelper {
     bloc.add(DeliveryRequestEvent.cancelRequest(requestId));
   }
 
-  // Update a bid by replacing it in the list and notifying listeners
-  void updateBid(Bid updatedBid) {
-    final current = List<Bid>.from(bids.value);
-    final index = current.indexWhere((bid) => bid.name == updatedBid.name);
-    if (index != -1) {
-      current[index] = updatedBid;
-      bids.value = current;
-    }
+  // Update a bid (bargain) via repository
+  void updateBid(BidModel bid) {
+    context.read<DeliveryRequestRepository>().bargain(
+      requestId,
+      bid.bidId,
+      bid.bargainAmount ?? 0,
+    );
   }
 
   // Handle bid acceptance and stop timer
-  void acceptBid(Bid bid) {
+  void acceptBid(BidModel bid) {
     isTimerActive.value = false;
     cancelTimer();
+
+    context.read<DeliveryRequestRepository>().acceptRequest(
+      requestId,
+      bid.agentId,
+      bid.bidAmount,
+    );
+
     CustomSnackbar.showSuccess(
       context: context,
       message: 'Bid accepted successfully!',
     );
 
-    Navigator.push(context, PaymentPage.route(bid: bid));
+    // Navigator.push(context, PaymentPage.route(bid: bid)); // Wait, PaymentPage.route might still use Bid
   }
 }

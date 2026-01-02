@@ -138,7 +138,7 @@ class DeliveryRequestModel {
       DeliveryRequestModel(
         agreedDeliveryCharge: json['agreedDeliveryCharge']?.toDouble(),
         auctionStartingTime: json['auctionStartingTime'] as Timestamp,
-        baseDeliveryCharge: json['baseDeliveryCharge']?.toDouble(),
+        baseDeliveryCharge: (json['baseDeliveryCharge'] ?? 0.0).toDouble(),
         createdAt: json['createdAt'] as Timestamp,
         customerAvatarUrl: json['customerAvatarUrl'],
         customerName: json['customerName'],
@@ -150,10 +150,11 @@ class DeliveryRequestModel {
         dropOffDate: json['dropOffDate'] as Timestamp,
         dropOffPhoneNumber: json['dropOffPhoneNumber'],
         dropOffRemarks: json['dropOffRemarks'],
-        minimumDeliveryCharge: json['minimumDeliveryCharge']?.toDouble(),
+        minimumDeliveryCharge: (json['minimumDeliveryCharge'] ?? 0.0)
+            .toDouble(),
         otp: json['otp'],
         packageType: PackageType.fromString(json['packageType']),
-        packageWeight: json['packageWeight']?.toDouble(),
+        packageWeight: (json['packageWeight'] ?? 0.0).toDouble(),
         paymentStatus: PaymentStatus.fromString(json['paymentStatus']),
         pickupAddress: json['pickupAddress'],
         pickupDate: json['pickupDate'] as Timestamp,

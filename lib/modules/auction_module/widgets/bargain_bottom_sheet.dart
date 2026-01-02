@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 
-import 'package:throw_user/core/models/bid.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/modules/auction_module/typedefs/submit_bargain.dart';
 
 class BargainBottomSheet extends StatefulWidget {
   final BuildContext context;
-  final Bid bid;
+  final BidModel bid;
   final TextTheme textTheme;
   final SubmitBargain submitBargain;
   const BargainBottomSheet({
@@ -30,8 +30,8 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
     super.initState();
     // Pre-fill with current price if no bargain exists, or with bargained price if it does
     _bargainController.text =
-        widget.bid.bargainedPrice?.toStringAsFixed(2) ??
-        widget.bid.price.toStringAsFixed(2);
+        widget.bid.bargainAmount?.toStringAsFixed(2) ??
+        widget.bid.bidAmount.toStringAsFixed(2);
   }
 
   @override
@@ -42,7 +42,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final Bid bid = widget.bid;
+    final BidModel bid = widget.bid;
     final TextTheme textTheme = widget.textTheme;
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
@@ -56,7 +56,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Bargain with ${bid.name}',
+              'Bargain with ${bid.agentName}',
               style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.getTextPrimaryColor(isDark),
@@ -66,17 +66,17 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
 
             // Show current bid price
             Text(
-              'Current Bid: \u20B9${bid.price.toStringAsFixed(2)}',
+              'Current Bid: \u20B9${bid.bidAmount.toStringAsFixed(2)}',
               style: textTheme.bodyMedium!.copyWith(
                 color: AppColors.getTextPrimaryColor(isDark),
               ),
             ),
 
             // Show previous bargained price if exists
-            if (bid.bargainedPrice != null) ...[
+            if (bid.bargainAmount != null) ...[
               const SizedBox(height: 8),
               Text(
-                'Previous Bargain: \u20B9${bid.bargainedPrice!.toStringAsFixed(2)}',
+                'Previous Bargain: \u20B9${bid.bargainAmount!.toStringAsFixed(2)}',
                 style: textTheme.bodyMedium?.copyWith(color: AppColors.success),
               ),
             ],

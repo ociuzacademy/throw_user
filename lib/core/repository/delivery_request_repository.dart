@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/core/exports/exception_exports.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/core/models/delivery_request_model.dart';
 import 'package:throw_user/core/models/user_profile_model.dart';
 import 'package:throw_user/modules/delivery_request_module/data/delivery_request_data.dart';
@@ -16,6 +17,7 @@ class DeliveryRequestRepository {
   // Collection reference
   static const String userCollection = 'users';
   static const String deliveryRequestCollection = 'deliveryRequest';
+  static const String bidsCollection = 'bids';
 
   // Create or update delivery request in Firestore
   Future<String> createDeliveryRequest(
@@ -206,6 +208,47 @@ class DeliveryRequestRepository {
       throw DeliveryRequestRepositoryException(
         message: 'Failed to check delivery request existence: ${e.toString()}',
       );
+    }
+  }
+
+  Stream<List<BidModel>> getDeliveryRequestBids(String requestId) {
+    try {
+      return _firestore
+          .collection(deliveryRequestCollection)
+          .doc(requestId)
+          .collection(bidsCollection)
+          .snapshots()
+          .map((doc) {
+            return doc.docs
+                .map((doc) => BidModel.fromJson(doc.data()))
+                .toList();
+          });
+    } catch (e) {
+      debugPrint('Error getting bids: $e');
+      throw DeliveryRequestRepositoryException(
+        message: 'Error getting bids: $e',
+      );
+    }
+  }
+
+  Future<void> bargain(
+    String requestId,
+    String bidId,
+    double bargainAmount,
+  ) async {
+    try {
+      await _firestore
+          .collection(deliveryRequestCollection)
+          .doc(requestId)
+          .collection(bidsCollection)
+          .doc(bidId)
+          .update({
+            'bargainAmount': bargainAmount,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+    } catch (e) {
+      debugPrint('Error bargaining: $e');
+      throw DeliveryRequestRepositoryException(message: 'Error bargaining: $e');
     }
   }
 }

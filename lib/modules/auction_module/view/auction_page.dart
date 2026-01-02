@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/exports/bloc_exports.dart';
 import 'package:throw_user/core/exports/custom_widget_exports.dart';
-import 'package:throw_user/core/models/bid.dart';
+import 'package:throw_user/core/repository/delivery_request_repository.dart';
 import 'package:throw_user/modules/auction_expired_module/view/auction_expired_page.dart';
-import 'package:throw_user/modules/auction_module/helper/fake_data.dart';
+import 'package:throw_user/modules/auction_module/cubit/delivery_request_bids_cubit.dart';
 import 'package:throw_user/modules/auction_module/utils/auction_helper.dart';
 import 'package:throw_user/modules/auction_module/widgets/bid_card.dart';
 import 'package:throw_user/modules/auction_module/widgets/time_unit.dart';
@@ -16,7 +16,12 @@ class AuctionPage extends StatefulWidget {
   const AuctionPage({super.key, required this.auctionId});
 
   static MaterialPageRoute route(String auctionId) => MaterialPageRoute(
-    builder: (context) => AuctionPage(auctionId: auctionId),
+    builder: (context) => BlocProvider(
+      create: (context) =>
+          DeliveryRequestBidsCubit(context.read<DeliveryRequestRepository>())
+            ..loadBids(auctionId),
+      child: AuctionPage(auctionId: auctionId),
+    ),
   );
 
   @override
@@ -25,9 +30,6 @@ class AuctionPage extends StatefulWidget {
 
 class _AuctionPageState extends State<AuctionPage> {
   late final AuctionHelper _auctionHelper;
-
-  // Converted to ValueNotifier
-  final ValueNotifier<List<Bid>> _bids = ValueNotifier<List<Bid>>([]);
 
   // Timer variables as ValueNotifiers
   final ValueNotifier<int> _remainingSeconds = ValueNotifier<int>(5 * 60);
@@ -41,19 +43,15 @@ class _AuctionPageState extends State<AuctionPage> {
       requestId: widget.auctionId,
       remainingSeconds: _remainingSeconds,
       isTimerActive: _isTimerActive,
-      bids: _bids,
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _bids.value = FakeData.generateRandomBids();
       _auctionHelper.startTimer();
-      _auctionHelper.reset();
     });
   }
 
   @override
   void dispose() {
     _auctionHelper.cancelTimer();
-    _bids.dispose();
     _remainingSeconds.dispose();
     _isTimerActive.dispose();
     super.dispose();
@@ -93,30 +91,34 @@ class _AuctionPageState extends State<AuctionPage> {
         title: const Text('Auction'),
         centerTitle: true,
       ),
-      body: BlocListener<DeliveryRequestBloc, DeliveryRequestState>(
-        listener: (context, state) {
-          switch (state) {
-            case DeliveryRequestLoading():
-              OverlayLoader.show(context);
-              break;
-            case CancelRequestSuccess _:
-              OverlayLoader.hide();
-              _auctionHelper.reset();
-              CustomSnackbar.showError(
-                context: context,
-                message: 'Auction has cancelled!',
-              );
-              Navigator.push(context, AuctionExpiredPage.route());
-              break;
-            case DeliveryRequestError(message: final String message):
-              OverlayLoader.hide();
-              CustomSnackbar.showError(context: context, message: message);
-              break;
-            default:
-              OverlayLoader.hide();
-              break;
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<DeliveryRequestBloc, DeliveryRequestState>(
+            listener: (context, state) {
+              switch (state) {
+                case DeliveryRequestLoading():
+                  OverlayLoader.show(context);
+                  break;
+                case CancelRequestSuccess _:
+                  OverlayLoader.hide();
+                  _auctionHelper.reset();
+                  CustomSnackbar.showError(
+                    context: context,
+                    message: 'Auction has cancelled!',
+                  );
+                  Navigator.push(context, AuctionExpiredPage.route());
+                  break;
+                case DeliveryRequestError(message: final String message):
+                  OverlayLoader.hide();
+                  CustomSnackbar.showError(context: context, message: message);
+                  break;
+                default:
+                  OverlayLoader.hide();
+                  break;
+              }
+            },
+          ),
+        ],
         child: SingleChildScrollView(
           child: Container(
             constraints: BoxConstraints(minHeight: size.height),
@@ -233,59 +235,99 @@ class _AuctionPageState extends State<AuctionPage> {
                 ),
                 SizedBox(height: isSmallScreen ? 16.0 : 24.0),
                 // Live Bids Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Live Bids',
-                      style: textTheme.titleLarge?.copyWith(
-                        fontSize: isSmallScreen
-                            ? 18.0
-                            : isLargeScreen
-                            ? 22.0
-                            : 20.0,
-                        color: AppColors.getTextSecondaryColor(isDark),
-                      ),
-                    ),
-                    ValueListenableBuilder<List<Bid>>(
-                      valueListenable: _bids,
-                      builder: (context, bids, _) => Text(
-                        '${bids.length} bids',
-                        style: textTheme.titleMedium?.copyWith(
-                          color: AppColors.getTextSecondaryColor(isDark),
-                          fontWeight: FontWeight.w500,
-                          fontSize: isSmallScreen ? 14.0 : 16.0,
+                BlocBuilder<DeliveryRequestBidsCubit, DeliveryRequestBidsState>(
+                  builder: (context, state) {
+                    final bidsCount = switch (state) {
+                      DeliveryRequestBidsLoaded(bids: final bids) =>
+                        bids.length,
+                      _ => 0,
+                    };
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Live Bids',
+                          style: textTheme.titleLarge?.copyWith(
+                            fontSize: isSmallScreen
+                                ? 18.0
+                                : isLargeScreen
+                                ? 22.0
+                                : 20.0,
+                            color: AppColors.getTextSecondaryColor(isDark),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                        Text(
+                          '$bidsCount bids',
+                          style: textTheme.titleMedium?.copyWith(
+                            color: AppColors.getTextSecondaryColor(isDark),
+                            fontWeight: FontWeight.w500,
+                            fontSize: isSmallScreen ? 14.0 : 16.0,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 SizedBox(height: isSmallScreen ? 12.0 : 16.0),
                 // Bids List
                 ValueListenableBuilder<bool>(
                   valueListenable: _isTimerActive,
                   builder: (context, isTimerActive, child) {
-                    return ValueListenableBuilder<List<Bid>>(
-                      valueListenable: _bids,
-                      builder: (context, bids, _) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: bids.length,
-                          itemBuilder: (context, index) {
-                            final bid = bids[index];
-                            return BidCard(
-                              bid: bid,
-                              textTheme: textTheme,
-                              isAuctionActive: isTimerActive,
-                              onBidUpdated: _auctionHelper.updateBid,
-                              onBidAccepted: _auctionHelper.acceptBid,
-                              isSmallScreen: isSmallScreen,
-                              isLargeScreen: isLargeScreen,
+                    return BlocBuilder<
+                      DeliveryRequestBidsCubit,
+                      DeliveryRequestBidsState
+                    >(
+                      builder: (context, state) {
+                        return switch (state) {
+                          DeliveryRequestBidsInitial() =>
+                            const SizedBox.shrink(),
+                          DeliveryRequestBidsLoading() => const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                          DeliveryRequestBidsEmpty() => Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                'No bids yet',
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.getTextSecondaryColor(
+                                    isDark,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          DeliveryRequestBidsLoaded(bids: final bids) =>
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: bids.length,
+                              itemBuilder: (context, index) {
+                                final bid = bids[index];
+                                return BidCard(
+                                  bid: bid,
+                                  textTheme: textTheme,
+                                  isAuctionActive: isTimerActive,
+                                  onBidUpdated: _auctionHelper.updateBid,
+                                  onBidAccepted: _auctionHelper.acceptBid,
+                                  isSmallScreen: isSmallScreen,
+                                  isLargeScreen: isLargeScreen,
+                                  isDark: isDark,
+                                );
+                              },
+                            ),
+                          DeliveryRequestBidsError(message: final message) =>
+                            CustomErrorWidget(
+                              errorMessage: message,
                               isDark: isDark,
-                            );
-                          },
-                        );
+                              onRetry: () {
+                                // _auctionHelper.loadBids(auctionId);
+                              },
+                            ),
+                        };
                       },
                     );
                   },

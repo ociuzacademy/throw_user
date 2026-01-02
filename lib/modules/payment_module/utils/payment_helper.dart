@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:throw_user/core/widgets/alert_dialogs/custom_alert_dialog.dart';
-import 'package:throw_user/core/models/bid.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/modules/payment_result_module/view/payment_result_page.dart';
 
 // Mock payment result class
@@ -53,7 +53,7 @@ class PaymentService {
 
 class PaymentHelper {
   final BuildContext context;
-  final Bid bid;
+  final BidModel bid;
   final PaymentService _paymentService = PaymentService();
 
   PaymentHelper({required this.context, required this.bid});
@@ -83,7 +83,7 @@ class PaymentHelper {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             Text(
-              '\u20B9${bid.bargainedPrice != null ? bid.bargainedPrice?.toStringAsFixed(2) : bid.price.toStringAsFixed(2)}',
+              '\u20B9${bid.bargainAmount ?? bid.bidAmount.toStringAsFixed(2)}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],

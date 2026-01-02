@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 
-import 'package:throw_user/core/models/bid.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/modules/auction_module/typedefs/bid_action.dart';
 import 'package:throw_user/modules/auction_module/utils/bid_card_helper.dart';
 import 'package:throw_user/modules/auction_module/widgets/accept_button.dart';
 import 'package:throw_user/modules/auction_module/widgets/bargain_button.dart';
 
 class BidCard extends StatefulWidget {
-  final Bid bid;
+  final BidModel bid;
   final TextTheme textTheme;
   final bool isAuctionActive;
   final bool isSmallScreen;
@@ -76,7 +76,7 @@ class _BidCardState extends State<BidCard> {
           children: [
             // Profile image
             CachedNetworkImage(
-              imageUrl: widget.bid.imageUrl,
+              imageUrl: widget.bid.agentAvatarUrl,
               imageBuilder: (context, imageProvider) => CircleAvatar(
                 radius: avatarRadius,
                 backgroundImage: imageProvider,
@@ -108,7 +108,7 @@ class _BidCardState extends State<BidCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.bid.name,
+                    widget.bid.agentName,
                     style: widget.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: nameFontSize,
@@ -125,14 +125,14 @@ class _BidCardState extends State<BidCard> {
                       ),
                       SizedBox(width: widget.isSmallScreen ? 2.0 : 4.0),
                       Text(
-                        widget.bid.rating.toString(),
+                        widget.bid.agentAverageRating.toString(),
                         style: widget.textTheme.bodySmall?.copyWith(
                           fontSize: widget.isSmallScreen ? 12.0 : 14.0,
                         ),
                       ),
                       SizedBox(width: widget.isSmallScreen ? 4.0 : 8.0),
                       Text(
-                        widget.bid.eta,
+                        '10-15 mins', // Placeholder for ETA
                         style: widget.textTheme.bodySmall?.copyWith(
                           color: AppColors.getTextSecondaryColor(widget.isDark),
                           fontSize: widget.isSmallScreen ? 12.0 : 14.0,
@@ -142,25 +142,12 @@ class _BidCardState extends State<BidCard> {
                   ),
 
                   // Show bargained price if exists
-                  if (widget.bid.bargainedPrice != null) ...[
+                  if (widget.bid.bargainAmount != null) ...[
                     SizedBox(height: widget.isSmallScreen ? 2.0 : 4.0),
                     Text(
-                      'Bargained: \u20B9${widget.bid.bargainedPrice!.toStringAsFixed(2)}',
+                      'Bargained: \u20B9${widget.bid.bargainAmount!.toStringAsFixed(2)}',
                       style: widget.textTheme.bodySmall?.copyWith(
                         color: AppColors.success,
-                        fontWeight: FontWeight.w500,
-                        fontSize: widget.isSmallScreen ? 11.0 : 12.0,
-                      ),
-                    ),
-                  ],
-
-                  // Show if agent left the auction
-                  if (widget.bid.agentLeftAuction) ...[
-                    SizedBox(height: widget.isSmallScreen ? 2.0 : 4.0),
-                    Text(
-                      'Agent left the auction',
-                      style: widget.textTheme.bodySmall?.copyWith(
-                        color: AppColors.error,
                         fontWeight: FontWeight.w500,
                         fontSize: widget.isSmallScreen ? 11.0 : 12.0,
                       ),
@@ -175,7 +162,7 @@ class _BidCardState extends State<BidCard> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '\u20B9${widget.bid.price.toStringAsFixed(2)}',
+                  '\u20B9${widget.bid.bidAmount.toStringAsFixed(2)}',
                   style: widget.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primary,
@@ -185,66 +172,55 @@ class _BidCardState extends State<BidCard> {
                 SizedBox(height: widget.isSmallScreen ? 4.0 : 8.0),
 
                 // Show different UI based on auction status and agent status
-                if (widget.bid.agentLeftAuction)
-                  Text(
-                    'No longer available',
-                    style: widget.textTheme.bodySmall?.copyWith(
-                      color: AppColors.error,
-                      fontStyle: FontStyle.italic,
-                      fontSize: widget.isSmallScreen ? 10.0 : 12.0,
-                    ),
-                  )
-                else
-                  // Responsive button layout
-                  widget.isSmallScreen
-                      ? Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            BargainButton(
-                              isAuctionActive: widget.isAuctionActive,
-                              agentLeftAuction: widget.bid.agentLeftAuction,
-                              showBargainBottomSheet:
-                                  _bidCardHelper.showBargainBottomSheet,
-                              fontSize: buttonFontSize,
-                              horizontalPadding: buttonHorizontalPadding,
-                              verticalPadding: buttonVerticalPadding,
-                            ),
-                            const SizedBox(height: 4),
-                            AcceptButton(
-                              isAuctionActive: widget.isAuctionActive,
-                              agentLeftAuction: widget.bid.agentLeftAuction,
-                              showAcceptBidDialog:
-                                  _bidCardHelper.showAcceptBidDialog,
-                              fontSize: buttonFontSize,
-                              horizontalPadding: buttonHorizontalPadding,
-                              verticalPadding: buttonVerticalPadding,
-                            ),
-                          ],
-                        )
-                      : Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            BargainButton(
-                              isAuctionActive: widget.isAuctionActive,
-                              agentLeftAuction: widget.bid.agentLeftAuction,
-                              showBargainBottomSheet:
-                                  _bidCardHelper.showBargainBottomSheet,
-                              fontSize: buttonFontSize,
-                              horizontalPadding: buttonHorizontalPadding,
-                              verticalPadding: buttonVerticalPadding,
-                            ),
-                            SizedBox(width: widget.isLargeScreen ? 12.0 : 8.0),
-                            AcceptButton(
-                              isAuctionActive: widget.isAuctionActive,
-                              agentLeftAuction: widget.bid.agentLeftAuction,
-                              showAcceptBidDialog:
-                                  _bidCardHelper.showAcceptBidDialog,
-                              fontSize: buttonFontSize,
-                              horizontalPadding: buttonHorizontalPadding,
-                              verticalPadding: buttonVerticalPadding,
-                            ),
-                          ],
-                        ),
+                widget.isSmallScreen
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          BargainButton(
+                            isAuctionActive: widget.isAuctionActive,
+                            agentLeftAuction: false, // Placeholder
+                            showBargainBottomSheet:
+                                _bidCardHelper.showBargainBottomSheet,
+                            fontSize: buttonFontSize,
+                            horizontalPadding: buttonHorizontalPadding,
+                            verticalPadding: buttonVerticalPadding,
+                          ),
+                          const SizedBox(height: 4),
+                          AcceptButton(
+                            isAuctionActive: widget.isAuctionActive,
+                            agentLeftAuction: false, // Placeholder
+                            showAcceptBidDialog:
+                                _bidCardHelper.showAcceptBidDialog,
+                            fontSize: buttonFontSize,
+                            horizontalPadding: buttonHorizontalPadding,
+                            verticalPadding: buttonVerticalPadding,
+                          ),
+                        ],
+                      )
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          BargainButton(
+                            isAuctionActive: widget.isAuctionActive,
+                            agentLeftAuction: false, // Placeholder
+                            showBargainBottomSheet:
+                                _bidCardHelper.showBargainBottomSheet,
+                            fontSize: buttonFontSize,
+                            horizontalPadding: buttonHorizontalPadding,
+                            verticalPadding: buttonVerticalPadding,
+                          ),
+                          SizedBox(width: widget.isLargeScreen ? 12.0 : 8.0),
+                          AcceptButton(
+                            isAuctionActive: widget.isAuctionActive,
+                            agentLeftAuction: false, // Placeholder
+                            showAcceptBidDialog:
+                                _bidCardHelper.showAcceptBidDialog,
+                            fontSize: buttonFontSize,
+                            horizontalPadding: buttonHorizontalPadding,
+                            verticalPadding: buttonVerticalPadding,
+                          ),
+                        ],
+                      ),
               ],
             ),
           ],

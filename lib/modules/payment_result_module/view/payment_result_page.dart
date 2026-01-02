@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 
-import 'package:throw_user/core/models/bid.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/modules/home_module/view/home_page.dart';
 import 'package:throw_user/modules/payment_result_module/widgets/failure_icon.dart';
 import 'package:throw_user/modules/payment_result_module/widgets/success_icon.dart';
@@ -10,7 +10,7 @@ import 'package:throw_user/modules/payment_module/view/payment_page.dart';
 
 class PaymentResultPage extends StatefulWidget {
   final bool isSuccess;
-  final Bid? bid;
+  final BidModel? bid;
   final String? transactionId;
 
   const PaymentResultPage({
@@ -25,7 +25,7 @@ class PaymentResultPage extends StatefulWidget {
 
   static MaterialPageRoute route({
     required bool isSuccess,
-    Bid? bid,
+    BidModel? bid,
     String? transactionId,
   }) => MaterialPageRoute(
     builder: (context) => PaymentResultPage(

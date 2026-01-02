@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 
-import 'package:throw_user/core/models/bid.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/modules/payment_module/utils/payment_helper.dart';
 
 class PaymentPage extends StatefulWidget {
-  final Bid bid;
+  final BidModel bid;
   const PaymentPage({super.key, required this.bid});
 
-  static MaterialPageRoute route({required Bid bid}) =>
+  static MaterialPageRoute route({required BidModel bid}) =>
       MaterialPageRoute(builder: (context) => PaymentPage(bid: bid));
 
   @override
@@ -168,7 +168,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     ),
                                     SizedBox(height: isSmallScreen ? 2 : 4),
                                     Text(
-                                      '\u20B9${widget.bid.bargainedPrice != null ? widget.bid.bargainedPrice?.toStringAsFixed(2) : widget.bid.price.toStringAsFixed(2)}',
+                                      '\u20B9${widget.bid.bargainAmount ?? widget.bid.bidAmount.toStringAsFixed(2)}',
                                       style: TextStyle(
                                         fontSize: amountFontSize,
                                         fontWeight: FontWeight.bold,
@@ -238,7 +238,9 @@ class _PaymentPageState extends State<PaymentPage> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  image: NetworkImage(widget.bid.imageUrl),
+                                  image: NetworkImage(
+                                    widget.bid.agentAvatarUrl,
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -250,7 +252,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.bid.name,
+                                    widget.bid.agentName,
                                     style: TextStyle(
                                       fontSize: isSmallScreen ? 14 : 16,
                                       fontWeight: FontWeight.bold,

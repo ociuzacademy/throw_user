@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:throw_user/core/models/bid.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/core/widgets/alert_dialogs/custom_alert_dialog.dart';
 import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
 import 'package:throw_user/modules/auction_module/typedefs/bid_action.dart';
@@ -9,7 +9,7 @@ import 'package:throw_user/modules/auction_module/widgets/bargain_bottom_sheet.d
 
 class BidCardHelper {
   final BuildContext context;
-  final Bid bid;
+  final BidModel bid;
   final TextTheme textTheme;
   final BidAction onBidUpdated; // Callback for bid updates
   final BidAction onBidAccepted; // Callback for when bid is accepted
@@ -27,7 +27,8 @@ class BidCardHelper {
 
     // Pre-fill with current price if no bargain exists, or with bargained price if it does
     bargainController.text =
-        bid.bargainedPrice?.toStringAsFixed(2) ?? bid.price.toStringAsFixed(2);
+        bid.bargainAmount?.toStringAsFixed(2) ??
+        bid.bidAmount.toStringAsFixed(2);
 
     showModalBottomSheet(
       context: context,
@@ -45,13 +46,13 @@ class BidCardHelper {
 
   void submitBargain(double bargainAmount) {
     // Update the bid with new bargained price
-    final updatedBid = bid.copyWith(bargainedPrice: bargainAmount);
+    final updatedBid = bid.copyWith(bargainAmount: bargainAmount);
     onBidUpdated(updatedBid);
 
     CustomSnackbar.showSuccess(
       context: context,
       message:
-          'Bargain of \u20B9${bargainAmount.toStringAsFixed(2)} sent to ${bid.name}',
+          'Bargain of \u20B9${bargainAmount.toStringAsFixed(2)} sent to ${bid.agentName}',
     );
   }
 
@@ -60,7 +61,7 @@ class BidCardHelper {
       context: context,
       title: 'Accept Bid',
       message:
-          'Are you sure you want to accept ${bid.name}\'s bid of \u20B9${bid.price.toStringAsFixed(2)}?',
+          'Are you sure you want to accept ${bid.agentName}\'s bid of \u20B9${bid.bidAmount.toStringAsFixed(2)}?',
       confirmButtonText: 'Accept',
       cancelButtonText: 'Cancel',
       onConfirm: acceptBid,

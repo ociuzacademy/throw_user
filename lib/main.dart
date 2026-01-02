@@ -33,72 +33,79 @@ class MyApp extends StatelessWidget {
       authService.initialize();
     });
 
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AuthBloc(
-            authService: authService,
-            authStorageFunctions: authStorageFunctions,
-            userRepository: userRepository,
-          ),
-        ),
-        BlocProvider(create: (context) => UserProfileCubit()),
-        BlocProvider(
-          create: (context) => DeliveryRequestBloc(
-            deliveryRequestRepository: deliveryRequestRepository,
-          ),
-        ),
+        RepositoryProvider.value(value: authService),
+        RepositoryProvider.value(value: userRepository),
+        RepositoryProvider.value(value: deliveryRequestRepository),
       ],
-      child: MaterialApp(
-        title: 'Throw',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: AppColors.primary,
-          cardColor: Colors.white,
-          scaffoldBackgroundColor: AppColors.backgroundLight,
-          textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
-            titleLarge: GoogleFonts.plusJakartaSans(
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-            bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.black87),
-            bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[700]),
-            bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[600]),
-          ),
-          appBarTheme: AppBarTheme(
-            backgroundColor: AppColors.backgroundLight.withValues(alpha: 0.8),
-            elevation: 0,
-            titleTextStyle: GoogleFonts.plusJakartaSans(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(
+              authService: authService,
+              authStorageFunctions: authStorageFunctions,
+              userRepository: userRepository,
             ),
           ),
+          BlocProvider(create: (context) => UserProfileCubit()),
+          BlocProvider(
+            create: (context) => DeliveryRequestBloc(
+              deliveryRequestRepository: deliveryRequestRepository,
+            ),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Throw',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: AppColors.primary,
+            cardColor: Colors.white,
+            scaffoldBackgroundColor: AppColors.backgroundLight,
+            textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
+              titleLarge: GoogleFonts.plusJakartaSans(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+              bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.black87),
+              bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[700]),
+              bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[600]),
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: AppColors.backgroundLight.withValues(alpha: 0.8),
+              elevation: 0,
+              titleTextStyle: GoogleFonts.plusJakartaSans(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          darkTheme: ThemeData(
+            primaryColor: AppColors.primary,
+            cardColor: AppColors.cardDark,
+            scaffoldBackgroundColor: AppColors.backgroundDark,
+            textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
+              titleLarge: GoogleFonts.plusJakartaSans(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.white),
+              bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[300]),
+              bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[400]),
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: AppColors.backgroundDark.withValues(alpha: 0.8),
+              elevation: 0,
+              titleTextStyle: GoogleFonts.plusJakartaSans(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          home: const SplashScreenWrapper(),
         ),
-        darkTheme: ThemeData(
-          primaryColor: AppColors.primary,
-          cardColor: AppColors.cardDark,
-          scaffoldBackgroundColor: AppColors.backgroundDark,
-          textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
-            titleLarge: GoogleFonts.plusJakartaSans(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            bodyLarge: GoogleFonts.plusJakartaSans(color: Colors.white),
-            bodyMedium: GoogleFonts.plusJakartaSans(color: Colors.grey[300]),
-            bodySmall: GoogleFonts.plusJakartaSans(color: Colors.grey[400]),
-          ),
-          appBarTheme: AppBarTheme(
-            backgroundColor: AppColors.backgroundDark.withValues(alpha: 0.8),
-            elevation: 0,
-            titleTextStyle: GoogleFonts.plusJakartaSans(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        home: const SplashScreenWrapper(),
       ),
     );
   }
