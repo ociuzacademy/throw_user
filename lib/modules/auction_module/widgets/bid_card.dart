@@ -14,7 +14,6 @@ class BidCard extends StatefulWidget {
   final bool isAuctionActive;
   final bool isSmallScreen;
   final bool isLargeScreen;
-  final BidAction onBidUpdated;
   final BidAction onBidAccepted;
   final bool isDark;
 
@@ -25,7 +24,6 @@ class BidCard extends StatefulWidget {
     required this.isAuctionActive,
     required this.isSmallScreen,
     required this.isLargeScreen,
-    required this.onBidUpdated,
     required this.onBidAccepted,
     required this.isDark,
   });
@@ -44,7 +42,6 @@ class _BidCardState extends State<BidCard> {
       context: context,
       bid: widget.bid,
       textTheme: widget.textTheme,
-      onBidUpdated: widget.onBidUpdated,
       onBidAccepted: widget.onBidAccepted,
     );
   }

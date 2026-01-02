@@ -134,13 +134,13 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( DeliveryRequestData deliveryRequestData)?  createDeliveryRequest,TResult Function( String requestId)?  cancelRequest,TResult Function( String requestId,  String deliveryAgentId,  double agreedDeliveryCharge)?  acceptRequest,TResult Function( String requestId)?  payEscrowAmount,TResult Function( String requestId)?  setDeliveryOnTheWay,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( DeliveryRequestData deliveryRequestData)?  createDeliveryRequest,TResult Function( String requestId)?  cancelRequest,TResult Function( String requestId,  BidModel bid)?  acceptRequest,TResult Function( String requestId)?  payEscrowAmount,TResult Function( String requestId)?  setDeliveryOnTheWay,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _CreateDeliveryRequest() when createDeliveryRequest != null:
 return createDeliveryRequest(_that.deliveryRequestData);case _CancelRequest() when cancelRequest != null:
 return cancelRequest(_that.requestId);case _AcceptRequest() when acceptRequest != null:
-return acceptRequest(_that.requestId,_that.deliveryAgentId,_that.agreedDeliveryCharge);case _PayEscrowAmount() when payEscrowAmount != null:
+return acceptRequest(_that.requestId,_that.bid);case _PayEscrowAmount() when payEscrowAmount != null:
 return payEscrowAmount(_that.requestId);case _SetDeliveryOnTheWay() when setDeliveryOnTheWay != null:
 return setDeliveryOnTheWay(_that.requestId);case _Reset() when reset != null:
 return reset();case _:
@@ -161,13 +161,13 @@ return reset();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( DeliveryRequestData deliveryRequestData)  createDeliveryRequest,required TResult Function( String requestId)  cancelRequest,required TResult Function( String requestId,  String deliveryAgentId,  double agreedDeliveryCharge)  acceptRequest,required TResult Function( String requestId)  payEscrowAmount,required TResult Function( String requestId)  setDeliveryOnTheWay,required TResult Function()  reset,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( DeliveryRequestData deliveryRequestData)  createDeliveryRequest,required TResult Function( String requestId)  cancelRequest,required TResult Function( String requestId,  BidModel bid)  acceptRequest,required TResult Function( String requestId)  payEscrowAmount,required TResult Function( String requestId)  setDeliveryOnTheWay,required TResult Function()  reset,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _CreateDeliveryRequest():
 return createDeliveryRequest(_that.deliveryRequestData);case _CancelRequest():
 return cancelRequest(_that.requestId);case _AcceptRequest():
-return acceptRequest(_that.requestId,_that.deliveryAgentId,_that.agreedDeliveryCharge);case _PayEscrowAmount():
+return acceptRequest(_that.requestId,_that.bid);case _PayEscrowAmount():
 return payEscrowAmount(_that.requestId);case _SetDeliveryOnTheWay():
 return setDeliveryOnTheWay(_that.requestId);case _Reset():
 return reset();}
@@ -184,13 +184,13 @@ return reset();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( DeliveryRequestData deliveryRequestData)?  createDeliveryRequest,TResult? Function( String requestId)?  cancelRequest,TResult? Function( String requestId,  String deliveryAgentId,  double agreedDeliveryCharge)?  acceptRequest,TResult? Function( String requestId)?  payEscrowAmount,TResult? Function( String requestId)?  setDeliveryOnTheWay,TResult? Function()?  reset,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( DeliveryRequestData deliveryRequestData)?  createDeliveryRequest,TResult? Function( String requestId)?  cancelRequest,TResult? Function( String requestId,  BidModel bid)?  acceptRequest,TResult? Function( String requestId)?  payEscrowAmount,TResult? Function( String requestId)?  setDeliveryOnTheWay,TResult? Function()?  reset,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _CreateDeliveryRequest() when createDeliveryRequest != null:
 return createDeliveryRequest(_that.deliveryRequestData);case _CancelRequest() when cancelRequest != null:
 return cancelRequest(_that.requestId);case _AcceptRequest() when acceptRequest != null:
-return acceptRequest(_that.requestId,_that.deliveryAgentId,_that.agreedDeliveryCharge);case _PayEscrowAmount() when payEscrowAmount != null:
+return acceptRequest(_that.requestId,_that.bid);case _PayEscrowAmount() when payEscrowAmount != null:
 return payEscrowAmount(_that.requestId);case _SetDeliveryOnTheWay() when setDeliveryOnTheWay != null:
 return setDeliveryOnTheWay(_that.requestId);case _Reset() when reset != null:
 return reset();case _:
@@ -369,12 +369,11 @@ as String,
 
 
 class _AcceptRequest implements DeliveryRequestEvent {
-  const _AcceptRequest(this.requestId, this.deliveryAgentId, this.agreedDeliveryCharge);
+  const _AcceptRequest(this.requestId, this.bid);
   
 
  final  String requestId;
- final  String deliveryAgentId;
- final  double agreedDeliveryCharge;
+ final  BidModel bid;
 
 /// Create a copy of DeliveryRequestEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -386,16 +385,16 @@ _$AcceptRequestCopyWith<_AcceptRequest> get copyWith => __$AcceptRequestCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AcceptRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.deliveryAgentId, deliveryAgentId) || other.deliveryAgentId == deliveryAgentId)&&(identical(other.agreedDeliveryCharge, agreedDeliveryCharge) || other.agreedDeliveryCharge == agreedDeliveryCharge));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AcceptRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.bid, bid) || other.bid == bid));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,requestId,deliveryAgentId,agreedDeliveryCharge);
+int get hashCode => Object.hash(runtimeType,requestId,bid);
 
 @override
 String toString() {
-  return 'DeliveryRequestEvent.acceptRequest(requestId: $requestId, deliveryAgentId: $deliveryAgentId, agreedDeliveryCharge: $agreedDeliveryCharge)';
+  return 'DeliveryRequestEvent.acceptRequest(requestId: $requestId, bid: $bid)';
 }
 
 
@@ -406,7 +405,7 @@ abstract mixin class _$AcceptRequestCopyWith<$Res> implements $DeliveryRequestEv
   factory _$AcceptRequestCopyWith(_AcceptRequest value, $Res Function(_AcceptRequest) _then) = __$AcceptRequestCopyWithImpl;
 @useResult
 $Res call({
- String requestId, String deliveryAgentId, double agreedDeliveryCharge
+ String requestId, BidModel bid
 });
 
 
@@ -423,12 +422,11 @@ class __$AcceptRequestCopyWithImpl<$Res>
 
 /// Create a copy of DeliveryRequestEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? requestId = null,Object? deliveryAgentId = null,Object? agreedDeliveryCharge = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? requestId = null,Object? bid = null,}) {
   return _then(_AcceptRequest(
 null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
-as String,null == deliveryAgentId ? _self.deliveryAgentId : deliveryAgentId // ignore: cast_nullable_to_non_nullable
-as String,null == agreedDeliveryCharge ? _self.agreedDeliveryCharge : agreedDeliveryCharge // ignore: cast_nullable_to_non_nullable
-as double,
+as String,null == bid ? _self.bid : bid // ignore: cast_nullable_to_non_nullable
+as BidModel,
   ));
 }
 
@@ -725,14 +723,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String requestId)?  createDeliveryRequestSuccess,TResult Function( String requestId)?  cancelRequestSuccess,TResult Function( String requestId)?  acceptRequestSuccess,TResult Function( String requestId)?  payEscrowAmountSuccess,TResult Function( String requestId)?  setDeliveryOnTheWaySuccess,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String requestId)?  createDeliveryRequestSuccess,TResult Function( String requestId)?  cancelRequestSuccess,TResult Function( BidModel bid)?  acceptRequestSuccess,TResult Function( String requestId)?  payEscrowAmountSuccess,TResult Function( String requestId)?  setDeliveryOnTheWaySuccess,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case DeliveryRequestInitial() when initial != null:
 return initial();case DeliveryRequestLoading() when loading != null:
 return loading();case CreateDeliveryRequestSuccess() when createDeliveryRequestSuccess != null:
 return createDeliveryRequestSuccess(_that.requestId);case CancelRequestSuccess() when cancelRequestSuccess != null:
 return cancelRequestSuccess(_that.requestId);case AcceptRequestSuccess() when acceptRequestSuccess != null:
-return acceptRequestSuccess(_that.requestId);case PayEscrowAmountSuccess() when payEscrowAmountSuccess != null:
+return acceptRequestSuccess(_that.bid);case PayEscrowAmountSuccess() when payEscrowAmountSuccess != null:
 return payEscrowAmountSuccess(_that.requestId);case SetDeliveryOnTheWaySuccess() when setDeliveryOnTheWaySuccess != null:
 return setDeliveryOnTheWaySuccess(_that.requestId);case DeliveryRequestError() when error != null:
 return error(_that.message);case _:
@@ -753,14 +751,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String requestId)  createDeliveryRequestSuccess,required TResult Function( String requestId)  cancelRequestSuccess,required TResult Function( String requestId)  acceptRequestSuccess,required TResult Function( String requestId)  payEscrowAmountSuccess,required TResult Function( String requestId)  setDeliveryOnTheWaySuccess,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String requestId)  createDeliveryRequestSuccess,required TResult Function( String requestId)  cancelRequestSuccess,required TResult Function( BidModel bid)  acceptRequestSuccess,required TResult Function( String requestId)  payEscrowAmountSuccess,required TResult Function( String requestId)  setDeliveryOnTheWaySuccess,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case DeliveryRequestInitial():
 return initial();case DeliveryRequestLoading():
 return loading();case CreateDeliveryRequestSuccess():
 return createDeliveryRequestSuccess(_that.requestId);case CancelRequestSuccess():
 return cancelRequestSuccess(_that.requestId);case AcceptRequestSuccess():
-return acceptRequestSuccess(_that.requestId);case PayEscrowAmountSuccess():
+return acceptRequestSuccess(_that.bid);case PayEscrowAmountSuccess():
 return payEscrowAmountSuccess(_that.requestId);case SetDeliveryOnTheWaySuccess():
 return setDeliveryOnTheWaySuccess(_that.requestId);case DeliveryRequestError():
 return error(_that.message);}
@@ -777,14 +775,14 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String requestId)?  createDeliveryRequestSuccess,TResult? Function( String requestId)?  cancelRequestSuccess,TResult? Function( String requestId)?  acceptRequestSuccess,TResult? Function( String requestId)?  payEscrowAmountSuccess,TResult? Function( String requestId)?  setDeliveryOnTheWaySuccess,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String requestId)?  createDeliveryRequestSuccess,TResult? Function( String requestId)?  cancelRequestSuccess,TResult? Function( BidModel bid)?  acceptRequestSuccess,TResult? Function( String requestId)?  payEscrowAmountSuccess,TResult? Function( String requestId)?  setDeliveryOnTheWaySuccess,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case DeliveryRequestInitial() when initial != null:
 return initial();case DeliveryRequestLoading() when loading != null:
 return loading();case CreateDeliveryRequestSuccess() when createDeliveryRequestSuccess != null:
 return createDeliveryRequestSuccess(_that.requestId);case CancelRequestSuccess() when cancelRequestSuccess != null:
 return cancelRequestSuccess(_that.requestId);case AcceptRequestSuccess() when acceptRequestSuccess != null:
-return acceptRequestSuccess(_that.requestId);case PayEscrowAmountSuccess() when payEscrowAmountSuccess != null:
+return acceptRequestSuccess(_that.bid);case PayEscrowAmountSuccess() when payEscrowAmountSuccess != null:
 return payEscrowAmountSuccess(_that.requestId);case SetDeliveryOnTheWaySuccess() when setDeliveryOnTheWaySuccess != null:
 return setDeliveryOnTheWaySuccess(_that.requestId);case DeliveryRequestError() when error != null:
 return error(_that.message);case _:
@@ -995,10 +993,10 @@ as String,
 
 
 class AcceptRequestSuccess implements DeliveryRequestState {
-  const AcceptRequestSuccess({required this.requestId});
+  const AcceptRequestSuccess({required this.bid});
   
 
- final  String requestId;
+ final  BidModel bid;
 
 /// Create a copy of DeliveryRequestState
 /// with the given fields replaced by the non-null parameter values.
@@ -1010,16 +1008,16 @@ $AcceptRequestSuccessCopyWith<AcceptRequestSuccess> get copyWith => _$AcceptRequ
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AcceptRequestSuccess&&(identical(other.requestId, requestId) || other.requestId == requestId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AcceptRequestSuccess&&(identical(other.bid, bid) || other.bid == bid));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,requestId);
+int get hashCode => Object.hash(runtimeType,bid);
 
 @override
 String toString() {
-  return 'DeliveryRequestState.acceptRequestSuccess(requestId: $requestId)';
+  return 'DeliveryRequestState.acceptRequestSuccess(bid: $bid)';
 }
 
 
@@ -1030,7 +1028,7 @@ abstract mixin class $AcceptRequestSuccessCopyWith<$Res> implements $DeliveryReq
   factory $AcceptRequestSuccessCopyWith(AcceptRequestSuccess value, $Res Function(AcceptRequestSuccess) _then) = _$AcceptRequestSuccessCopyWithImpl;
 @useResult
 $Res call({
- String requestId
+ BidModel bid
 });
 
 
@@ -1047,10 +1045,10 @@ class _$AcceptRequestSuccessCopyWithImpl<$Res>
 
 /// Create a copy of DeliveryRequestState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? requestId = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? bid = null,}) {
   return _then(AcceptRequestSuccess(
-requestId: null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
-as String,
+bid: null == bid ? _self.bid : bid // ignore: cast_nullable_to_non_nullable
+as BidModel,
   ));
 }
 

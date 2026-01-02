@@ -11,14 +11,12 @@ class BidCardHelper {
   final BuildContext context;
   final BidModel bid;
   final TextTheme textTheme;
-  final BidAction onBidUpdated; // Callback for bid updates
-  final BidAction onBidAccepted; // Callback for when bid is accepted
+  final BidAction onBidAccepted;
 
   const BidCardHelper({
     required this.context,
     required this.bid,
     required this.textTheme,
-    required this.onBidUpdated,
     required this.onBidAccepted, // Make sure this parameter is included
   });
 
@@ -45,10 +43,6 @@ class BidCardHelper {
   }
 
   void submitBargain(double bargainAmount) {
-    // Update the bid with new bargained price
-    final updatedBid = bid.copyWith(bargainAmount: bargainAmount);
-    onBidUpdated(updatedBid);
-
     CustomSnackbar.showSuccess(
       context: context,
       message:

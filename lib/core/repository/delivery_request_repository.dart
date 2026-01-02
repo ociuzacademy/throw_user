@@ -101,6 +101,22 @@ class DeliveryRequestRepository {
 
   Future<void> cancelRequest(String requestId) async {
     try {
+      // 1. Set the status of all the bids to rejected
+      await _firestore
+          .collection(deliveryRequestCollection)
+          .doc(requestId)
+          .collection(bidsCollection)
+          .get()
+          .then((querySnapshot) {
+            for (var doc in querySnapshot.docs) {
+              doc.reference.update({
+                'bidStatus': BidStatus.rejected.value,
+                'updatedAt': FieldValue.serverTimestamp(),
+              });
+            }
+          });
+
+      // 2. Set the status of the request to cancelled
       await _firestore
           .collection(deliveryRequestCollection)
           .doc(requestId)
@@ -116,18 +132,53 @@ class DeliveryRequestRepository {
     }
   }
 
-  Future<void> acceptRequest(
-    String requestId,
-    String deliveryAgentId,
-    double agreedDeliveryCharge,
-  ) async {
+  Future<void> acceptRequest(String requestId, String bidId) async {
     try {
+      // 1. Set the status of all the bids to rejected except the accepted bid
+      final querySnapshot = await _firestore
+          .collection(deliveryRequestCollection)
+          .doc(requestId)
+          .collection(bidsCollection)
+          .get();
+
+      final List<Future<void>> updateFutures = [];
+      for (var doc in querySnapshot.docs) {
+        if (doc.id != bidId) {
+          updateFutures.add(
+            doc.reference.update({
+              'bidStatus': BidStatus.rejected.value,
+              'updatedAt': FieldValue.serverTimestamp(),
+            }),
+          );
+        } else {
+          updateFutures.add(
+            doc.reference.update({
+              'bidStatus': BidStatus.approved.value,
+              'updatedAt': FieldValue.serverTimestamp(),
+            }),
+          );
+        }
+      }
+      await Future.wait(updateFutures);
+
+      // 2. Get the approved bid
+      final approvedBid = await _firestore
+          .collection(deliveryRequestCollection)
+          .doc(requestId)
+          .collection(bidsCollection)
+          .doc(bidId)
+          .get();
+
+      // 3. Convert the approved bid to a BidModel object
+      final bid = BidModel.fromJson(approvedBid.data()!);
+
+      // 4. Set the status of the request to accepted
       await _firestore
           .collection(deliveryRequestCollection)
           .doc(requestId)
           .update({
-            'deliveryAgentId': deliveryAgentId,
-            'agreedDeliveryCharge': agreedDeliveryCharge,
+            'deliveryAgentId': bid.agentId,
+            'agreedDeliveryCharge': bid.bidAmount,
             'requestStatus': RequestStatus.requestAccepted.value,
             'updatedAt': FieldValue.serverTimestamp(),
           });

@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/exports/bloc_exports.dart';
 import 'package:throw_user/core/exports/custom_widget_exports.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/core/repository/delivery_request_repository.dart';
 import 'package:throw_user/modules/auction_expired_module/view/auction_expired_page.dart';
 import 'package:throw_user/modules/auction_module/cubit/delivery_request_bids_cubit.dart';
 import 'package:throw_user/modules/auction_module/utils/auction_helper.dart';
 import 'package:throw_user/modules/auction_module/widgets/bid_card.dart';
 import 'package:throw_user/modules/auction_module/widgets/time_unit.dart';
+import 'package:throw_user/modules/payment_module/view/payment_page.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AuctionPage extends StatefulWidget {
@@ -107,6 +109,20 @@ class _AuctionPageState extends State<AuctionPage> {
                     message: 'Auction has cancelled!',
                   );
                   Navigator.push(context, AuctionExpiredPage.route());
+                  break;
+                case AcceptRequestSuccess(bid: final BidModel bid):
+                  OverlayLoader.hide();
+                  _auctionHelper.reset();
+                  _auctionHelper.cancelTimer();
+                  CustomSnackbar.showSuccess(
+                    context: context,
+                    message:
+                        'Bid with id ${bid.bidId} accepted and forwarding to the payment page!',
+                  );
+                  Navigator.push(
+                    context,
+                    PaymentPage.route(bid: bid, requestId: widget.auctionId),
+                  );
                   break;
                 case DeliveryRequestError(message: final String message):
                   OverlayLoader.hide();
@@ -311,7 +327,6 @@ class _AuctionPageState extends State<AuctionPage> {
                                   bid: bid,
                                   textTheme: textTheme,
                                   isAuctionActive: isTimerActive,
-                                  onBidUpdated: _auctionHelper.updateBid,
                                   onBidAccepted: _auctionHelper.acceptBid,
                                   isSmallScreen: isSmallScreen,
                                   isLargeScreen: isLargeScreen,

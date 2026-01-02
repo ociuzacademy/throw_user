@@ -11,7 +11,7 @@ sealed class DeliveryRequestState with _$DeliveryRequestState {
     required String requestId,
   }) = CancelRequestSuccess;
   const factory DeliveryRequestState.acceptRequestSuccess({
-    required String requestId,
+    required BidModel bid,
   }) = AcceptRequestSuccess;
   const factory DeliveryRequestState.payEscrowAmountSuccess({
     required String requestId,

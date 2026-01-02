@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/core/repository/delivery_request_repository.dart';
 import 'package:throw_user/core/storage/auth_storage_functions.dart';
 import 'package:throw_user/modules/delivery_request_module/data/delivery_request_data.dart';
@@ -68,12 +69,9 @@ class DeliveryRequestBloc
     try {
       await deliveryRequestRepository.acceptRequest(
         event.requestId,
-        event.deliveryAgentId,
-        event.agreedDeliveryCharge,
+        event.bid.bidId,
       );
-      emit(
-        DeliveryRequestState.acceptRequestSuccess(requestId: event.requestId),
-      );
+      emit(DeliveryRequestState.acceptRequestSuccess(bid: event.bid));
     } catch (e) {
       emit(DeliveryRequestState.error(message: e.toString()));
     }

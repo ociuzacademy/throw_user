@@ -69,8 +69,12 @@ class BidModel {
     bidAmount: (json['bidAmount'] ?? 0.0).toDouble(),
     bidId: json['bidId'],
     bidStatus: BidStatus.fromString(json['bidStatus']),
-    createdAt: json['createdAt'] as Timestamp,
-    updatedAt: json['updatedAt'] as Timestamp,
+    createdAt: json['createdAt'] != null
+        ? json['createdAt'] as Timestamp
+        : Timestamp.now(),
+    updatedAt: json['updatedAt'] != null
+        ? json['updatedAt'] as Timestamp
+        : Timestamp.now(),
   );
 
   Map<String, dynamic> toJson() => {

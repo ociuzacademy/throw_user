@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 
 import 'package:throw_user/core/models/bid_model.dart';
@@ -10,14 +11,16 @@ import 'package:throw_user/modules/payment_module/view/payment_page.dart';
 
 class PaymentResultPage extends StatefulWidget {
   final bool isSuccess;
-  final BidModel? bid;
-  final String? transactionId;
+  final String requestId;
+  final BidModel bid;
+  final String? errorMessage;
 
   const PaymentResultPage({
     super.key,
     required this.isSuccess,
-    this.bid,
-    this.transactionId,
+    required this.requestId,
+    required this.bid,
+    this.errorMessage,
   });
 
   @override
@@ -25,13 +28,15 @@ class PaymentResultPage extends StatefulWidget {
 
   static MaterialPageRoute route({
     required bool isSuccess,
-    BidModel? bid,
-    String? transactionId,
+    required String requestId,
+    required BidModel bid,
+    String? errorMessage,
   }) => MaterialPageRoute(
     builder: (context) => PaymentResultPage(
       isSuccess: isSuccess,
       bid: bid,
-      transactionId: transactionId,
+      requestId: requestId,
+      errorMessage: errorMessage,
     ),
   );
 }
@@ -118,7 +123,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                     child: Text(
                       'Payment',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         fontSize: isSmallScreen ? 16.0 : 18.0,
                         fontWeight: FontWeight.bold,
                         color: textColor,
@@ -161,7 +166,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                       widget.isSuccess
                           ? 'Payment Successful'
                           : 'Payment Failed',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         fontSize: titleFontSize,
                         fontWeight: FontWeight.bold,
                         color: textColor,
@@ -180,7 +185,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                             ? 'Your payment has been processed successfully. You will receive a confirmation shortly.'
                             : 'Unfortunately, your payment could not be processed. Please try again.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: descriptionFontSize,
                           color: textColor.withValues(alpha: 0.8),
                         ),
@@ -189,7 +194,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                     SizedBox(height: descriptionSpacing),
 
                     // Transaction ID (only for success)
-                    if (widget.isSuccess && widget.transactionId != null) ...[
+                    if (widget.isSuccess) ...[
                       Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: isSmallScreen ? 12.0 : 16.0,
@@ -213,8 +218,8 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Transaction ID:',
-                              style: TextStyle(
+                              'Bid ID:',
+                              style: GoogleFonts.inter(
                                 fontSize: transactionFontSize,
                                 color: textColor.withValues(alpha: 0.6),
                               ),
@@ -222,8 +227,8 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                             SizedBox(width: isSmallScreen ? 2.0 : 4.0),
                             Flexible(
                               child: Text(
-                                widget.transactionId!,
-                                style: TextStyle(
+                                widget.bid.bidId,
+                                style: GoogleFonts.inter(
                                   fontSize: transactionFontSize,
                                   fontWeight: FontWeight.w600,
                                   color: textColor,
@@ -235,6 +240,17 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                         ),
                       ),
                       SizedBox(height: transactionSpacing),
+                    ],
+                    if (widget.errorMessage != null) ...[
+                      Text(
+                        widget.errorMessage!,
+                        style: GoogleFonts.inter(
+                          fontSize: titleFontSize,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                     SizedBox(height: isSmallScreen ? 20.0 : 40.0),
                   ],
@@ -259,7 +275,10 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                     } else {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        PaymentPage.route(bid: widget.bid!),
+                        PaymentPage.route(
+                          bid: widget.bid,
+                          requestId: widget.requestId,
+                        ),
                         (_) => false,
                       );
                     }
@@ -277,7 +296,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                   ),
                   child: Text(
                     widget.isSuccess ? 'Done' : 'Retry Payment',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: buttonFontSize,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

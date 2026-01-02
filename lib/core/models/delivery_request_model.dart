@@ -137,9 +137,13 @@ class DeliveryRequestModel {
   factory DeliveryRequestModel.fromJson(Map<String, dynamic> json) =>
       DeliveryRequestModel(
         agreedDeliveryCharge: json['agreedDeliveryCharge']?.toDouble(),
-        auctionStartingTime: json['auctionStartingTime'] as Timestamp,
+        auctionStartingTime: json['auctionStartingTime'] != null
+            ? json['auctionStartingTime'] as Timestamp
+            : Timestamp.now(),
         baseDeliveryCharge: (json['baseDeliveryCharge'] ?? 0.0).toDouble(),
-        createdAt: json['createdAt'] as Timestamp,
+        createdAt: json['createdAt'] != null
+            ? json['createdAt'] as Timestamp
+            : Timestamp.now(),
         customerAvatarUrl: json['customerAvatarUrl'],
         customerName: json['customerName'],
         deliveryAgentId: json['deliveryAgentId'],
@@ -147,7 +151,9 @@ class DeliveryRequestModel {
         deliveryRequestId: json['deliveryRequestId'],
         deliveryStatus: DeliveryStatus.fromString(json['deliveryStatus']),
         dropOffAddress: json['dropOffAddress'],
-        dropOffDate: json['dropOffDate'] as Timestamp,
+        dropOffDate: json['dropOffDate'] != null
+            ? json['dropOffDate'] as Timestamp
+            : Timestamp.now(),
         dropOffPhoneNumber: json['dropOffPhoneNumber'],
         dropOffRemarks: json['dropOffRemarks'],
         minimumDeliveryCharge: (json['minimumDeliveryCharge'] ?? 0.0)
@@ -157,7 +163,9 @@ class DeliveryRequestModel {
         packageWeight: (json['packageWeight'] ?? 0.0).toDouble(),
         paymentStatus: PaymentStatus.fromString(json['paymentStatus']),
         pickupAddress: json['pickupAddress'],
-        pickupDate: json['pickupDate'] as Timestamp,
+        pickupDate: json['pickupDate'] != null
+            ? json['pickupDate'] as Timestamp
+            : Timestamp.now(),
         pickupLocation: json['pickupLocation'] as GeoPoint,
         pickupPhoneNumber: json['pickupPhoneNumber'],
         pickupRemarks: json['pickupRemarks'],
@@ -165,7 +173,9 @@ class DeliveryRequestModel {
           json['preferredDeliveryTime'],
         ),
         requestStatus: RequestStatus.fromString(json['requestStatus']),
-        updatedAt: json['updatedAt'] as Timestamp,
+        updatedAt: json['updatedAt'] != null
+            ? json['updatedAt'] as Timestamp
+            : Timestamp.now(),
         urgency: Urgency.fromString(json['urgency']),
       );
 

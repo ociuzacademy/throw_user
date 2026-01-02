@@ -10,8 +10,7 @@ sealed class DeliveryRequestEvent with _$DeliveryRequestEvent {
       _CancelRequest;
   const factory DeliveryRequestEvent.acceptRequest(
     String requestId,
-    String deliveryAgentId,
-    double agreedDeliveryCharge,
+    BidModel bid,
   ) = _AcceptRequest;
   const factory DeliveryRequestEvent.payEscrowAmount(String requestId) =
       _PayEscrowAmount;

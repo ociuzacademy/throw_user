@@ -4,10 +4,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/exports/bloc_exports.dart';
-import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
 
 import 'package:throw_user/core/models/bid_model.dart';
-import 'package:throw_user/core/repository/delivery_request_repository.dart';
 
 class AuctionHelper {
   final BuildContext context;
@@ -44,6 +42,8 @@ class AuctionHelper {
   }
 
   void cancelTimer() {
+    isTimerActive.value = false;
+    remainingSeconds.value = 0;
     timer?.cancel();
   }
 
@@ -52,31 +52,9 @@ class AuctionHelper {
     bloc.add(DeliveryRequestEvent.cancelRequest(requestId));
   }
 
-  // Update a bid (bargain) via repository
-  void updateBid(BidModel bid) {
-    context.read<DeliveryRequestRepository>().bargain(
-      requestId,
-      bid.bidId,
-      bid.bargainAmount ?? 0,
-    );
-  }
-
   // Handle bid acceptance and stop timer
   void acceptBid(BidModel bid) {
-    isTimerActive.value = false;
-    cancelTimer();
-
-    context.read<DeliveryRequestRepository>().acceptRequest(
-      requestId,
-      bid.agentId,
-      bid.bidAmount,
-    );
-
-    CustomSnackbar.showSuccess(
-      context: context,
-      message: 'Bid accepted successfully!',
-    );
-
-    // Navigator.push(context, PaymentPage.route(bid: bid)); // Wait, PaymentPage.route might still use Bid
+    final DeliveryRequestBloc bloc = context.read<DeliveryRequestBloc>();
+    bloc.add(DeliveryRequestEvent.acceptRequest(requestId, bid));
   }
 }
