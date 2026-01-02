@@ -19,6 +19,10 @@ sealed class DeliveryRequestState with _$DeliveryRequestState {
   const factory DeliveryRequestState.setDeliveryOnTheWaySuccess({
     required String requestId,
   }) = SetDeliveryOnTheWaySuccess;
+  const factory DeliveryRequestState.bargainSuccess({
+    required String bidId,
+    required double bargainAmount,
+  }) = BargainSuccess;
   const factory DeliveryRequestState.error({required String message}) =
       DeliveryRequestError;
 }

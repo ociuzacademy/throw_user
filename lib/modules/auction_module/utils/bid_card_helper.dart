@@ -1,23 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
 
 import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/core/widgets/alert_dialogs/custom_alert_dialog.dart';
-import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
 import 'package:throw_user/modules/auction_module/typedefs/bid_action.dart';
 import 'package:throw_user/modules/auction_module/widgets/bargain_bottom_sheet.dart';
 
 class BidCardHelper {
   final BuildContext context;
+  final String requestId;
   final BidModel bid;
   final TextTheme textTheme;
   final BidAction onBidAccepted;
 
   const BidCardHelper({
     required this.context,
+    required this.requestId,
     required this.bid,
     required this.textTheme,
-    required this.onBidAccepted, // Make sure this parameter is included
+    required this.onBidAccepted,
   });
 
   void showBargainBottomSheet() {
@@ -43,10 +46,18 @@ class BidCardHelper {
   }
 
   void submitBargain(double bargainAmount) {
-    CustomSnackbar.showSuccess(
-      context: context,
-      message:
-          'Bargain of \u20B9${bargainAmount.toStringAsFixed(2)} sent to ${bid.agentName}',
+    // CustomSnackbar.showSuccess(
+    //   context: context,
+    //   message:
+    //       'Bargain of \u20B9${bargainAmount.toStringAsFixed(2)} sent to ${bid.agentName}',
+    // );
+    final DeliveryRequestBloc bloc = context.read<DeliveryRequestBloc>();
+    bloc.add(
+      DeliveryRequestEvent.bargain(
+        requestId: requestId,
+        bidId: bid.bidId,
+        amount: bargainAmount,
+      ),
     );
   }
 
@@ -60,7 +71,7 @@ class BidCardHelper {
       cancelButtonText: 'Cancel',
       onConfirm: acceptBid,
       onCancel: () {
-        // Just close the dialog, no additional action needed
+        Navigator.pop(context);
       },
       barrierDismissible: true, // Allow tapping outside to dismiss
       // Optional: Add an icon for better visual appeal

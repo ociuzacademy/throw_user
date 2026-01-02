@@ -20,6 +20,7 @@ class DeliveryRequestBloc
     on<_PayEscrowAmount>(_onPayEscrowAmount);
     on<_SetDeliveryOnTheWay>(_onSetDeliveryOnTheWay);
     on<_Reset>(_onReset);
+    on<_Bargain>(_onBargain);
   }
 
   Future<void> _onCreateDeliveryRequest(
@@ -114,5 +115,27 @@ class DeliveryRequestBloc
     Emitter<DeliveryRequestState> emit,
   ) async {
     emit(const DeliveryRequestState.initial());
+  }
+
+  Future<void> _onBargain(
+    _Bargain event,
+    Emitter<DeliveryRequestState> emit,
+  ) async {
+    emit(const DeliveryRequestState.loading());
+    try {
+      await deliveryRequestRepository.bargain(
+        event.requestId,
+        event.bidId,
+        event.amount,
+      );
+      emit(
+        DeliveryRequestState.bargainSuccess(
+          bidId: event.bidId,
+          bargainAmount: event.amount,
+        ),
+      );
+    } catch (e) {
+      emit(DeliveryRequestState.error(message: e.toString()));
+    }
   }
 }

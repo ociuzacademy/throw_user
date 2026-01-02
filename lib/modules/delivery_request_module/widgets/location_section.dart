@@ -87,6 +87,7 @@ class LocationSection extends StatelessWidget {
         children: [
           // Header
           Container(
+            width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border(

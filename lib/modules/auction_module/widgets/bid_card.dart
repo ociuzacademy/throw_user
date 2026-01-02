@@ -9,6 +9,7 @@ import 'package:throw_user/modules/auction_module/widgets/accept_button.dart';
 import 'package:throw_user/modules/auction_module/widgets/bargain_button.dart';
 
 class BidCard extends StatefulWidget {
+  final String requestId;
   final BidModel bid;
   final TextTheme textTheme;
   final bool isAuctionActive;
@@ -19,6 +20,7 @@ class BidCard extends StatefulWidget {
 
   const BidCard({
     super.key,
+    required this.requestId,
     required this.bid,
     required this.textTheme,
     required this.isAuctionActive,
@@ -40,6 +42,7 @@ class _BidCardState extends State<BidCard> {
     super.initState();
     _bidCardHelper = BidCardHelper(
       context: context,
+      requestId: widget.requestId,
       bid: widget.bid,
       textTheme: widget.textTheme,
       onBidAccepted: widget.onBidAccepted,

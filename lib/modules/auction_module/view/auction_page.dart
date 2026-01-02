@@ -124,6 +124,17 @@ class _AuctionPageState extends State<AuctionPage> {
                     PaymentPage.route(bid: bid, requestId: widget.auctionId),
                   );
                   break;
+                case BargainSuccess(
+                  bidId: final bidId,
+                  bargainAmount: final bargainAmount,
+                ):
+                  OverlayLoader.hide();
+                  CustomSnackbar.showSuccess(
+                    context: context,
+                    message:
+                        'Bargain of \u20B9${bargainAmount.toStringAsFixed(2)} sent to bid with id $bidId',
+                  );
+                  break;
                 case DeliveryRequestError(message: final String message):
                   OverlayLoader.hide();
                   CustomSnackbar.showError(context: context, message: message);
@@ -330,6 +341,7 @@ class _AuctionPageState extends State<AuctionPage> {
                                 itemBuilder: (context, index) {
                                   final bid = bids[index];
                                   return BidCard(
+                                    requestId: widget.auctionId,
                                     bid: bid,
                                     textTheme: textTheme,
                                     isAuctionActive: isTimerActive,

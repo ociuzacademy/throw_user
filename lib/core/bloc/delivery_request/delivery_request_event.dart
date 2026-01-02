@@ -16,5 +16,10 @@ sealed class DeliveryRequestEvent with _$DeliveryRequestEvent {
       _PayEscrowAmount;
   const factory DeliveryRequestEvent.setDeliveryOnTheWay(String requestId) =
       _SetDeliveryOnTheWay;
+  const factory DeliveryRequestEvent.bargain({
+    required String requestId,
+    required String bidId,
+    required double amount,
+  }) = _Bargain;
   const factory DeliveryRequestEvent.reset() = _Reset;
 }
