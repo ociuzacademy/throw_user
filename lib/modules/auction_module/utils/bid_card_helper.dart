@@ -11,19 +11,17 @@ import 'package:throw_user/modules/auction_module/widgets/bargain_bottom_sheet.d
 class BidCardHelper {
   final BuildContext context;
   final String requestId;
-  final BidModel bid;
   final TextTheme textTheme;
   final BidAction onBidAccepted;
 
   const BidCardHelper({
     required this.context,
     required this.requestId,
-    required this.bid,
     required this.textTheme,
     required this.onBidAccepted,
   });
 
-  void showBargainBottomSheet() {
+  void showBargainBottomSheet(BidModel bid) {
     final TextEditingController bargainController = TextEditingController();
 
     // Pre-fill with current price if no bargain exists, or with bargained price if it does
@@ -45,12 +43,7 @@ class BidCardHelper {
     );
   }
 
-  void submitBargain(double bargainAmount) {
-    // CustomSnackbar.showSuccess(
-    //   context: context,
-    //   message:
-    //       'Bargain of \u20B9${bargainAmount.toStringAsFixed(2)} sent to ${bid.agentName}',
-    // );
+  void submitBargain(BidModel bid, double bargainAmount) {
     final DeliveryRequestBloc bloc = context.read<DeliveryRequestBloc>();
     bloc.add(
       DeliveryRequestEvent.bargain(
@@ -61,7 +54,7 @@ class BidCardHelper {
     );
   }
 
-  void showAcceptBidDialog() {
+  void showAcceptBidDialog(BidModel bid) {
     CustomAlertDialog.showCustomDialog(
       context: context,
       title: 'Accept Bid',
@@ -69,7 +62,7 @@ class BidCardHelper {
           'Are you sure you want to accept ${bid.agentName}\'s bid of \u20B9${bid.bidAmount.toStringAsFixed(2)}?',
       confirmButtonText: 'Accept',
       cancelButtonText: 'Cancel',
-      onConfirm: acceptBid,
+      onConfirm: () => acceptBid(bid),
       onCancel: () {
         Navigator.pop(context);
       },
@@ -83,7 +76,7 @@ class BidCardHelper {
     );
   }
 
-  void acceptBid() {
+  void acceptBid(BidModel bid) {
     // Call the parent callback to stop the timer and handle acceptance
     onBidAccepted.call(bid);
 

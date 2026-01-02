@@ -124,7 +124,7 @@ class _BargainBottomSheetState extends State<BargainBottomSheet> {
                       );
                       if (bargainAmount != null && bargainAmount > 0) {
                         Navigator.of(context).pop();
-                        widget.submitBargain(bargainAmount);
+                        widget.submitBargain(widget.bid, bargainAmount);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

@@ -43,7 +43,6 @@ class _BidCardState extends State<BidCard> {
     _bidCardHelper = BidCardHelper(
       context: context,
       requestId: widget.requestId,
-      bid: widget.bid,
       textTheme: widget.textTheme,
       onBidAccepted: widget.onBidAccepted,
     );
@@ -179,8 +178,8 @@ class _BidCardState extends State<BidCard> {
                           BargainButton(
                             isAuctionActive: widget.isAuctionActive,
                             agentLeftAuction: false, // Placeholder
-                            showBargainBottomSheet:
-                                _bidCardHelper.showBargainBottomSheet,
+                            showBargainBottomSheet: () => _bidCardHelper
+                                .showBargainBottomSheet(widget.bid),
                             fontSize: buttonFontSize,
                             horizontalPadding: buttonHorizontalPadding,
                             verticalPadding: buttonVerticalPadding,
@@ -189,8 +188,8 @@ class _BidCardState extends State<BidCard> {
                           AcceptButton(
                             isAuctionActive: widget.isAuctionActive,
                             agentLeftAuction: false, // Placeholder
-                            showAcceptBidDialog:
-                                _bidCardHelper.showAcceptBidDialog,
+                            showAcceptBidDialog: () =>
+                                _bidCardHelper.showAcceptBidDialog(widget.bid),
                             fontSize: buttonFontSize,
                             horizontalPadding: buttonHorizontalPadding,
                             verticalPadding: buttonVerticalPadding,
@@ -203,8 +202,8 @@ class _BidCardState extends State<BidCard> {
                           BargainButton(
                             isAuctionActive: widget.isAuctionActive,
                             agentLeftAuction: false, // Placeholder
-                            showBargainBottomSheet:
-                                _bidCardHelper.showBargainBottomSheet,
+                            showBargainBottomSheet: () => _bidCardHelper
+                                .showBargainBottomSheet(widget.bid),
                             fontSize: buttonFontSize,
                             horizontalPadding: buttonHorizontalPadding,
                             verticalPadding: buttonVerticalPadding,
@@ -213,8 +212,8 @@ class _BidCardState extends State<BidCard> {
                           AcceptButton(
                             isAuctionActive: widget.isAuctionActive,
                             agentLeftAuction: false, // Placeholder
-                            showAcceptBidDialog:
-                                _bidCardHelper.showAcceptBidDialog,
+                            showAcceptBidDialog: () =>
+                                _bidCardHelper.showAcceptBidDialog(widget.bid),
                             fontSize: buttonFontSize,
                             horizontalPadding: buttonHorizontalPadding,
                             verticalPadding: buttonVerticalPadding,
