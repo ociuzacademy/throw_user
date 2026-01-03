@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
+import 'package:throw_user/core/exports/custom_widget_exports.dart';
+import 'package:throw_user/modules/home_module/utils/recent_deliveries_widget_helper.dart';
 import 'package:throw_user/modules/home_module/widgets/delivery_card.dart';
 
-class RecentDeliveriesWidget extends StatelessWidget {
+class RecentDeliveriesWidget extends StatefulWidget {
   const RecentDeliveriesWidget({super.key});
+
+  @override
+  State<RecentDeliveriesWidget> createState() => _RecentDeliveriesWidgetState();
+}
+
+class _RecentDeliveriesWidgetState extends State<RecentDeliveriesWidget> {
+  late final RecentDeliveriesWidgetHelper _recentDeliveriesWidgetHelper;
+
+  @override
+  void initState() {
+    super.initState();
+    _recentDeliveriesWidgetHelper = RecentDeliveriesWidgetHelper(
+      context: context,
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _recentDeliveriesWidgetHelper.getUserDeliveryRequests();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,51 +43,61 @@ class RecentDeliveriesWidget extends StatelessWidget {
     final spacing = isSmallScreen ? 16.0 : 24.0;
     final titleFontSize = isSmallScreen ? 20.0 : 24.0;
 
-    return Container(
-      color: backgroundColor,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Recent Deliveries Section Title
-            Text(
-              'Recent Deliveries',
-              style: TextStyle(
-                fontSize: titleFontSize,
-                fontWeight: FontWeight.bold,
-                color: textPrimaryColor,
+    return BlocBuilder<UserDeliveryRequestsCubit, UserDeliveryRequestsState>(
+      builder: (context, state) {
+        return switch (state) {
+          UserDeliveryRequestsLoading() => const CustomLoaderWidget(
+            message: 'Fetching user delivery requests...',
+          ),
+          UserDeliveryRequestsError(message: final message) =>
+            CustomErrorWidget(
+              errorMessage: message,
+              isDark: isDark,
+              onRetry: _recentDeliveriesWidgetHelper.getUserDeliveryRequests,
+            ),
+          UserDeliveryRequestsEmpty() => CustomEmptyWidget(
+            message: 'No delivery requests',
+            subMessage: 'Your delivery requests will appear here',
+            icon: Icons.local_shipping_outlined,
+            isDark: isDark,
+          ),
+          UserDeliveryRequestsLoaded(
+            deliveryRequests: final deliveryRequests,
+          ) =>
+            Container(
+              color: backgroundColor,
+              child: ListView.separated(
+                padding: EdgeInsets.all(padding),
+                itemCount: deliveryRequests.length + 1,
+                separatorBuilder: (context, index) => SizedBox(height: spacing),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Text(
+                      'Delivery Requests',
+                      style: TextStyle(
+                        fontSize: titleFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: textPrimaryColor,
+                      ),
+                    );
+                  }
+
+                  final request = deliveryRequests[index - 1];
+                  return DeliveryCard(
+                    status:
+                        request.deliveryStatus.value[0].toUpperCase() +
+                        request.deliveryStatus.value
+                            .substring(1)
+                            .replaceAll('_', ' '),
+                    title: request.packageType.value,
+                    description: request.dropOffAddress,
+                  );
+                },
               ),
             ),
-            SizedBox(height: spacing),
-
-            // Delivery Cards
-            const DeliveryCard(
-              status: 'In Progress',
-              title: 'Package to 123 Main St',
-              description: 'Estimated delivery: 2 hours',
-              imageUrl: 'assets/images/package_delivery.png',
-            ),
-            SizedBox(height: spacing),
-
-            const DeliveryCard(
-              status: 'Completed',
-              title: 'Groceries to 456 Oak Ave',
-              description: 'Delivered on time',
-              imageUrl: 'assets/images/groceries_delivery.png',
-            ),
-            SizedBox(height: spacing),
-
-            // Additional delivery cards for better UX
-            const DeliveryCard(
-              status: 'Completed',
-              title: 'Documents to Office',
-              description: 'Signed and delivered',
-              imageUrl: 'assets/images/documents_delivery.png',
-            ),
-          ],
-        ),
-      ),
+          _ => const SizedBox.shrink(),
+        };
+      },
     );
   }
 }

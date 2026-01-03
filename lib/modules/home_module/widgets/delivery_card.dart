@@ -6,13 +6,11 @@ class DeliveryCard extends StatelessWidget {
   final String status;
   final String title;
   final String description;
-  final String imageUrl;
   const DeliveryCard({
     super.key,
     required this.status,
     required this.title,
     required this.description,
-    required this.imageUrl,
   });
 
   @override

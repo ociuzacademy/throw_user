@@ -42,8 +42,9 @@ class DeliveryRequestModel {
   final RequestStatus requestStatus;
   final Timestamp updatedAt;
   final Urgency urgency;
+  final String userId;
 
-  DeliveryRequestModel({
+  const DeliveryRequestModel({
     this.agreedDeliveryCharge,
     required this.auctionStartingTime,
     required this.baseDeliveryCharge,
@@ -72,6 +73,7 @@ class DeliveryRequestModel {
     required this.requestStatus,
     required this.updatedAt,
     required this.urgency,
+    required this.userId,
   });
 
   DeliveryRequestModel copyWith({
@@ -103,6 +105,7 @@ class DeliveryRequestModel {
     RequestStatus? requestStatus,
     Timestamp? updatedAt,
     Urgency? urgency,
+    String? userId,
   }) => DeliveryRequestModel(
     agreedDeliveryCharge: agreedDeliveryCharge ?? this.agreedDeliveryCharge,
     auctionStartingTime: auctionStartingTime ?? this.auctionStartingTime,
@@ -132,6 +135,7 @@ class DeliveryRequestModel {
     requestStatus: requestStatus ?? this.requestStatus,
     updatedAt: updatedAt ?? this.updatedAt,
     urgency: urgency ?? this.urgency,
+    userId: userId ?? this.userId,
   );
 
   factory DeliveryRequestModel.fromJson(Map<String, dynamic> json) =>
@@ -177,6 +181,7 @@ class DeliveryRequestModel {
             ? json['updatedAt'] as Timestamp
             : Timestamp.now(),
         urgency: Urgency.fromString(json['urgency']),
+        userId: json['userId'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -219,5 +224,6 @@ class DeliveryRequestModel {
     'updatedAt':
         "${updatedAt.toDate().year.toString().padLeft(4, '0')}-${updatedAt.toDate().month.toString().padLeft(2, '0')}-${updatedAt.toDate().day.toString().padLeft(2, '0')}",
     'urgency': urgency.value,
+    'userId': userId,
   };
 }

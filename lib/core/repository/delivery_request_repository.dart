@@ -77,6 +77,7 @@ class DeliveryRequestRepository {
         'requestStatus': RequestStatus.requestCreated.value,
         'updatedAt': FieldValue.serverTimestamp(),
         'urgency': deliveryRequestData.urgency.value,
+        'userId': userUid,
       };
 
       // Generate a document reference with auto-generated ID
@@ -225,7 +226,7 @@ class DeliveryRequestRepository {
   }
 
   // Get user by UID
-  Future<DeliveryRequestModel?> getDeliveryRequestByUid(
+  Future<DeliveryRequestModel?> getDeliveryRequestByRequestId(
     String requestId,
   ) async {
     try {
@@ -300,6 +301,27 @@ class DeliveryRequestRepository {
     } catch (e) {
       debugPrint('Error bargaining: $e');
       throw DeliveryRequestRepositoryException(message: 'Error bargaining: $e');
+    }
+  }
+
+  Future<List<DeliveryRequestModel>> getDeliveryRequestsByUser(
+    String userId,
+  ) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection(deliveryRequestCollection)
+          .where('userId', isEqualTo: userId)
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => DeliveryRequestModel.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      debugPrint('Error getting delivery requests by user: $e');
+      throw DeliveryRequestRepositoryException(
+        message: 'Error getting delivery requests by user: $e',
+      );
     }
   }
 }

@@ -23,7 +23,7 @@ class BidModel {
   final Timestamp createdAt;
   final Timestamp updatedAt;
 
-  BidModel({
+  const BidModel({
     required this.agentAvatarUrl,
     required this.agentAverageRating,
     required this.agentId,

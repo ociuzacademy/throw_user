@@ -54,6 +54,11 @@ class MyApp extends StatelessWidget {
               deliveryRequestRepository: deliveryRequestRepository,
             ),
           ),
+          BlocProvider(
+            create: (context) => UserDeliveryRequestsCubit(
+              deliveryRequestRepository: deliveryRequestRepository,
+            ),
+          ),
         ],
         child: MaterialApp(
           title: 'Throw',
