@@ -3,11 +3,13 @@ import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_details_module/view/delivery_details_page.dart';
 
 class DeliveryCard extends StatelessWidget {
+  final String deliveryRequestId;
   final String status;
   final String title;
   final String description;
   const DeliveryCard({
     super.key,
+    required this.deliveryRequestId,
     required this.status,
     required this.title,
     required this.description,
@@ -33,7 +35,10 @@ class DeliveryCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, DeliveryDetailsPage.route());
+        Navigator.push(
+          context,
+          DeliveryDetailsPage.route(deliveryRequestId: deliveryRequestId),
+        );
       },
       child: Container(
         decoration: BoxDecoration(

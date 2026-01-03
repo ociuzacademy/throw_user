@@ -84,6 +84,7 @@ class _RecentDeliveriesWidgetState extends State<RecentDeliveriesWidget> {
 
                   final request = deliveryRequests[index - 1];
                   return DeliveryCard(
+                    deliveryRequestId: request.deliveryRequestId,
                     status:
                         request.deliveryStatus.value[0].toUpperCase() +
                         request.deliveryStatus.value

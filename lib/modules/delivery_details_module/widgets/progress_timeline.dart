@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
-import 'package:throw_user/modules/delivery_details_module/enums/delivery_status.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/progress_step.dart';
 
 class ProgressTimeline extends StatelessWidget {
@@ -56,12 +56,12 @@ class ProgressTimeline extends StatelessWidget {
             ProgressStep(
               icon: Icons.inventory_2,
               title: 'Pickup',
-              subtitle: deliveryStatus == DeliveryStatus.pickUp
+              subtitle: deliveryStatus == DeliveryStatus.pending
                   ? 'Ready to Start'
                   : 'Completed',
-              isActive: deliveryStatus == DeliveryStatus.pickUp,
-              isCompleted: deliveryStatus.index > DeliveryStatus.pickUp.index,
-              hasButton: deliveryStatus == DeliveryStatus.pickUp,
+              isActive: deliveryStatus == DeliveryStatus.pending,
+              isCompleted: deliveryStatus.index > DeliveryStatus.pending.index,
+              hasButton: deliveryStatus == DeliveryStatus.pending,
               buttonText: 'Start',
               onButtonPressed: onStartPressed,
               primaryColor: primaryColor,
@@ -100,13 +100,13 @@ class ProgressTimeline extends StatelessWidget {
             ProgressStep(
               icon: Icons.task_alt,
               title: 'Delivered',
-              subtitle: deliveryStatus == DeliveryStatus.delivered
+              subtitle: deliveryStatus == DeliveryStatus.dropOff
                   ? 'Completed'
                   : 'Pending',
-              isActive: deliveryStatus == DeliveryStatus.delivered,
-              isCompleted: deliveryStatus == DeliveryStatus.delivered,
+              isActive: deliveryStatus == DeliveryStatus.dropOff,
+              isCompleted: deliveryStatus == DeliveryStatus.dropOff,
               hasReviewButton: true,
-              isReviewButtonEnabled: deliveryStatus == DeliveryStatus.delivered,
+              isReviewButtonEnabled: deliveryStatus == DeliveryStatus.dropOff,
               primaryColor: primaryColor,
               textPrimaryColor: textPrimaryColor,
               textSecondaryColor: textSecondaryColor,

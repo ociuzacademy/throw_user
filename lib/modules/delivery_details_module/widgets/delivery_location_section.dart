@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class LocationSection extends StatelessWidget {
+class DeliveryLocationSection extends StatelessWidget {
   final String title;
   final String address;
   final String? phone;
@@ -10,7 +10,8 @@ class LocationSection extends StatelessWidget {
   final String date;
   final Color primaryColor;
   final Color textSecondaryColor;
-  const LocationSection({
+  final Color textPrimaryColor;
+  const DeliveryLocationSection({
     super.key,
     required this.title,
     required this.address,
@@ -19,6 +20,7 @@ class LocationSection extends StatelessWidget {
     required this.date,
     required this.primaryColor,
     required this.textSecondaryColor,
+    required this.textPrimaryColor,
   });
 
   @override
@@ -71,6 +73,7 @@ class LocationSection extends StatelessWidget {
           style: TextStyle(
             fontSize: isSmallScreen ? 12 : 14,
             fontWeight: FontWeight.w500,
+            color: textPrimaryColor,
           ),
         ),
       ],

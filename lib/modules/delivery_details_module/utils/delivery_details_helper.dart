@@ -2,25 +2,30 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-import 'package:throw_user/modules/delivery_details_module/enums/delivery_status.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
 
 class DeliveryDetailsHelper {
-  final ValueNotifier<DeliveryStatus> deliveryStatus;
-  final ValueNotifier<String?> otp;
+  final BuildContext context;
+  final String deliveryRequestId;
   const DeliveryDetailsHelper({
-    required this.deliveryStatus,
-    required this.otp,
+    required this.context,
+    required this.deliveryRequestId,
   });
 
-  void generateOtp() {
+  void deliveryRequestDetailsInit() {
+    final DeliveryRequestDetailsCubit cubit = context
+        .read<DeliveryRequestDetailsCubit>();
+    cubit.getDeliveryRequestDetails(deliveryRequestId);
+  }
+
+  String generateOtp() {
     final random = Random();
-    otp.value = (1000 + random.nextInt(9000))
-        .toString(); // Generates 4-digit OTP
+    return (1000 + random.nextInt(9000)).toString(); // Generates 4-digit OTP
   }
 
   void startPickup() {
-    deliveryStatus.value = DeliveryStatus.onTheWay;
+    // deliveryStatus.value = DeliveryStatus.onTheWay;
     generateOtp();
   }
 }

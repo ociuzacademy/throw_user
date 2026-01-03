@@ -1,17 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
-import 'package:throw_user/modules/delivery_details_module/enums/delivery_status.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
+import 'package:throw_user/core/exports/custom_widget_exports.dart';
 import 'package:throw_user/modules/delivery_details_module/utils/delivery_details_helper.dart';
-import 'package:throw_user/modules/delivery_details_module/widgets/location_section.dart';
+import 'package:throw_user/modules/delivery_details_module/widgets/delivery_location_section.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/package_details_grid.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/progress_timeline.dart';
 
 class DeliveryDetailsPage extends StatefulWidget {
-  const DeliveryDetailsPage({super.key});
+  final String deliveryRequestId;
+  const DeliveryDetailsPage({super.key, required this.deliveryRequestId});
 
-  static MaterialPageRoute route() =>
-      MaterialPageRoute(builder: (_) => const DeliveryDetailsPage());
+  static MaterialPageRoute route({required String deliveryRequestId}) =>
+      MaterialPageRoute(
+        builder: (_) =>
+            DeliveryDetailsPage(deliveryRequestId: deliveryRequestId),
+      );
 
   @override
   State<DeliveryDetailsPage> createState() => _DeliveryDetailsPageState();
@@ -19,30 +26,18 @@ class DeliveryDetailsPage extends StatefulWidget {
 
 class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
   late final DeliveryDetailsHelper _deliveryDetailsHelper;
-  final ValueNotifier<DeliveryStatus> _deliveryStatus =
-      ValueNotifier<DeliveryStatus>(DeliveryStatus.pickUp);
-  final ValueNotifier<String?> _otp = ValueNotifier<String?>(null);
 
   @override
   void initState() {
     super.initState();
     _deliveryDetailsHelper = DeliveryDetailsHelper(
-      deliveryStatus: _deliveryStatus,
-      otp: _otp,
+      deliveryRequestId: widget.deliveryRequestId,
+      context: context,
     );
-  }
 
-  @override
-  void dispose() {
-    _deliveryStatus.dispose();
-    _otp.dispose();
-    super.dispose();
-  }
-
-  // Add this method to handle OTP shared callback
-  void _onOtpShared() {
-    // Update delivery status to delivered when OTP is successfully shared
-    _deliveryStatus.value = DeliveryStatus.delivered;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _deliveryDetailsHelper.deliveryRequestDetailsInit();
+    });
   }
 
   @override
@@ -74,6 +69,8 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
     final textPrimaryColor = isDark ? textPrimaryDark : textPrimaryLight;
     final textSecondaryColor = isDark ? textSecondaryDark : textSecondaryLight;
 
+    final DateFormat dateFormat = DateFormat('dd MMM, yyyy');
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -98,192 +95,204 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(horizontalPadding),
-          child: Column(
-            children: [
-              SizedBox(height: spacing),
-
-              // Delivery Progress Card
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(cardPadding),
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                    if (isDark)
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Delivery Progress',
-                      style: TextStyle(
-                        fontSize: titleFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: textPrimaryColor,
-                      ),
-                    ),
-                    SizedBox(height: spacing),
-
-                    // Progress Timeline
-                    ValueListenableBuilder<DeliveryStatus>(
-                      valueListenable: _deliveryStatus,
-                      builder: (context, status, child) {
-                        return ValueListenableBuilder(
-                          valueListenable: _otp,
-                          builder: (context, otp, child) {
-                            return ProgressTimeline(
-                              isDark: isDark,
-                              primaryColor: primaryColor,
-                              textPrimaryColor: textPrimaryColor,
-                              textSecondaryColor: textSecondaryColor,
-                              deliveryStatus: status,
-                              otp: otp,
-                              onStartPressed:
-                                  _deliveryDetailsHelper.startPickup,
-                              onOtpShared:
-                                  _onOtpShared, // Pass the callback here
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
+      body: BlocBuilder<DeliveryRequestDetailsCubit, DeliveryRequestDetailsState>(
+        builder: (context, state) {
+          return switch (state) {
+            DeliveryRequestDetailsLoading() => const CustomLoaderWidget(
+              message: 'Loading delivery request details...',
+            ),
+            DeliveryRequestDetailsError(message: final message) =>
+              CustomErrorWidget(
+                errorMessage: message,
+                isDark: isDark,
+                onRetry: _deliveryDetailsHelper.deliveryRequestDetailsInit,
               ),
-              SizedBox(height: spacing),
-
-              // Delivery Details Card
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(cardPadding),
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                    if (isDark)
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                  ],
-                ),
+            DeliveryRequestDetailsSuccess(:final deliveryRequest) => SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(horizontalPadding),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Delivery Details',
-                      style: TextStyle(
-                        fontSize: titleFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: textPrimaryColor,
-                      ),
-                    ),
                     SizedBox(height: spacing),
 
-                    // Pickup Section
-                    LocationSection(
-                      title: 'Pickup',
-                      address:
-                          '12, HSR Layout, Sector 6, Bengaluru, Karnataka 560102',
-                      remark: '"Leave with security guard"',
-                      date: 'July 05, 2024 at 10:30 AM',
-                      primaryColor: primaryColor,
-                      textSecondaryColor: textSecondaryColor,
-                    ),
-
-                    // Divider
+                    // Delivery Progress Card
                     Container(
-                      height: 1,
-                      margin: EdgeInsets.symmetric(
-                        vertical: isSmallScreen ? 16.0 : 20.0,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(cardPadding),
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                          if (isDark)
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                        ],
                       ),
-                      color: AppColors.getBorderColor(isDark),
-                    ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Delivery Progress',
+                            style: TextStyle(
+                              fontSize: titleFontSize,
+                              fontWeight: FontWeight.bold,
+                              color: textPrimaryColor,
+                            ),
+                          ),
+                          SizedBox(height: spacing),
 
-                    // Drop-off Section
-                    LocationSection(
-                      title: 'Drop-off',
-                      address:
-                          'A-45, Block A, Connaught Place, New Delhi, Delhi 110001',
-                      phone: 'Phone: +91 98765 43210',
-                      remark: '"Call upon arrival, flat no. 3B"',
-                      date: 'Estimated: Evening',
-                      primaryColor: primaryColor,
-                      textSecondaryColor: textSecondaryColor,
+                          // Progress Timeline
+                          ProgressTimeline(
+                            isDark: isDark,
+                            primaryColor: primaryColor,
+                            textPrimaryColor: textPrimaryColor,
+                            textSecondaryColor: textSecondaryColor,
+                            deliveryStatus: deliveryRequest.deliveryStatus,
+                            otp: deliveryRequest.otp,
+                            onStartPressed: () {},
+                            onOtpShared: () {},
+                          ),
+                        ],
+                      ),
                     ),
+                    SizedBox(height: spacing),
+
+                    // Delivery Details Card
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(cardPadding),
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                          if (isDark)
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Delivery Details',
+                            style: TextStyle(
+                              fontSize: titleFontSize,
+                              fontWeight: FontWeight.bold,
+                              color: textPrimaryColor,
+                            ),
+                          ),
+                          SizedBox(height: spacing),
+
+                          // Pickup Section
+                          DeliveryLocationSection(
+                            title: 'Pickup',
+                            address: deliveryRequest.pickupAddress,
+                            remark: deliveryRequest.pickupRemarks,
+                            date: dateFormat.format(
+                              deliveryRequest.pickupDate.toDate(),
+                            ),
+                            primaryColor: primaryColor,
+                            textSecondaryColor: textSecondaryColor,
+                            textPrimaryColor: textPrimaryColor,
+                          ),
+
+                          // Divider
+                          Container(
+                            height: 1,
+                            margin: EdgeInsets.symmetric(
+                              vertical: isSmallScreen ? 16.0 : 20.0,
+                            ),
+                            color: AppColors.getBorderColor(isDark),
+                          ),
+
+                          // Drop-off Section
+                          DeliveryLocationSection(
+                            title: 'Drop-off',
+                            address: deliveryRequest.dropOffAddress,
+                            phone:
+                                'Phone: ${deliveryRequest.dropOffPhoneNumber}',
+                            remark: deliveryRequest.dropOffRemarks,
+                            date: dateFormat.format(
+                              deliveryRequest.dropOffDate.toDate(),
+                            ),
+                            primaryColor: primaryColor,
+                            textSecondaryColor: textSecondaryColor,
+                            textPrimaryColor: textPrimaryColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: spacing),
+
+                    // Package Details Card
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(cardPadding),
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                          if (isDark)
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Package Details',
+                            style: TextStyle(
+                              fontSize: titleFontSize,
+                              fontWeight: FontWeight.bold,
+                              color: textPrimaryColor,
+                            ),
+                          ),
+                          SizedBox(height: isSmallScreen ? 16.0 : 20.0),
+
+                          // Package Details Grid
+                          PackageDetailsGrid(
+                            textSecondaryColor: textSecondaryColor,
+                            textPrimaryColor: textPrimaryColor,
+                            isSmallScreen: isSmallScreen,
+                            packageType: deliveryRequest.packageType,
+                            weight: deliveryRequest.packageWeight,
+                            urgency: deliveryRequest.urgency,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: spacing),
                   ],
                 ),
               ),
-              SizedBox(height: spacing),
-
-              // Package Details Card
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(cardPadding),
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                    if (isDark)
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Package Details',
-                      style: TextStyle(
-                        fontSize: titleFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: textPrimaryColor,
-                      ),
-                    ),
-                    SizedBox(height: isSmallScreen ? 16.0 : 20.0),
-
-                    // Package Details Grid
-                    PackageDetailsGrid(
-                      textSecondaryColor: textSecondaryColor,
-                      textPrimaryColor: textPrimaryColor,
-                      isSmallScreen: isSmallScreen,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: spacing),
-            ],
-          ),
-        ),
+            ),
+            _ => const SizedBox.shrink(),
+          };
+        },
       ),
     );
   }

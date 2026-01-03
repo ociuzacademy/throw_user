@@ -1,17 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/detail_item.dart';
 
 class PackageDetailsGrid extends StatelessWidget {
   final Color textSecondaryColor;
   final Color textPrimaryColor;
   final bool isSmallScreen;
+  final PackageType packageType;
+  final double weight;
+  final Urgency urgency;
   const PackageDetailsGrid({
     super.key,
     required this.textSecondaryColor,
     required this.textPrimaryColor,
     this.isSmallScreen = false,
+    required this.packageType,
+    required this.weight,
+    required this.urgency,
   });
 
   @override
@@ -33,7 +40,7 @@ class PackageDetailsGrid extends StatelessWidget {
           textSecondaryColor: textSecondaryColor,
           textPrimaryColor: textPrimaryColor,
           label: 'Package Type',
-          value: 'Document',
+          value: packageType.value,
           index: 0,
         ),
         DetailItem(
@@ -41,7 +48,7 @@ class PackageDetailsGrid extends StatelessWidget {
           textSecondaryColor: textSecondaryColor,
           textPrimaryColor: textPrimaryColor,
           label: 'Weight',
-          value: '~0.5 kg',
+          value: '~$weight kg',
           index: 1,
         ),
         DetailItem(
@@ -49,7 +56,7 @@ class PackageDetailsGrid extends StatelessWidget {
           textSecondaryColor: textSecondaryColor,
           textPrimaryColor: textPrimaryColor,
           label: 'Urgency',
-          value: 'Standard',
+          value: urgency.value,
           index: 2,
         ),
       ],
