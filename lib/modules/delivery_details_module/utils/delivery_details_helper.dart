@@ -19,13 +19,15 @@ class DeliveryDetailsHelper {
     cubit.getDeliveryRequestDetails(deliveryRequestId);
   }
 
-  String generateOtp() {
+  String _generateOtp() {
     final random = Random();
     return (1000 + random.nextInt(9000)).toString(); // Generates 4-digit OTP
   }
 
   void startPickup() {
     // deliveryStatus.value = DeliveryStatus.onTheWay;
-    generateOtp();
+    final otp = _generateOtp();
+    final DeliveryRequestBloc bloc = context.read<DeliveryRequestBloc>();
+    bloc.add(DeliveryRequestEvent.setDeliveryOnTheWay(deliveryRequestId, otp));
   }
 }

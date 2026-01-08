@@ -208,12 +208,13 @@ class DeliveryRequestRepository {
     }
   }
 
-  Future<void> setDeliveryOnTheWay(String requestId) async {
+  Future<void> setDeliveryOnTheWay(String requestId, String otp) async {
     try {
       await _firestore
           .collection(deliveryRequestCollection)
           .doc(requestId)
           .update({
+            'otp': otp,
             'deliveryStatus': DeliveryStatus.onTheWay.value,
             'updatedAt': FieldValue.serverTimestamp(),
           });

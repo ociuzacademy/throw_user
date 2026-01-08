@@ -99,7 +99,10 @@ class DeliveryRequestBloc
   ) async {
     emit(const DeliveryRequestState.loading());
     try {
-      await deliveryRequestRepository.setDeliveryOnTheWay(event.requestId);
+      await deliveryRequestRepository.setDeliveryOnTheWay(
+        event.requestId,
+        event.otp,
+      );
       emit(
         DeliveryRequestState.setDeliveryOnTheWaySuccess(
           requestId: event.requestId,
