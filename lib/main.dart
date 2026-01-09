@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
               deliveryRequestRepository: deliveryRequestRepository,
             ),
           ),
+          BlocProvider(create: (context) => SendOtpBloc()),
         ],
         child: MaterialApp(
           title: 'Throw',

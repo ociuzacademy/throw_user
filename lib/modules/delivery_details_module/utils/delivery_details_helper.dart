@@ -30,4 +30,9 @@ class DeliveryDetailsHelper {
     final DeliveryRequestBloc bloc = context.read<DeliveryRequestBloc>();
     bloc.add(DeliveryRequestEvent.setDeliveryOnTheWay(deliveryRequestId, otp));
   }
+
+  void shareOtp(String phoneNumber, String otp) {
+    final SendOtpBloc bloc = context.read<SendOtpBloc>();
+    bloc.add(SendOtpEvent.sendingOtp(phoneNumber, otp));
+  }
 }

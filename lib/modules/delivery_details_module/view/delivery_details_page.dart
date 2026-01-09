@@ -96,37 +96,64 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
           ),
         ),
       ),
-      body: BlocListener<DeliveryRequestBloc, DeliveryRequestState>(
-        listener: (context, state) {
-          switch (state) {
-            case DeliveryRequestLoading():
-              OverlayLoader.show(
-                context,
-                message: 'Initiating delivery pickup...',
-              );
-              break;
-            case DeliveryRequestError(message: final message):
-              OverlayLoader.hide();
-              CustomSnackbar.showError(context: context, message: message);
-              break;
-            case SetDeliveryOnTheWaySuccess(requestId: final requestId):
-              OverlayLoader.hide();
-              CustomSnackbar.showSuccess(
-                context: context,
-                message:
-                    'Delivery with requestId $requestId pickup initiated successfully.',
-              );
-              Navigator.pushAndRemoveUntil(
-                context,
-                HomePage.route(),
-                (_) => false,
-              );
-              break;
-            default:
-              OverlayLoader.hide();
-              break;
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<DeliveryRequestBloc, DeliveryRequestState>(
+            listener: (context, state) {
+              switch (state) {
+                case DeliveryRequestLoading():
+                  OverlayLoader.show(
+                    context,
+                    message: 'Initiating delivery pickup...',
+                  );
+                  break;
+                case DeliveryRequestError(message: final message):
+                  OverlayLoader.hide();
+                  CustomSnackbar.showError(context: context, message: message);
+                  break;
+                case SetDeliveryOnTheWaySuccess(requestId: final requestId):
+                  OverlayLoader.hide();
+                  CustomSnackbar.showSuccess(
+                    context: context,
+                    message:
+                        'Delivery with requestId $requestId pickup initiated successfully.',
+                  );
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    HomePage.route(),
+                    (_) => false,
+                  );
+                  break;
+                default:
+                  OverlayLoader.hide();
+                  break;
+              }
+            },
+          ),
+          BlocListener<SendOtpBloc, SendOtpState>(
+            listener: (context, state) {
+              switch (state) {
+                case SendOtpLoading():
+                  OverlayLoader.show(context, message: 'Sending OTP...');
+                  break;
+                case SendOtpError(error: final error):
+                  OverlayLoader.hide();
+                  CustomSnackbar.showError(context: context, message: error);
+                  break;
+                case SendOtpSuccess():
+                  OverlayLoader.hide();
+                  CustomSnackbar.showSuccess(
+                    context: context,
+                    message: 'OTP sent successfully.',
+                  );
+                  break;
+                default:
+                  OverlayLoader.hide();
+                  break;
+              }
+            },
+          ),
+        ],
         child: BlocBuilder<DeliveryRequestDetailsCubit, DeliveryRequestDetailsState>(
           builder: (context, state) {
             return switch (state) {
@@ -190,7 +217,14 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                               otp: deliveryRequest.otp,
                               onStartPressed:
                                   _deliveryDetailsHelper.startPickup,
-                              onOtpShared: () {},
+                              onOtpShared: () {
+                                if (deliveryRequest.otp != null) {
+                                  _deliveryDetailsHelper.shareOtp(
+                                    deliveryRequest.dropOffPhoneNumber,
+                                    deliveryRequest.otp!,
+                                  );
+                                }
+                              },
                             ),
                           ],
                         ),

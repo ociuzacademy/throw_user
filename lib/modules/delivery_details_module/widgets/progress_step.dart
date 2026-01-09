@@ -19,7 +19,6 @@ class ProgressStep extends StatelessWidget {
   final VoidCallback? onButtonPressed;
   final VoidCallback? onOtpShared; // Add this callback
   final String? otp;
-  final String? phoneNumber;
   final String? buttonText;
   final Color? primaryColor;
   final Color? textPrimaryColor;
@@ -40,7 +39,6 @@ class ProgressStep extends StatelessWidget {
     this.onButtonPressed,
     this.onOtpShared, // Add this parameter
     this.otp,
-    this.phoneNumber,
     this.buttonText,
     this.primaryColor,
     this.textPrimaryColor,

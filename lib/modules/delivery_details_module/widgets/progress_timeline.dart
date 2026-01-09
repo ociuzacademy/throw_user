@@ -91,7 +91,6 @@ class ProgressTimeline extends StatelessWidget {
               textPrimaryColor: textPrimaryColor,
               textSecondaryColor: textSecondaryColor,
               isDark: isDark,
-              phoneNumber: '+919567274127',
             ),
 
             SizedBox(height: stepSpacing),
