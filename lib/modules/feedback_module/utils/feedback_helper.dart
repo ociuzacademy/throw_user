@@ -1,14 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:throw_user/core/widgets/snackbars/custom_snackbar.dart';
-import 'package:throw_user/modules/home_module/view/home_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
 
 class FeedbackHelper {
   final BuildContext context;
+  final String deliveryRequestId;
   final ValueNotifier<int> selectedRating;
   final TextEditingController commentController;
   const FeedbackHelper({
     required this.context,
+    required this.deliveryRequestId,
     required this.selectedRating,
     required this.commentController,
   });
@@ -21,17 +23,13 @@ class FeedbackHelper {
     final rating = selectedRating.value;
     final comment = commentController.text.trim();
 
-    // Here you would typically send the feedback to your backend
-    debugPrint('Rating: $rating stars');
-    debugPrint('Comment: $comment');
-
-    // Show confirmation dialog or snackbar
-    CustomSnackbar.showSuccess(
-      context: context,
-      message: 'Thank you for your feedback!',
+    final FeedbackBloc bloc = context.read<FeedbackBloc>();
+    bloc.add(
+      FeedbackEvent.submittingFeedback(
+        deliveryRequestId: deliveryRequestId,
+        feedbackText: comment,
+        rating: rating,
+      ),
     );
-
-    // Optionally navigate back
-    Navigator.pushAndRemoveUntil(context, HomePage.route(), (_) => false);
   }
 }

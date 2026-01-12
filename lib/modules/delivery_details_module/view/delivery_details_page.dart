@@ -209,6 +209,7 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
 
                             // Progress Timeline
                             ProgressTimeline(
+                              deliveryId: widget.deliveryRequestId,
                               isDark: isDark,
                               primaryColor: primaryColor,
                               textPrimaryColor: textPrimaryColor,
@@ -225,6 +226,8 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                                   );
                                 }
                               },
+                              feedbackSubmitted:
+                                  deliveryRequest.feedbackSubmitted,
                             ),
                           ],
                         ),

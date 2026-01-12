@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/exports/bloc_exports.dart';
 import 'package:throw_user/core/repository/delivery_request_repository.dart';
+import 'package:throw_user/core/repository/feedback_repository.dart';
 import 'package:throw_user/core/service/auth_service.dart';
 import 'package:throw_user/core/storage/app_storage_functions.dart';
 import 'package:throw_user/core/storage/auth_storage_functions.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     final UserRepository userRepository = UserRepository();
     final DeliveryRequestRepository deliveryRequestRepository =
         DeliveryRequestRepository();
+    final FeedbackRepository feedbackRepository = FeedbackRepository();
     // Initialize auth service
     WidgetsBinding.instance.addPostFrameCallback((_) {
       authService.initialize();
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider.value(value: authService),
         RepositoryProvider.value(value: userRepository),
         RepositoryProvider.value(value: deliveryRequestRepository),
+        RepositoryProvider.value(value: feedbackRepository),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -65,6 +68,10 @@ class MyApp extends StatelessWidget {
             ),
           ),
           BlocProvider(create: (context) => SendOtpBloc()),
+          BlocProvider(
+            create: (context) =>
+                FeedbackBloc(feedbackRepository: feedbackRepository),
+          ),
         ],
         child: MaterialApp(
           title: 'Throw',

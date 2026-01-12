@@ -60,6 +60,7 @@ class DeliveryRequestRepository {
         'dropOffAddress': deliveryRequestData.dropOffAddress,
         'dropOffDate': Timestamp.fromDate(deliveryRequestData.dropOffDate),
         'dropOffRemarks': deliveryRequestData.dropOffRemarks,
+        'feedbackSubmitted': false,
         'minimumDeliveryCharge': deliveryRequestData.baseDeliveryCharge,
         'packageType': deliveryRequestData.packageType.value,
         'packageWeight': deliveryRequestData.packageWeight,

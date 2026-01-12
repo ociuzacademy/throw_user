@@ -48,11 +48,11 @@ class _HomeTabWidgetState extends State<HomeTabWidget> {
           Navigator.push(context, DeliveryRequestPage.route());
         },
       ),
-      GridButtonItemModel(
-        iconImageUrl: 'assets/icons/order-tracking.png',
-        title: 'Track Package',
-        onTap: () {},
-      ),
+      // GridButtonItemModel(
+      //   iconImageUrl: 'assets/icons/order-tracking.png',
+      //   title: 'Track Package',
+      //   onTap: () {},
+      // ),
     ];
     _carouselController.addListener(() {
       _currentCarouselPage.value = _carouselController.page?.round() ?? 0;

@@ -28,6 +28,7 @@ class DeliveryRequestModel {
   final Timestamp dropOffDate;
   final String dropOffPhoneNumber;
   final String dropOffRemarks;
+  final bool feedbackSubmitted;
   final double minimumDeliveryCharge;
   final String? otp;
   final PackageType packageType;
@@ -59,6 +60,7 @@ class DeliveryRequestModel {
     required this.dropOffDate,
     required this.dropOffPhoneNumber,
     required this.dropOffRemarks,
+    required this.feedbackSubmitted,
     required this.minimumDeliveryCharge,
     this.otp,
     required this.packageType,
@@ -91,6 +93,7 @@ class DeliveryRequestModel {
     Timestamp? dropOffDate,
     String? dropOffPhoneNumber,
     String? dropOffRemarks,
+    bool? feedbackSubmitted,
     double? minimumDeliveryCharge,
     dynamic otp,
     PackageType? packageType,
@@ -121,6 +124,7 @@ class DeliveryRequestModel {
     dropOffDate: dropOffDate ?? this.dropOffDate,
     dropOffPhoneNumber: dropOffPhoneNumber ?? this.dropOffPhoneNumber,
     dropOffRemarks: dropOffRemarks ?? this.dropOffRemarks,
+    feedbackSubmitted: feedbackSubmitted ?? this.feedbackSubmitted,
     minimumDeliveryCharge: minimumDeliveryCharge ?? this.minimumDeliveryCharge,
     otp: otp ?? this.otp,
     packageType: packageType ?? this.packageType,
@@ -160,6 +164,7 @@ class DeliveryRequestModel {
             : Timestamp.now(),
         dropOffPhoneNumber: json['dropOffPhoneNumber'],
         dropOffRemarks: json['dropOffRemarks'],
+        feedbackSubmitted: json['feedbackSubmitted'],
         minimumDeliveryCharge: (json['minimumDeliveryCharge'] ?? 0.0)
             .toDouble(),
         otp: json['otp'],
@@ -205,6 +210,7 @@ class DeliveryRequestModel {
         "${dropOffDate.toDate().year.toString().padLeft(4, '0')}-${dropOffDate.toDate().month.toString().padLeft(2, '0')}-${dropOffDate.toDate().day.toString().padLeft(2, '0')}",
     'dropOffPhoneNumber': dropOffPhoneNumber,
     'dropOffRemarks': dropOffRemarks,
+    'feedbackSubmitted': feedbackSubmitted,
     'minimumDeliveryCharge': minimumDeliveryCharge,
     'otp': otp,
     'packageType': packageType.value,

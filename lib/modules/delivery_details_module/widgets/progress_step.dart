@@ -6,6 +6,7 @@ import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/feedback_module/view/feedback_page.dart';
 
 class ProgressStep extends StatelessWidget {
+  final String deliveryId;
   final IconData icon;
   final String title;
   final String subtitle;
@@ -26,6 +27,7 @@ class ProgressStep extends StatelessWidget {
   final bool isDark;
   const ProgressStep({
     super.key,
+    required this.deliveryId,
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -223,7 +225,10 @@ class ProgressStep extends StatelessWidget {
         if (hasReviewButton)
           ElevatedButton(
             onPressed: isReviewButtonEnabled
-                ? () => Navigator.push(context, FeedbackPage.route())
+                ? () => Navigator.push(
+                    context,
+                    FeedbackPage.route(deliveryId: deliveryId),
+                  )
                 : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,

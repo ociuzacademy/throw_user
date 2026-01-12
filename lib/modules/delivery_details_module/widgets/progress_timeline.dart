@@ -5,6 +5,7 @@ import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/progress_step.dart';
 
 class ProgressTimeline extends StatelessWidget {
+  final String deliveryId;
   final bool isDark;
   final Color primaryColor;
   final Color textPrimaryColor;
@@ -13,9 +14,11 @@ class ProgressTimeline extends StatelessWidget {
   final String? otp;
   final VoidCallback? onStartPressed;
   final VoidCallback? onOtpShared; // Add this callback
+  final bool feedbackSubmitted;
 
   const ProgressTimeline({
     super.key,
+    required this.deliveryId,
     required this.isDark,
     required this.primaryColor,
     required this.textPrimaryColor,
@@ -24,6 +27,7 @@ class ProgressTimeline extends StatelessWidget {
     this.otp,
     this.onStartPressed,
     this.onOtpShared, // Add this parameter
+    required this.feedbackSubmitted,
   });
 
   @override
@@ -54,6 +58,7 @@ class ProgressTimeline extends StatelessWidget {
           children: [
             // Pickup Step
             ProgressStep(
+              deliveryId: deliveryId,
               icon: Icons.inventory_2,
               title: 'Pickup',
               subtitle: deliveryStatus == DeliveryStatus.pending
@@ -74,6 +79,7 @@ class ProgressTimeline extends StatelessWidget {
 
             // On the way Step
             ProgressStep(
+              deliveryId: deliveryId,
               icon: Icons.local_shipping,
               title: 'On the way',
               subtitle: deliveryStatus == DeliveryStatus.onTheWay
@@ -97,6 +103,7 @@ class ProgressTimeline extends StatelessWidget {
 
             // Delivered Step
             ProgressStep(
+              deliveryId: deliveryId,
               icon: Icons.task_alt,
               title: 'Delivered',
               subtitle: deliveryStatus == DeliveryStatus.dropOff
@@ -105,7 +112,9 @@ class ProgressTimeline extends StatelessWidget {
               isActive: deliveryStatus == DeliveryStatus.dropOff,
               isCompleted: deliveryStatus == DeliveryStatus.dropOff,
               hasReviewButton: true,
-              isReviewButtonEnabled: deliveryStatus == DeliveryStatus.dropOff,
+              isReviewButtonEnabled:
+                  deliveryStatus == DeliveryStatus.dropOff &&
+                  !feedbackSubmitted,
               primaryColor: primaryColor,
               textPrimaryColor: textPrimaryColor,
               textSecondaryColor: textSecondaryColor,
