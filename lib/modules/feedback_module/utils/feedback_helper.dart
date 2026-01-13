@@ -20,6 +20,7 @@ class FeedbackHelper {
   }
 
   void submitFeedback() {
+    FocusScope.of(context).unfocus();
     final rating = selectedRating.value;
     final comment = commentController.text.trim();
 
