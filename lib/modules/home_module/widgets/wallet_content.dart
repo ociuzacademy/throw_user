@@ -2,17 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/core/exports/enum_exports.dart';
+import 'package:throw_user/core/models/delivery_request_model.dart';
 import 'package:throw_user/modules/home_module/widgets/transaction_item.dart';
 
 class WalletContent extends StatelessWidget {
   final bool isDark;
   final bool isSmallScreen;
   final bool isLargeScreen;
+  final List<DeliveryRequestModel> deliveryRequests;
   const WalletContent({
     super.key,
     required this.isDark,
     required this.isSmallScreen,
     required this.isLargeScreen,
+    required this.deliveryRequests,
   });
 
   @override
@@ -34,51 +38,43 @@ class WalletContent extends StatelessWidget {
 
           SizedBox(height: isSmallScreen ? 16 : 24),
 
-          // Transactions List
-          Expanded(
-            child: ListView(
-              children: [
-                TransactionItem(
-                  icon: Icons.refresh,
-                  title: 'Refund',
-                  subtitle: 'From Throw',
-                  amount: '+₹12.00',
-                  isPositive: true,
-                  isDark: isDark,
-                  isSmallScreen: isSmallScreen,
+          Builder(
+            builder: (context) {
+              final paymentCompletedRequests = deliveryRequests
+                  .where(
+                    (request) => request.paymentStatus != PaymentStatus.pending,
+                  )
+                  .toList();
+              return Expanded(
+                child: ListView.separated(
+                  itemCount: paymentCompletedRequests.length,
+                  itemBuilder: (context, index) {
+                    final DeliveryRequestModel deliveryRequest =
+                        paymentCompletedRequests[index];
+
+                    final isPaymentCompleted =
+                        deliveryRequest.paymentStatus ==
+                        PaymentStatus.escrowAmountPaid;
+                    return TransactionItem(
+                      icon: isPaymentCompleted
+                          ? Icons.north_east
+                          : Icons.south_east,
+                      title: deliveryRequest.paymentStatus.value,
+                      subtitle: isPaymentCompleted
+                          ? 'To Escrow Wallet'
+                          : 'To Delivery Partner',
+                      amount:
+                          '${isPaymentCompleted ? '\u2197 ₹' : '\u2198 ₹'} ${deliveryRequest.agreedDeliveryCharge?.toStringAsFixed(2) ?? '0.00'}',
+                      isPositive: isPaymentCompleted,
+                      isDark: isDark,
+                      isSmallScreen: isSmallScreen,
+                    );
+                  },
+                  separatorBuilder: (context, index) =>
+                      SizedBox(height: isSmallScreen ? 12 : 16),
                 ),
-                SizedBox(height: isSmallScreen ? 12 : 16),
-                TransactionItem(
-                  icon: Icons.cancel,
-                  title: 'Failed Transaction',
-                  subtitle: 'To Throw',
-                  amount: '-₹12.00',
-                  isPositive: false,
-                  isDark: isDark,
-                  isSmallScreen: isSmallScreen,
-                ),
-                SizedBox(height: isSmallScreen ? 12 : 16),
-                TransactionItem(
-                  icon: Icons.refresh,
-                  title: 'Refund',
-                  subtitle: 'From Throw',
-                  amount: '+₹12.00',
-                  isPositive: true,
-                  isDark: isDark,
-                  isSmallScreen: isSmallScreen,
-                ),
-                SizedBox(height: isSmallScreen ? 12 : 16),
-                TransactionItem(
-                  icon: Icons.cancel,
-                  title: 'Failed Transaction',
-                  subtitle: 'To Throw',
-                  amount: '-₹12.00',
-                  isPositive: false,
-                  isDark: isDark,
-                  isSmallScreen: isSmallScreen,
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ],
       ),

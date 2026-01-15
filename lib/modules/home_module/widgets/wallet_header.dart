@@ -8,9 +8,11 @@ class WalletHeader extends StatelessWidget {
     super.key,
     required this.isDark,
     required this.isSmallScreen,
+    required this.balance,
   });
   final bool isDark;
   final bool isSmallScreen;
+  final double balance;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,7 @@ class WalletHeader extends StatelessWidget {
               ),
               SizedBox(height: isSmallScreen ? 8 : 12),
               Text(
-                '₹250.00',
+                '₹${balance.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontSize: isSmallScreen ? 36 : 48,
                   fontWeight: FontWeight.w800,
@@ -80,6 +82,3 @@ class WalletHeader extends StatelessWidget {
     );
   }
 }
-
-// To use this page, you can navigate to it like this:
-// Navigator.push(context, MaterialPageRoute(builder: (context) => WalletPage()));

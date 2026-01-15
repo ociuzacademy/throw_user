@@ -82,160 +82,186 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       ),
                       child: Column(
                         children: [
-                          // Avatar
-                          Container(
-                            width: avatarSize,
-                            height: avatarSize,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: primaryColor.withValues(alpha: 0.1),
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  userProfile.photoUrl,
+                          // Top row: avatar + details + edit
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Avatar
+                              Container(
+                                width: avatarSize,
+                                height: avatarSize,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: primaryColor.withValues(alpha: 0.1),
+                                  image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                      userProfile.photoUrl,
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                fit: BoxFit.cover,
                               ),
-                            ),
+
+                              SizedBox(width: isSmallScreen ? 12 : 16),
+
+                              // Name and contact info
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      userProfile.displayName,
+                                      style: TextStyle(
+                                        fontSize: titleFontSize,
+                                        fontWeight: FontWeight.bold,
+                                        color: textPrimaryColor,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '@${userProfile.displayName}',
+                                      style: TextStyle(
+                                        fontSize: subtitleFontSize,
+                                        color: textSecondaryColor,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.email_outlined,
+                                          size: 14,
+                                          color: textSecondaryColor,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Flexible(
+                                          child: Text(
+                                            userProfile.email,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: textSecondaryColor,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.phone_outlined,
+                                          size: 14,
+                                          color: textSecondaryColor,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          userProfile.phoneNumber.isEmpty
+                                              ? 'No phone number'
+                                              : userProfile.phoneNumber,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: textSecondaryColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
+
                           SizedBox(height: isSmallScreen ? 16 : 20),
-                          Text(
-                            userProfile.displayName,
-                            style: TextStyle(
-                              fontSize: titleFontSize,
-                              fontWeight: FontWeight.bold,
-                              color: textPrimaryColor,
-                            ),
+
+                          // Quick stats row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: backgroundColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        '0',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: textPrimaryColor,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Requests',
+                                        style: TextStyle(
+                                          color: textSecondaryColor,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: backgroundColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        '₹0',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: textPrimaryColor,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Wallet',
+                                        style: TextStyle(
+                                          color: textSecondaryColor,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '@${userProfile.displayName}',
-                            style: TextStyle(
-                              fontSize: subtitleFontSize,
-                              color: textSecondaryColor,
-                            ),
+
+                          SizedBox(height: isSmallScreen ? 12 : 16),
+
+                          // Action buttons
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Text('Logout'),
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
                         ],
                       ),
                     ),
 
                     SizedBox(height: sectionSpacing),
-
-                    // Account Section
-                    // Container(
-                    //   width: double.infinity,
-                    //   decoration: BoxDecoration(
-                    //     color: cardColor,
-                    //     borderRadius: BorderRadius.circular(16),
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.black.withValues(alpha: 0.05),
-                    //         blurRadius: 8,
-                    //         offset: const Offset(0, 2),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   child: Padding(
-                    //     padding: EdgeInsets.all(isSmallScreen ? 16 : 20),
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         Text(
-                    //           'Account',
-                    //           style: TextStyle(
-                    //             fontSize: sectionFontSize,
-                    //             fontWeight: FontWeight.bold,
-                    //             color: textPrimaryColor,
-                    //           ),
-                    //         ),
-                    //         SizedBox(height: isSmallScreen ? 16 : 20),
-                    //         AccountItem(
-                    //           icon: Icons.verified_user_outlined,
-                    //           title: 'ID Verification',
-                    //           subtitle: 'Verified',
-                    //           primaryColor: primaryColor,
-                    //           textSecondaryColor: textSecondaryColor,
-                    //           isSmallScreen: isSmallScreen,
-                    //         ),
-                    //         AccountItem(
-                    //           icon: Icons.credit_card_outlined,
-                    //           title: 'Payment Methods',
-                    //           primaryColor: primaryColor,
-                    //           textSecondaryColor: textSecondaryColor,
-                    //           hasArrow: true,
-                    //           isSmallScreen: isSmallScreen,
-                    //         ),
-                    //         AccountItem(
-                    //           icon: Icons.notifications_outlined,
-                    //           title: 'Notifications',
-                    //           primaryColor: primaryColor,
-                    //           textSecondaryColor: textSecondaryColor,
-                    //           hasArrow: true,
-                    //           isSmallScreen: isSmallScreen,
-                    //         ),
-                    //         AccountItem(
-                    //           icon: Icons.settings_outlined,
-                    //           title: 'Settings',
-                    //           primaryColor: primaryColor,
-                    //           textSecondaryColor: textSecondaryColor,
-                    //           hasArrow: true,
-                    //           isSmallScreen: isSmallScreen,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    SizedBox(height: sectionSpacing),
-
-                    // Support Section
-                    // Container(
-                    //   width: double.infinity,
-                    //   decoration: BoxDecoration(
-                    //     color: cardColor,
-                    //     borderRadius: BorderRadius.circular(16),
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.black.withValues(alpha: 0.05),
-                    //         blurRadius: 8,
-                    //         offset: const Offset(0, 2),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   child: Padding(
-                    //     padding: EdgeInsets.all(isSmallScreen ? 16 : 20),
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         Text(
-                    //           'Support',
-                    //           style: TextStyle(
-                    //             fontSize: sectionFontSize,
-                    //             fontWeight: FontWeight.bold,
-                    //             color: textPrimaryColor,
-                    //           ),
-                    //         ),
-                    //         SizedBox(height: isSmallScreen ? 16 : 20),
-                    //         AccountItem(
-                    //           icon: Icons.help_outline_outlined,
-                    //           title: 'Help Center',
-                    //           primaryColor: primaryColor,
-                    //           textSecondaryColor: textSecondaryColor,
-                    //           hasArrow: true,
-                    //           isSmallScreen: isSmallScreen,
-                    //         ),
-                    //         AccountItem(
-                    //           icon: Icons.chat_bubble_outline_outlined,
-                    //           title: 'Contact Us',
-                    //           primaryColor: primaryColor,
-                    //           textSecondaryColor: textSecondaryColor,
-                    //           hasArrow: true,
-                    //           isSmallScreen: isSmallScreen,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    const SizedBox(height: 80), // Space for bottom navigation
                   ],
                 ),
               ),
