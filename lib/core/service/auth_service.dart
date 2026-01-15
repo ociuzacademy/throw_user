@@ -173,7 +173,8 @@ class AuthService {
       await _googleSignIn.disconnect();
       await _firebaseAuth.signOut();
     } catch (e) {
-      // Ignore error
+      debugPrint('Sign out error: ${e.toString()}');
+      throw Exception('Sign out failed: ${e.toString()}');
     }
   }
 

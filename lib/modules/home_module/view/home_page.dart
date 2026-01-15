@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
+import 'package:throw_user/core/exports/bloc_exports.dart';
+import 'package:throw_user/core/exports/custom_widget_exports.dart';
 import 'package:throw_user/modules/home_module/widgets/home_page_bottom_navigation_bar.dart';
 import 'package:throw_user/modules/home_module/widgets/home_tab_widget.dart';
 import 'package:throw_user/modules/home_module/widgets/profile_widget.dart';
 import 'package:throw_user/modules/home_module/widgets/recent_deliveries_widget.dart';
 import 'package:throw_user/modules/home_module/widgets/wallet_widget.dart';
+import 'package:throw_user/modules/login_module/view/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,11 +67,37 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ValueListenableBuilder(
-        valueListenable: _currentIndex,
-        builder: (context, currentIndex, child) {
-          return SafeArea(child: _tabs[currentIndex]);
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          switch (state) {
+            case AuthLoading():
+              OverlayLoader.show(context, message: 'Logging out...');
+              break;
+            case AuthError(message: final message):
+              OverlayLoader.hide();
+              CustomSnackbar.showError(context: context, message: message);
+              break;
+            case Unauthenticated():
+              OverlayLoader.hide();
+              CustomSnackbar.showInfo(
+                context: context,
+                message: 'You have been logged out.',
+              );
+              Navigator.of(
+                context,
+              ).pushAndRemoveUntil(LoginPage.route(), (route) => false);
+              break;
+            default:
+              OverlayLoader.hide();
+              break;
+          }
         },
+        child: ValueListenableBuilder(
+          valueListenable: _currentIndex,
+          builder: (context, currentIndex, child) {
+            return SafeArea(child: _tabs[currentIndex]);
+          },
+        ),
       ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: _currentIndex,

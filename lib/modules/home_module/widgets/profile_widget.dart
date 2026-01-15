@@ -5,6 +5,8 @@ import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/exports/bloc_exports.dart';
 import 'package:throw_user/core/widgets/custom_error_widget.dart';
 import 'package:throw_user/modules/home_module/utils/profile_widget_helper.dart';
+import 'package:throw_user/modules/home_module/utils/wallet_widget_helper.dart'
+    show WalletWidgetHelper;
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
@@ -21,6 +23,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     _profileWidgetHelper = ProfileWidgetHelper(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _profileWidgetHelper.userProfileInit();
+      _profileWidgetHelper.getUserDeliveryRequests();
     });
   }
 
@@ -175,73 +178,116 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           SizedBox(height: isSmallScreen ? 16 : 20),
 
                           // Quick stats row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 8,
+                          BlocBuilder<
+                            UserDeliveryRequestsCubit,
+                            UserDeliveryRequestsState
+                          >(
+                            builder: (context, state) {
+                              return switch (state) {
+                                UserDeliveryRequestsLoading() ||
+                                UserDeliveryRequestsInitial() ||
+                                UserDeliveryRequestsEmpty() ||
+                                UserDeliveryRequestsError() =>
+                                  UserDataDashboardWidget(
+                                    backgroundColor: backgroundColor,
+                                    textPrimaryColor: textPrimaryColor,
+                                    textSecondaryColor: textSecondaryColor,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: backgroundColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
+                                UserDeliveryRequestsLoaded(
+                                  :final deliveryRequests,
+                                ) =>
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        '0',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: textPrimaryColor,
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 12,
+                                            horizontal: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: backgroundColor,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Builder(
+                                                builder: (context) {
+                                                  final requestCount =
+                                                      deliveryRequests.length;
+                                                  return Text(
+                                                    '$requestCount',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: textPrimaryColor,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Requests',
+                                                style: TextStyle(
+                                                  color: textSecondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Requests',
-                                        style: TextStyle(
-                                          color: textSecondaryColor,
-                                          fontSize: 12,
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 12,
+                                            horizontal: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: backgroundColor,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Builder(
+                                                builder: (context) {
+                                                  final walletBalance =
+                                                      WalletWidgetHelper.calculateBalance(
+                                                        deliveryRequests,
+                                                      );
+                                                  return Text(
+                                                    '₹${walletBalance.toStringAsFixed(2)}',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: textPrimaryColor,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Wallet',
+                                                style: TextStyle(
+                                                  color: textSecondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: backgroundColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        '₹0',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: textPrimaryColor,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Wallet',
-                                        style: TextStyle(
-                                          color: textSecondaryColor,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                              };
+                              /*return ;*/
+                            },
                           ),
 
                           SizedBox(height: isSmallScreen ? 12 : 16),
@@ -251,7 +297,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: _profileWidgetHelper.logout,
                                   child: const Text('Logout'),
                                 ),
                               ),
@@ -274,6 +320,79 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           ),
         };
       },
+    );
+  }
+}
+
+class UserDataDashboardWidget extends StatelessWidget {
+  const UserDataDashboardWidget({
+    super.key,
+    required this.backgroundColor,
+    required this.textPrimaryColor,
+    required this.textSecondaryColor,
+  });
+
+  final Color backgroundColor;
+  final Color textPrimaryColor;
+  final Color textSecondaryColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  '0',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: textPrimaryColor,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Requests',
+                  style: TextStyle(color: textSecondaryColor, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  '₹0',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: textPrimaryColor,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Wallet',
+                  style: TextStyle(color: textSecondaryColor, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

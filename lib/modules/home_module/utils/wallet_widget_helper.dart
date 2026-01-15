@@ -15,7 +15,7 @@ class WalletWidgetHelper {
     cubit.getUserDeliveryRequests();
   }
 
-  double calculateBalance(List<DeliveryRequestModel> deliveryRequests) {
+  static double calculateBalance(List<DeliveryRequestModel> deliveryRequests) {
     double balance = 0.0;
     for (var request in deliveryRequests) {
       if (request.paymentStatus == PaymentStatus.escrowAmountPaid) {

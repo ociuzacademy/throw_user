@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
               context,
             ).pushAndRemoveUntil(HomePage.route(), (route) => false);
             break;
-          case AuthErrorState(
+          case AuthError(
             message: final message,
             details: final details,
             code: _,

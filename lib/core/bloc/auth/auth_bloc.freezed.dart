@@ -435,14 +435,14 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initial value)?  initial,TResult Function( Loading value)?  loading,TResult Function( Authenticated value)?  authenticated,TResult Function( Unauthenticated value)?  unauthenticated,TResult Function( AuthErrorState value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthInitial value)?  initial,TResult Function( AuthLoading value)?  loading,TResult Function( Authenticated value)?  authenticated,TResult Function( Unauthenticated value)?  unauthenticated,TResult Function( AuthError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case Initial() when initial != null:
-return initial(_that);case Loading() when loading != null:
+case AuthInitial() when initial != null:
+return initial(_that);case AuthLoading() when loading != null:
 return loading(_that);case Authenticated() when authenticated != null:
 return authenticated(_that);case Unauthenticated() when unauthenticated != null:
-return unauthenticated(_that);case AuthErrorState() when error != null:
+return unauthenticated(_that);case AuthError() when error != null:
 return error(_that);case _:
   return orElse();
 
@@ -461,14 +461,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initial value)  initial,required TResult Function( Loading value)  loading,required TResult Function( Authenticated value)  authenticated,required TResult Function( Unauthenticated value)  unauthenticated,required TResult Function( AuthErrorState value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthInitial value)  initial,required TResult Function( AuthLoading value)  loading,required TResult Function( Authenticated value)  authenticated,required TResult Function( Unauthenticated value)  unauthenticated,required TResult Function( AuthError value)  error,}){
 final _that = this;
 switch (_that) {
-case Initial():
-return initial(_that);case Loading():
+case AuthInitial():
+return initial(_that);case AuthLoading():
 return loading(_that);case Authenticated():
 return authenticated(_that);case Unauthenticated():
-return unauthenticated(_that);case AuthErrorState():
+return unauthenticated(_that);case AuthError():
 return error(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -483,14 +483,14 @@ return error(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initial value)?  initial,TResult? Function( Loading value)?  loading,TResult? Function( Authenticated value)?  authenticated,TResult? Function( Unauthenticated value)?  unauthenticated,TResult? Function( AuthErrorState value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthInitial value)?  initial,TResult? Function( AuthLoading value)?  loading,TResult? Function( Authenticated value)?  authenticated,TResult? Function( Unauthenticated value)?  unauthenticated,TResult? Function( AuthError value)?  error,}){
 final _that = this;
 switch (_that) {
-case Initial() when initial != null:
-return initial(_that);case Loading() when loading != null:
+case AuthInitial() when initial != null:
+return initial(_that);case AuthLoading() when loading != null:
 return loading(_that);case Authenticated() when authenticated != null:
 return authenticated(_that);case Unauthenticated() when unauthenticated != null:
-return unauthenticated(_that);case AuthErrorState() when error != null:
+return unauthenticated(_that);case AuthError() when error != null:
 return error(_that);case _:
   return null;
 
@@ -510,11 +510,11 @@ return error(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( UserProfile user)?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message,  String? details,  String? code)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case Initial() when initial != null:
-return initial();case Loading() when loading != null:
+case AuthInitial() when initial != null:
+return initial();case AuthLoading() when loading != null:
 return loading();case Authenticated() when authenticated != null:
 return authenticated(_that.user);case Unauthenticated() when unauthenticated != null:
-return unauthenticated();case AuthErrorState() when error != null:
+return unauthenticated();case AuthError() when error != null:
 return error(_that.message,_that.details,_that.code);case _:
   return orElse();
 
@@ -535,11 +535,11 @@ return error(_that.message,_that.details,_that.code);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( UserProfile user)  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message,  String? details,  String? code)  error,}) {final _that = this;
 switch (_that) {
-case Initial():
-return initial();case Loading():
+case AuthInitial():
+return initial();case AuthLoading():
 return loading();case Authenticated():
 return authenticated(_that.user);case Unauthenticated():
-return unauthenticated();case AuthErrorState():
+return unauthenticated();case AuthError():
 return error(_that.message,_that.details,_that.code);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -556,11 +556,11 @@ return error(_that.message,_that.details,_that.code);}
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( UserProfile user)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message,  String? details,  String? code)?  error,}) {final _that = this;
 switch (_that) {
-case Initial() when initial != null:
-return initial();case Loading() when loading != null:
+case AuthInitial() when initial != null:
+return initial();case AuthLoading() when loading != null:
 return loading();case Authenticated() when authenticated != null:
 return authenticated(_that.user);case Unauthenticated() when unauthenticated != null:
-return unauthenticated();case AuthErrorState() when error != null:
+return unauthenticated();case AuthError() when error != null:
 return error(_that.message,_that.details,_that.code);case _:
   return null;
 
@@ -572,8 +572,8 @@ return error(_that.message,_that.details,_that.code);case _:
 /// @nodoc
 
 
-class Initial with DiagnosticableTreeMixin implements AuthState {
-  const Initial();
+class AuthInitial with DiagnosticableTreeMixin implements AuthState {
+  const AuthInitial();
   
 
 
@@ -589,7 +589,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initial);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthInitial);
 }
 
 
@@ -610,8 +610,8 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class Loading with DiagnosticableTreeMixin implements AuthState {
-  const Loading();
+class AuthLoading with DiagnosticableTreeMixin implements AuthState {
+  const AuthLoading();
   
 
 
@@ -627,7 +627,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthLoading);
 }
 
 
@@ -767,8 +767,8 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class AuthErrorState with DiagnosticableTreeMixin implements AuthState {
-  const AuthErrorState({required this.message, this.details, this.code});
+class AuthError with DiagnosticableTreeMixin implements AuthState {
+  const AuthError({required this.message, this.details, this.code});
   
 
  final  String message;
@@ -779,7 +779,7 @@ class AuthErrorState with DiagnosticableTreeMixin implements AuthState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$AuthErrorStateCopyWith<AuthErrorState> get copyWith => _$AuthErrorStateCopyWithImpl<AuthErrorState>(this, _$identity);
+$AuthErrorCopyWith<AuthError> get copyWith => _$AuthErrorCopyWithImpl<AuthError>(this, _$identity);
 
 
 @override
@@ -791,7 +791,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthErrorState&&(identical(other.message, message) || other.message == message)&&(identical(other.details, details) || other.details == details)&&(identical(other.code, code) || other.code == code));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthError&&(identical(other.message, message) || other.message == message)&&(identical(other.details, details) || other.details == details)&&(identical(other.code, code) || other.code == code));
 }
 
 
@@ -807,8 +807,8 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 }
 
 /// @nodoc
-abstract mixin class $AuthErrorStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
-  factory $AuthErrorStateCopyWith(AuthErrorState value, $Res Function(AuthErrorState) _then) = _$AuthErrorStateCopyWithImpl;
+abstract mixin class $AuthErrorCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory $AuthErrorCopyWith(AuthError value, $Res Function(AuthError) _then) = _$AuthErrorCopyWithImpl;
 @useResult
 $Res call({
  String message, String? details, String? code
@@ -819,17 +819,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$AuthErrorStateCopyWithImpl<$Res>
-    implements $AuthErrorStateCopyWith<$Res> {
-  _$AuthErrorStateCopyWithImpl(this._self, this._then);
+class _$AuthErrorCopyWithImpl<$Res>
+    implements $AuthErrorCopyWith<$Res> {
+  _$AuthErrorCopyWithImpl(this._self, this._then);
 
-  final AuthErrorState _self;
-  final $Res Function(AuthErrorState) _then;
+  final AuthError _self;
+  final $Res Function(AuthError) _then;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,Object? details = freezed,Object? code = freezed,}) {
-  return _then(AuthErrorState(
+  return _then(AuthError(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,details: freezed == details ? _self.details : details // ignore: cast_nullable_to_non_nullable
 as String?,code: freezed == code ? _self.code : code // ignore: cast_nullable_to_non_nullable

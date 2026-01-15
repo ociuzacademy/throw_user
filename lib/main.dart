@@ -153,7 +153,7 @@ class _SplashScreenWrapperState extends State<SplashScreenWrapper> {
         final isLoggedIn = authState is Authenticated;
 
         // Show loading state while checking auth
-        if (authState is Initial || authState is Loading) {
+        if (authState is AuthInitial || authState is AuthLoading) {
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: const Center(child: CircularProgressIndicator()),

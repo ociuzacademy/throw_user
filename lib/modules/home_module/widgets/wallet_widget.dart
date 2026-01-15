@@ -46,7 +46,7 @@ class _WalletWidgetState extends State<WalletWidget> {
               WalletHeader(
                 isDark: isDark,
                 isSmallScreen: isSmallScreen,
-                balance: _walletWidgetHelper.calculateBalance(deliveryRequests),
+                balance: WalletWidgetHelper.calculateBalance(deliveryRequests),
               ),
 
               // Main Content

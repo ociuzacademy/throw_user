@@ -92,7 +92,7 @@ class LoginPageContent extends StatelessWidget {
                               // Show loading indicator when authenticating
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, state) {
-                                  if (state is Loading) {
+                                  if (state is AuthLoading) {
                                     return const Padding(
                                       padding: EdgeInsets.only(top: 16.0),
                                       child: CircularProgressIndicator(),
