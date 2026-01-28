@@ -1,10 +1,15 @@
 // delivery_request_provider.dart
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_request_module/data/delivery_request_data.dart';
 
 class DeliveryRequestProvider extends ChangeNotifier {
+  // Item image
+  File? _itemImage;
+
   // Selected locations
   GeoPoint? _pickupLocation;
   GeoPoint? _dropOffLocation;
@@ -33,8 +38,10 @@ class DeliveryRequestProvider extends ChangeNotifier {
   final TextEditingController recipientPhoneController =
       TextEditingController();
   final TextEditingController basePriceController = TextEditingController();
+  final TextEditingController itemRemarksController = TextEditingController();
 
   // Getters
+  File? get itemImage => _itemImage;
   GeoPoint? get pickupLocation => _pickupLocation;
   GeoPoint? get dropOffLocation => _dropOffLocation;
   DateTime? get pickUpDate => _pickUpDate;
@@ -45,6 +52,11 @@ class DeliveryRequestProvider extends ChangeNotifier {
   PreferedDeliveryTime get selectedTime => _selectedTime;
 
   // Setters
+  void setItemImage(File? image) {
+    _itemImage = image;
+    notifyListeners();
+  }
+
   void setPickupLocation(GeoPoint? location) {
     _pickupLocation = location;
     notifyListeners();
@@ -181,12 +193,20 @@ class DeliveryRequestProvider extends ChangeNotifier {
     return null;
   }
 
+  String? validateItemRemarks(String? value) {
+    return null;
+  }
+
   DeliveryRequestData? getDeliveryRequestData(GlobalKey<FormState> formKey) {
     if (!validateForm(formKey)) {
       return null;
     }
 
     if (!areLocationsSelected) {
+      return null;
+    }
+
+    if (itemImage == null) {
       return null;
     }
 
@@ -197,6 +217,8 @@ class DeliveryRequestProvider extends ChangeNotifier {
       dropOffDate: dropOffDate!,
       dropOffRemarks: dropOffRemarksController.text.trim(),
       dropOffPhone: recipientPhoneController.text.trim(),
+      itemImage: itemImage!,
+      itemRemarks: itemRemarksController.text.trim(),
       packageType: selectedPackageType!,
       packageWeight: double.parse(weightController.text.trim()),
       pickupAddress: pickupAddressController.text.trim(),

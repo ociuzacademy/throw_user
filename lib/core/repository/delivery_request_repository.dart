@@ -6,6 +6,7 @@ import 'package:throw_user/core/exports/exception_exports.dart';
 import 'package:throw_user/core/models/bid_model.dart';
 import 'package:throw_user/core/models/delivery_request_model.dart';
 import 'package:throw_user/core/models/user_profile_model.dart';
+import 'package:throw_user/core/service/storage_service.dart';
 import 'package:throw_user/modules/delivery_request_module/data/delivery_request_data.dart';
 
 class DeliveryRequestRepository {
@@ -13,6 +14,8 @@ class DeliveryRequestRepository {
     app: Firebase.app(),
     databaseId: 'throw',
   );
+
+  final StorageService _storageService = StorageService();
 
   // Collection reference
   static const String userCollection = 'users';
@@ -61,6 +64,7 @@ class DeliveryRequestRepository {
         'dropOffDate': Timestamp.fromDate(deliveryRequestData.dropOffDate),
         'dropOffRemarks': deliveryRequestData.dropOffRemarks,
         'feedbackSubmitted': false,
+        'itemRemarks': deliveryRequestData.itemRemarks,
         'minimumDeliveryCharge': deliveryRequestData.baseDeliveryCharge,
         'packageType': deliveryRequestData.packageType.value,
         'packageWeight': deliveryRequestData.packageWeight,
@@ -88,8 +92,18 @@ class DeliveryRequestRepository {
 
       userData['deliveryRequestId'] = docRef.id;
 
-      // Save the data with the generated ID
+      // Save the data without the image URL first
       await docRef.set(userData, SetOptions(merge: true));
+
+      // Upload images to Firebase Storage
+      final imageUrl = await _storageService.uploadImage(
+        deliveryRequestId: docRef.id,
+        imagePath: deliveryRequestData.itemImage.path,
+        imageType: 'deliveryRequest',
+      );
+
+      // Update the document with the image URL
+      await docRef.update({'itemImageUrl': imageUrl});
 
       // Return the auto-generated document ID
       return docRef.id;

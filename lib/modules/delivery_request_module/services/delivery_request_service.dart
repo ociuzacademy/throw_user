@@ -1,5 +1,8 @@
 // delivery_request_service.dart
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:throw_user/modules/delivery_request_module/providers/delivery_request_provider.dart';
 import 'package:throw_user/modules/location_picker_module/view/location_picker_page.dart';
 
@@ -64,6 +67,14 @@ class DeliveryRequestService {
 
     if (picked != null) {
       provider.setDropOffDate(picked);
+    }
+  }
+
+  Future<void> selectItemImage(DeliveryRequestProvider provider) async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (image != null && context.mounted) {
+      provider.setItemImage(File(image.path));
     }
   }
 }

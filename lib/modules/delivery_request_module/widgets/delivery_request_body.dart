@@ -1,5 +1,3 @@
-// delivery_request_page.dart (updated)
-
 import 'package:flutter/material.dart';
 import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/modules/delivery_request_module/providers/delivery_request_provider.dart';
@@ -30,7 +28,7 @@ class DeliveryRequestBody extends StatelessWidget {
     final isMediumScreen = screenSize.width < 600;
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    const IconData rupeeSymbol = IconData(0x20B9, fontFamily: 'MaterialIcons');
+    const IconData dollarSymbol = Icons.attach_money;
 
     return SafeArea(
       child: Form(
@@ -38,6 +36,7 @@ class DeliveryRequestBody extends StatelessWidget {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Pickup Location
               LocationSection(
@@ -65,7 +64,7 @@ class DeliveryRequestBody extends StatelessWidget {
                     deliveryRequestService.selectPickupTime(provider),
               ),
 
-              SizedBox(height: isSmallScreen ? 16 : 24),
+              const SizedBox(height: 24),
 
               // Drop-off Location
               LocationSection(
@@ -94,12 +93,143 @@ class DeliveryRequestBody extends StatelessWidget {
                 },
               ),
 
-              SizedBox(height: isSmallScreen ? 16 : 24),
+              const SizedBox(height: 24),
 
-              // Package Details
+              // Package Details Card
+              Container(
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.cardDark : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        'Package Details',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: isDark
+                              ? AppColors.textPrimaryDark
+                              : AppColors.textPrimaryLight,
+                        ),
+                      ),
+                    ),
+                    const Divider(height: 1),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: GestureDetector(
+                              onTap: () => deliveryRequestService
+                                  .selectItemImage(provider),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? AppColors.backgroundDark
+                                      : AppColors.backgroundLight,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? AppColors.borderDark
+                                        : AppColors.borderLight,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: provider.itemImage != null
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Image.file(
+                                          provider.itemImage!,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.add_a_photo,
+                                            size: 40,
+                                            color: isDark
+                                                ? AppColors.textSecondaryDark
+                                                : AppColors.textSecondaryLight,
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            'Upload Package Photo',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: isDark
+                                                  ? AppColors.textSecondaryDark
+                                                  : AppColors
+                                                        .textSecondaryLight,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? AppColors.cardDark
+                                  : AppColors.backgroundLight,
+                              border: Border.all(
+                                color: isDark
+                                    ? AppColors.borderDark
+                                    : AppColors.borderLight,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: TextFormField(
+                              controller: provider.itemRemarksController,
+                              maxLines: 3,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(16),
+                                hintText:
+                                    'Package description and special instructions...',
+                                hintStyle: TextStyle(
+                                  color: isDark
+                                      ? AppColors.textSecondaryDark
+                                      : AppColors.textSecondaryLight,
+                                ),
+                              ),
+                              style: TextStyle(
+                                color: isDark
+                                    ? AppColors.textPrimaryDark
+                                    : AppColors.textPrimaryLight,
+                              ),
+                              validator: provider.validateItemRemarks,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Additional Package Info
               Column(
                 children: [
-                  // Package Type Dropdown
                   PackageTypeSelectionWidget(
                     selectedPackageType: provider.selectedPackageType,
                     onSelectingPackageType: (value) {
@@ -107,21 +237,16 @@ class DeliveryRequestBody extends StatelessWidget {
                     },
                     validator: provider.validatePackageType,
                   ),
-
-                  SizedBox(height: isSmallScreen ? 12 : 16),
-
-                  // Weight and Urgency Row
+                  const SizedBox(height: 16),
                   WeightAndUrgencySection(
                     isMediumScreen: isMediumScreen,
                     isSmallScreen: isSmallScreen,
                     isDark: isDark,
                     provider: provider,
                   ),
-
-                  SizedBox(height: isSmallScreen ? 12 : 16),
-
-                  // Base Price Field
+                  const SizedBox(height: 16),
                   Container(
+                    height: 56,
                     decoration: BoxDecoration(
                       color: isDark ? AppColors.cardDark : Colors.white,
                       border: Border.all(
@@ -129,7 +254,14 @@ class DeliveryRequestBody extends StatelessWidget {
                             ? AppColors.borderDark
                             : AppColors.borderLight,
                       ),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: TextFormField(
                       controller: provider.basePriceController,
@@ -140,19 +272,15 @@ class DeliveryRequestBody extends StatelessWidget {
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
-                          vertical: 18,
+                          vertical: 10,
                         ),
                         hintText: 'Base Price',
-                        hintStyle: TextStyle(
-                          color: isDark
-                              ? AppColors.textSecondaryDark
-                              : AppColors.textSecondaryLight,
-                        ),
                         prefixIcon: Icon(
-                          rupeeSymbol,
+                          dollarSymbol,
                           color: isDark
                               ? AppColors.textSecondaryDark
                               : AppColors.textSecondaryLight,
+                          size: 20,
                         ),
                       ),
                       style: TextStyle(
@@ -166,7 +294,7 @@ class DeliveryRequestBody extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: isSmallScreen ? 20 : 28),
+              const SizedBox(height: 24),
 
               // Preferred Delivery Time
               TimeSelectionWidget(
@@ -176,37 +304,31 @@ class DeliveryRequestBody extends StatelessWidget {
                 },
               ),
 
-              SizedBox(height: isSmallScreen ? 24 : 32),
+              const SizedBox(height: 32),
 
               // Create Request Button
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: 56,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: TextButton(
+                child: ElevatedButton(
                   onPressed: onSubmit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 8,
+                    shadowColor: AppColors.primary.withValues(alpha: 0.4),
+                  ),
                   child: const Text(
                     'Create Request',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
             ],
           ),
         ),

@@ -49,10 +49,6 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
     final isSmallScreen = screenWidth < 600;
 
     // Responsive dimensions
-    final horizontalPadding = isSmallScreen ? 16.0 : 24.0;
-    final cardPadding = isSmallScreen ? 16.0 : 24.0;
-    final titleFontSize = isSmallScreen ? 18.0 : 20.0;
-    final spacing = isSmallScreen ? 16.0 : 24.0;
 
     // Color definitions based on HTML
     const primaryColor = AppColors.primary;
@@ -76,21 +72,20 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: primaryColor,
-        elevation: 4,
-        shadowColor: Colors.black.withValues(alpha: 0.1),
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
             color: Colors.white,
-            size: 20,
+            size: 24,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Delivery Details',
           style: TextStyle(
-            fontSize: titleFontSize,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -166,199 +161,174 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                   isDark: isDark,
                   onRetry: _deliveryDetailsHelper.deliveryRequestDetailsInit,
                 ),
-              DeliveryRequestDetailsSuccess(:final deliveryRequest) => SafeArea(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(horizontalPadding),
-                  child: Column(
-                    children: [
-                      SizedBox(height: spacing),
+              DeliveryRequestDetailsSuccess(:final deliveryRequest) => Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          // Delivery Progress Card
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: cardColor,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Delivery Progress',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: textPrimaryColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                ProgressTimeline(
+                                  deliveryId: widget.deliveryRequestId,
+                                  isDark: isDark,
+                                  primaryColor: primaryColor,
+                                  textPrimaryColor: textPrimaryColor,
+                                  textSecondaryColor: textSecondaryColor,
+                                  deliveryStatus:
+                                      deliveryRequest.deliveryStatus,
+                                  otp: deliveryRequest.otp,
+                                  onStartPressed:
+                                      _deliveryDetailsHelper.startPickup,
+                                  onOtpShared: () {
+                                    if (deliveryRequest.otp != null) {
+                                      _deliveryDetailsHelper.shareOtp(
+                                        deliveryRequest.dropOffPhoneNumber,
+                                        deliveryRequest.otp!,
+                                      );
+                                    }
+                                  },
+                                  feedbackSubmitted:
+                                      deliveryRequest.feedbackSubmitted ??
+                                      false,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
 
-                      // Delivery Progress Card
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(cardPadding),
-                        decoration: BoxDecoration(
-                          color: cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
+                          // Location Details Card
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: cardColor,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                            if (isDark)
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Delivery Progress',
-                              style: TextStyle(
-                                fontSize: titleFontSize,
-                                fontWeight: FontWeight.bold,
-                                color: textPrimaryColor,
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Location Details',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: textPrimaryColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                DeliveryLocationSection(
+                                  title: 'Pickup',
+                                  icon: Icons.location_on,
+                                  address: deliveryRequest.pickupAddress,
+                                  remark: deliveryRequest.pickupRemarks,
+                                  date: dateFormat.format(
+                                    deliveryRequest.pickupDate.toDate(),
+                                  ),
+                                  primaryColor: primaryColor,
+                                  textSecondaryColor: textSecondaryColor,
+                                  textPrimaryColor: textPrimaryColor,
+                                ),
+                                const SizedBox(height: 16),
+                                Divider(color: Colors.grey[200]),
+                                const SizedBox(height: 16),
+                                DeliveryLocationSection(
+                                  title: 'Drop-off',
+                                  icon: Icons.flag,
+                                  address: deliveryRequest.dropOffAddress,
+                                  phone:
+                                      'Phone: ${deliveryRequest.dropOffPhoneNumber}',
+                                  remark: deliveryRequest.dropOffRemarks,
+                                  date:
+                                      'Estimated: ${deliveryRequest.preferredDeliveryTime.value}',
+                                  primaryColor: primaryColor,
+                                  textSecondaryColor: textSecondaryColor,
+                                  textPrimaryColor: textPrimaryColor,
+                                ),
+                              ],
                             ),
-                            SizedBox(height: spacing),
+                          ),
+                          const SizedBox(height: 24),
 
-                            // Progress Timeline
-                            ProgressTimeline(
-                              deliveryId: widget.deliveryRequestId,
-                              isDark: isDark,
-                              primaryColor: primaryColor,
-                              textPrimaryColor: textPrimaryColor,
-                              textSecondaryColor: textSecondaryColor,
-                              deliveryStatus: deliveryRequest.deliveryStatus,
-                              otp: deliveryRequest.otp,
-                              onStartPressed:
-                                  _deliveryDetailsHelper.startPickup,
-                              onOtpShared: () {
-                                if (deliveryRequest.otp != null) {
-                                  _deliveryDetailsHelper.shareOtp(
-                                    deliveryRequest.dropOffPhoneNumber,
-                                    deliveryRequest.otp!,
-                                  );
-                                }
-                              },
-                              feedbackSubmitted:
-                                  deliveryRequest.feedbackSubmitted,
+                          // Package Details Card
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: cardColor,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Package Details',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: textPrimaryColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                PackageDetailsGrid(
+                                  textSecondaryColor: textSecondaryColor,
+                                  textPrimaryColor: textPrimaryColor,
+                                  isSmallScreen: isSmallScreen,
+                                  packageType: deliveryRequest.packageType,
+                                  weight: deliveryRequest.packageWeight,
+                                  urgency: deliveryRequest.urgency,
+                                  imageUrl: deliveryRequest.itemImageUrl,
+                                  remarks: deliveryRequest.itemRemarks,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
                       ),
-                      SizedBox(height: spacing),
-
-                      // Delivery Details Card
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(cardPadding),
-                        decoration: BoxDecoration(
-                          color: cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                            if (isDark)
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Delivery Details',
-                              style: TextStyle(
-                                fontSize: titleFontSize,
-                                fontWeight: FontWeight.bold,
-                                color: textPrimaryColor,
-                              ),
-                            ),
-                            SizedBox(height: spacing),
-
-                            // Pickup Section
-                            DeliveryLocationSection(
-                              title: 'Pickup',
-                              address: deliveryRequest.pickupAddress,
-                              remark: deliveryRequest.pickupRemarks,
-                              date: dateFormat.format(
-                                deliveryRequest.pickupDate.toDate(),
-                              ),
-                              primaryColor: primaryColor,
-                              textSecondaryColor: textSecondaryColor,
-                              textPrimaryColor: textPrimaryColor,
-                            ),
-
-                            // Divider
-                            Container(
-                              height: 1,
-                              margin: EdgeInsets.symmetric(
-                                vertical: isSmallScreen ? 16.0 : 20.0,
-                              ),
-                              color: AppColors.getBorderColor(isDark),
-                            ),
-
-                            // Drop-off Section
-                            DeliveryLocationSection(
-                              title: 'Drop-off',
-                              address: deliveryRequest.dropOffAddress,
-                              phone:
-                                  'Phone: ${deliveryRequest.dropOffPhoneNumber}',
-                              remark: deliveryRequest.dropOffRemarks,
-                              date: dateFormat.format(
-                                deliveryRequest.dropOffDate.toDate(),
-                              ),
-                              primaryColor: primaryColor,
-                              textSecondaryColor: textSecondaryColor,
-                              textPrimaryColor: textPrimaryColor,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: spacing),
-
-                      // Package Details Card
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(cardPadding),
-                        decoration: BoxDecoration(
-                          color: cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                            if (isDark)
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Package Details',
-                              style: TextStyle(
-                                fontSize: titleFontSize,
-                                fontWeight: FontWeight.bold,
-                                color: textPrimaryColor,
-                              ),
-                            ),
-                            SizedBox(height: isSmallScreen ? 16.0 : 20.0),
-
-                            // Package Details Grid
-                            PackageDetailsGrid(
-                              textSecondaryColor: textSecondaryColor,
-                              textPrimaryColor: textPrimaryColor,
-                              isSmallScreen: isSmallScreen,
-                              packageType: deliveryRequest.packageType,
-                              weight: deliveryRequest.packageWeight,
-                              urgency: deliveryRequest.urgency,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: spacing),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
               _ => const SizedBox.shrink(),
             };

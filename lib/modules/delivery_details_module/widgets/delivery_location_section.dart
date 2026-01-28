@@ -11,6 +11,8 @@ class DeliveryLocationSection extends StatelessWidget {
   final Color primaryColor;
   final Color textSecondaryColor;
   final Color textPrimaryColor;
+  final IconData icon;
+
   const DeliveryLocationSection({
     super.key,
     required this.title,
@@ -21,6 +23,7 @@ class DeliveryLocationSection extends StatelessWidget {
     required this.primaryColor,
     required this.textSecondaryColor,
     required this.textPrimaryColor,
+    required this.icon,
   });
 
   @override
@@ -31,49 +34,56 @@ class DeliveryLocationSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: primaryColor,
-            fontSize: isSmallScreen ? 15 : 16,
-          ),
+        Row(
+          children: [
+            Icon(icon, color: primaryColor, size: isSmallScreen ? 18 : 20),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: primaryColor,
+                fontSize: isSmallScreen ? 15 : 16,
+              ),
+            ),
+          ],
         ),
-        SizedBox(height: isSmallScreen ? 6 : 8),
+        SizedBox(height: isSmallScreen ? 8 : 10),
         Text(
           address,
           style: TextStyle(
             color: textSecondaryColor,
             fontSize: isSmallScreen ? 13 : 14,
+            height: 1.4,
           ),
         ),
         if (phone != null) ...[
-          SizedBox(height: isSmallScreen ? 2 : 4),
+          const SizedBox(height: 4),
           Text(
             phone!,
             style: TextStyle(
               color: textSecondaryColor,
               fontSize: isSmallScreen ? 13 : 14,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
-        SizedBox(height: isSmallScreen ? 2 : 4),
+        const SizedBox(height: 4),
         Text(
-          remark,
+          '"$remark"',
           style: TextStyle(
-            fontSize: isSmallScreen ? 12 : 14,
+            fontSize: isSmallScreen ? 12 : 13,
             fontStyle: FontStyle.italic,
-            color: textSecondaryColor,
+            color: Colors.grey[500],
           ),
         ),
-        SizedBox(height: isSmallScreen ? 6 : 8),
+        const SizedBox(height: 6),
         Text(
           date,
           style: TextStyle(
-            fontSize: isSmallScreen ? 12 : 14,
-            fontWeight: FontWeight.w500,
-            color: textPrimaryColor,
+            fontSize: isSmallScreen ? 12 : 13,
+            fontWeight: FontWeight.w600,
+            color: textPrimaryColor.withValues(alpha: 0.8),
           ),
         ),
       ],

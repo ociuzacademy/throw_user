@@ -77,8 +77,8 @@ class LocationSection extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -86,16 +86,8 @@ class LocationSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
-          Container(
-            width: double.infinity,
+          Padding(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: isDark ? AppColors.borderDark : AppColors.borderLight,
-                ),
-              ),
-            ),
             child: Text(
               title,
               style: TextStyle(
@@ -107,6 +99,7 @@ class LocationSection extends StatelessWidget {
               ),
             ),
           ),
+          const Divider(height: 1),
 
           // Content
           Padding(
@@ -124,7 +117,7 @@ class LocationSection extends StatelessWidget {
                           ? AppColors.borderDark
                           : AppColors.borderLight,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: TextFormField(
                     controller: addressController,
@@ -185,7 +178,7 @@ class LocationSection extends StatelessWidget {
                           ? AppColors.borderDark
                           : AppColors.borderLight,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: TextFormField(
                     controller: remarksController,
@@ -249,8 +242,8 @@ class LocationSection extends StatelessWidget {
                 bottomLeft: Radius.circular(16),
                 bottomRight: Radius.circular(16),
               ),
-              child: SizedBox(
-                height: 200,
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
                 child: selectedLocation != null
                     ? LocationCardPreview(
                         isDark: isDark,
@@ -260,14 +253,14 @@ class LocationSection extends StatelessWidget {
                     : Container(
                         color: isDark
                             ? AppColors.borderDark
-                            : AppColors.borderLight,
+                            : AppColors.borderLight.withValues(alpha: 0.5),
                         child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 Icons.add_location_alt,
-                                size: 48,
+                                size: 40,
                                 color: isDark
                                     ? AppColors.textSecondaryDark
                                     : AppColors.textSecondaryLight,
@@ -279,8 +272,8 @@ class LocationSection extends StatelessWidget {
                                   color: isDark
                                       ? AppColors.textSecondaryDark
                                       : AppColors.textSecondaryLight,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],

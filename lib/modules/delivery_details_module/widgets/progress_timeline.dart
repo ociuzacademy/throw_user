@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:throw_user/core/constants/app_colors.dart';
 import 'package:throw_user/core/exports/enum_exports.dart';
 import 'package:throw_user/modules/delivery_details_module/widgets/progress_step.dart';
 
@@ -36,20 +35,30 @@ class ProgressTimeline extends StatelessWidget {
     final isVerySmallScreen = mediaQuery.size.width < 400;
 
     // Responsive dimensions
-    final linePosition = isVerySmallScreen ? 20.0 : 20.0;
     final stepSpacing = isVerySmallScreen ? 32.0 : 32.0;
 
     return Stack(
       children: [
-        // Dashed line - positioned exactly like HTML
+        // Dashed line
         Positioned(
-          left: linePosition,
-          top: isVerySmallScreen ? 40 : 40,
-          bottom: isVerySmallScreen ? 40 : 40,
-          child: CustomPaint(
-            size: const Size(2, double.infinity),
-            painter: _DashedLinePainter(
-              color: AppColors.getBorderColor(isDark),
+          left: 20,
+          top: 20,
+          bottom: 20,
+          child: Container(
+            width: 2,
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(
+                  color: isDark ? Colors.grey[800]! : Colors.grey[200]!,
+                  width: 2,
+                  style: BorderStyle.none,
+                ),
+              ),
+            ),
+            child: CustomPaint(
+              painter: _DashedLinePainter(
+                color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+              ),
             ),
           ),
         ),

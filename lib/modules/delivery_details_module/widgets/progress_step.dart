@@ -18,13 +18,14 @@ class ProgressStep extends StatelessWidget {
   final bool hasReviewButton;
   final bool isReviewButtonEnabled;
   final VoidCallback? onButtonPressed;
-  final VoidCallback? onOtpShared; // Add this callback
+  final VoidCallback? onOtpShared;
   final String? otp;
   final String? buttonText;
   final Color? primaryColor;
   final Color? textPrimaryColor;
   final Color? textSecondaryColor;
   final bool isDark;
+
   const ProgressStep({
     super.key,
     required this.deliveryId,
@@ -39,7 +40,7 @@ class ProgressStep extends StatelessWidget {
     this.hasReviewButton = false,
     this.isReviewButtonEnabled = false,
     this.onButtonPressed,
-    this.onOtpShared, // Add this parameter
+    this.onOtpShared,
     this.otp,
     this.buttonText,
     this.primaryColor,
@@ -50,200 +51,182 @@ class ProgressStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final isVerySmallScreen = mediaQuery.size.width < 400;
+    final bool isFinished = isCompleted;
 
-    // Responsive dimensions
-    final iconSize = isVerySmallScreen ? 40.0 : 40.0;
-    final iconInnerSize = isVerySmallScreen ? 20.0 : 20.0;
-    final spacing = isVerySmallScreen ? 16.0 : 16.0;
-    final buttonPadding = isVerySmallScreen
-        ? const EdgeInsets.symmetric(horizontal: 24, vertical: 8)
-        : const EdgeInsets.symmetric(horizontal: 24, vertical: 8);
-    final otpFontSize = isVerySmallScreen ? 20.0 : 20.0;
+    // Circle background color
+    final Color circleColor = isFinished || isActive
+        ? (primaryColor ?? AppColors.primary)
+        : (isDark ? Colors.grey[800]! : Colors.grey[200]!);
 
-    // Determine icon circle color
-    final iconCircleColor = isCompleted
-        ? AppColors
-              .success // Green for completed
-        : isActive
-        ? primaryColor!
-        : AppColors.getBorderColor(isDark);
-
-    // Determine icon color
-    final iconColor = isCompleted || isActive
+    // Icon color
+    final Color iconColor = isFinished || isActive
         ? Colors.white
-        : AppColors.getGrayColor(isDark);
+        : (isDark ? Colors.grey[500]! : Colors.grey[400]!);
 
-    // Determine title color
-    final titleColor = isActive || isCompleted
-        ? textPrimaryColor
-        : textSecondaryColor;
-
-    // Determine subtitle color
-    final subtitleColor = isCompleted
-        ? AppColors
-              .success // Green for completed
-        : isActive
-        ? AppColors
-              .success // Green for active
-        : textSecondaryColor;
+    // Subtitle text color
+    final Color subtitleColor = isFinished || (isActive && !hasButton)
+        ? Colors.green[500]!
+        : (isDark ? textSecondaryColor! : textSecondaryColor!);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Icon Circle
+        // Stepper Icon
         Container(
-          width: iconSize,
-          height: iconSize,
-          decoration: BoxDecoration(
-            color: iconCircleColor,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            isCompleted ? Icons.check : icon,
-            color: iconColor,
-            size: iconInnerSize,
-          ),
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(color: circleColor, shape: BoxShape.circle),
+          child: Icon(icon, color: iconColor, size: 20),
         ),
-        SizedBox(width: spacing),
-
+        const SizedBox(width: 16),
         // Content
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: isVerySmallScreen ? 16 : 16,
-                  color: titleColor,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: isVerySmallScreen ? 14 : 14,
-                  color: subtitleColor,
-                ),
-              ),
-
-              // OTP Section
-              if (hasOtp) ...[
-                SizedBox(height: isVerySmallScreen ? 12 : 12),
-                Opacity(
-                  opacity: isActive ? 1.0 : 0.5,
-                  child: Container(
-                    padding: EdgeInsets.all(isVerySmallScreen ? 12 : 12),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? AppColors.inactiveBackgroundDark
-                          : AppColors.backgroundLight,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'OTP:',
+                          title,
                           style: TextStyle(
-                            fontSize: isVerySmallScreen ? 14 : 14,
-                            color: textSecondaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: isFinished || isActive
+                                ? textPrimaryColor
+                                : textSecondaryColor,
                           ),
                         ),
-                        SizedBox(width: isVerySmallScreen ? 16 : 16),
-                        Expanded(
-                          child: Text(
-                            otp ?? '1234',
-                            style: TextStyle(
-                              fontSize: otpFontSize,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: isVerySmallScreen ? 4 : 4,
-                              color: textPrimaryColor,
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: (isFinished || (isActive && !hasButton))
+                                ? FontWeight.w600
+                                : FontWeight.normal,
+                            color: subtitleColor,
                           ),
                         ),
-                        if (showShareIcon)
-                          IconButton(
-                            onPressed: () /*async*/ {
-                              debugPrint('Share OTP via WhatsApp tapped');
-                              onOtpShared?.call();
-                              // if (phoneNumber != null) {
-                              //   final success =
-                              //       await ProgressStepHelper.shareOtpToWhatsApp(
-                              //         context,
-                              //         otp,
-                              //         phoneNumber: phoneNumber!,
-                              //       );
-
-                              //   // If OTP was successfully shared, call the callback
-                              //   if (success && onOtpShared != null) {
-                              //     onOtpShared!();
-                              //   }
-                              // }
-                            },
-                            icon: Icon(
-                              Icons.share,
-                              color: primaryColor,
-                              size: isVerySmallScreen ? 20 : 20,
-                            ),
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            tooltip: 'Share OTP via WhatsApp',
-                          ),
                       ],
                     ),
+                  ),
+                  if (hasButton && isActive)
+                    ElevatedButton(
+                      onPressed: onButtonPressed,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor ?? AppColors.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 8,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9999),
+                        ),
+                      ),
+                      child: Text(
+                        buttonText ?? 'Start',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  if (hasReviewButton)
+                    ElevatedButton(
+                      onPressed: isReviewButtonEnabled
+                          ? () => Navigator.push(
+                              context,
+                              FeedbackPage.route(deliveryId: deliveryId),
+                            )
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isReviewButtonEnabled
+                            ? (primaryColor?.withValues(alpha: 0.1) ??
+                                  AppColors.primary.withValues(alpha: 0.1))
+                            : (isDark ? Colors.grey[800] : Colors.grey[200]),
+                        foregroundColor: isReviewButtonEnabled
+                            ? (primaryColor ?? AppColors.primary)
+                            : Colors.grey[500],
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 8,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9999),
+                        ),
+                      ),
+                      child: const Text(
+                        'Review',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              if (hasOtp) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? Colors.grey[800]?.withValues(alpha: 0.5)
+                        : Colors.grey[100]?.withValues(alpha: 0.8),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'OTP:',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: textSecondaryColor,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        otp ?? '1234',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 4,
+                          color: textPrimaryColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      if (showShareIcon)
+                        IconButton(
+                          onPressed: onOtpShared,
+                          icon: Icon(
+                            Icons.share,
+                            color: primaryColor ?? AppColors.primary,
+                            size: 20,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                    ],
                   ),
                 ),
               ],
             ],
           ),
         ),
-
-        // Start Button (only for Pickup step when active)
-        if (hasButton && isActive)
-          ElevatedButton(
-            onPressed: onButtonPressed,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryColor,
-              foregroundColor: Colors.white,
-              padding: buttonPadding,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(9999),
-              ),
-              textStyle: TextStyle(
-                fontSize: isVerySmallScreen ? 14 : 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            child: Text(buttonText ?? 'Start'),
-          ),
-
-        // Review Button (for delivered step)
-        if (hasReviewButton)
-          ElevatedButton(
-            onPressed: isReviewButtonEnabled
-                ? () => Navigator.push(
-                    context,
-                    FeedbackPage.route(deliveryId: deliveryId),
-                  )
-                : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: primaryColor,
-              padding: buttonPadding,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(9999),
-              ),
-              textStyle: TextStyle(
-                fontSize: isVerySmallScreen ? 14 : 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            child: const Text('Review'),
-          ),
       ],
     );
   }

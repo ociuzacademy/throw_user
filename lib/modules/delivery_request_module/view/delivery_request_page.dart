@@ -56,11 +56,7 @@ class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
           centerTitle: true,
           backgroundColor: AppColors.primary.withValues(alpha: 0.95),
           elevation: 0,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.95),
-            ),
-          ),
+          scrolledUnderElevation: 0,
         ),
         body: BlocListener<DeliveryRequestBloc, DeliveryRequestState>(
           listener: (context, state) {

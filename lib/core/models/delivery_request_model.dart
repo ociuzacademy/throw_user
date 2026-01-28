@@ -28,7 +28,9 @@ class DeliveryRequestModel {
   final Timestamp dropOffDate;
   final String dropOffPhoneNumber;
   final String dropOffRemarks;
-  final bool feedbackSubmitted;
+  final bool? feedbackSubmitted;
+  final String? itemImageUrl;
+  final String? itemRemarks;
   final double minimumDeliveryCharge;
   final String? otp;
   final PackageType packageType;
@@ -60,7 +62,9 @@ class DeliveryRequestModel {
     required this.dropOffDate,
     required this.dropOffPhoneNumber,
     required this.dropOffRemarks,
-    required this.feedbackSubmitted,
+    this.feedbackSubmitted,
+    this.itemImageUrl,
+    this.itemRemarks,
     required this.minimumDeliveryCharge,
     this.otp,
     required this.packageType,
@@ -94,6 +98,8 @@ class DeliveryRequestModel {
     String? dropOffPhoneNumber,
     String? dropOffRemarks,
     bool? feedbackSubmitted,
+    String? itemImageUrl,
+    String? itemRemarks,
     double? minimumDeliveryCharge,
     dynamic otp,
     PackageType? packageType,
@@ -125,6 +131,8 @@ class DeliveryRequestModel {
     dropOffPhoneNumber: dropOffPhoneNumber ?? this.dropOffPhoneNumber,
     dropOffRemarks: dropOffRemarks ?? this.dropOffRemarks,
     feedbackSubmitted: feedbackSubmitted ?? this.feedbackSubmitted,
+    itemImageUrl: itemImageUrl ?? this.itemImageUrl,
+    itemRemarks: itemRemarks ?? this.itemRemarks,
     minimumDeliveryCharge: minimumDeliveryCharge ?? this.minimumDeliveryCharge,
     otp: otp ?? this.otp,
     packageType: packageType ?? this.packageType,
@@ -164,7 +172,9 @@ class DeliveryRequestModel {
             : Timestamp.now(),
         dropOffPhoneNumber: json['dropOffPhoneNumber'],
         dropOffRemarks: json['dropOffRemarks'],
-        feedbackSubmitted: json['feedbackSubmitted'],
+        feedbackSubmitted: json['feedbackSubmitted'] ?? false,
+        itemImageUrl: json['itemImageUrl'],
+        itemRemarks: json['itemRemarks'],
         minimumDeliveryCharge: (json['minimumDeliveryCharge'] ?? 0.0)
             .toDouble(),
         otp: json['otp'],
@@ -211,6 +221,8 @@ class DeliveryRequestModel {
     'dropOffPhoneNumber': dropOffPhoneNumber,
     'dropOffRemarks': dropOffRemarks,
     'feedbackSubmitted': feedbackSubmitted,
+    'itemImageUrl': itemImageUrl,
+    'itemRemarks': itemRemarks,
     'minimumDeliveryCharge': minimumDeliveryCharge,
     'otp': otp,
     'packageType': packageType.value,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:throw_user/core/exports/enum_exports.dart';
@@ -9,6 +11,8 @@ class DeliveryRequestData {
   final DateTime dropOffDate;
   final String dropOffRemarks;
   final String dropOffPhone;
+  final File itemImage;
+  final String itemRemarks;
   final PackageType packageType;
   final double packageWeight;
   final String pickupAddress;
@@ -27,6 +31,8 @@ class DeliveryRequestData {
     required this.dropOffDate,
     required this.dropOffRemarks,
     required this.dropOffPhone,
+    required this.itemImage,
+    required this.itemRemarks,
     required this.packageType,
     required this.packageWeight,
     required this.pickupAddress,
