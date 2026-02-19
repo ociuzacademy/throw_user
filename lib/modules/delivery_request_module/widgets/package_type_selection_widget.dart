@@ -27,7 +27,7 @@ class PackageTypeSelectionWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: DropdownButtonFormField<PackageType>(
-        initialValue: selectedPackageType,
+        value: selectedPackageType,
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
