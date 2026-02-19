@@ -20,7 +20,7 @@ class UrgencyDropdown extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return DropdownButtonFormField<Urgency>(
-      value: selectedUrgency,
+      initialValue: selectedUrgency,
       decoration: InputDecoration(
         border: InputBorder.none,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
